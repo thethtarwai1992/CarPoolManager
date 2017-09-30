@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="col-md-3 col-sm-3 col-xs-12">
-                    
+
                     <div class="field">
                         <select id="" name="destination">
                             <option value="default">Number of seats</option>
@@ -324,9 +324,11 @@
 
 @section('scripts')
 <script>
+    var pick = "default";
+    var dest = "default";
     function myMap() {
         var marker = null;
-        
+
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
 
@@ -344,7 +346,7 @@
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-
+                
                 //infoWindow.setPosition(pos);
                 //infoWindow.setContent('Your Location');
                 //infoWindow.open(map);
@@ -353,11 +355,11 @@
                 marker = new google.maps.Marker({
                     position: pos,
                     draggable: false,
-                    animation: google.maps.Animation.DROP,
+                    animation: google.maps.Animation.DROP
                 });
 
-                marker.setMap(map);     
-        
+                marker.setMap(map);
+
             }, function () {
                 handleLocationError(true, infoWindow, map.getCenter());
             });
@@ -366,26 +368,37 @@
             handleLocationError(false, infoWindow, map.getCenter());
         }
  
-        var onChangeHandler = function() {
-          calculateAndDisplayRoute(directionsService, directionsDisplay);
-        };        
-        document.getElementById('pickup').addEventListener('change', onChangeHandler);
-        document.getElementById('destination').addEventListener('change', onChangeHandler);
+        if ($("#pickup").change(function () {
+            pick = $(this).val();
+            if (pick !== "default" && dest !== "default") {
+                calculateAndDisplayRoute(directionsService, directionsDisplay);
+            }
+
+        }))
+    if ($("#destination").change(function () {
+            dest = $(this).val();
+            if (pick !== "default" && dest !== "default") {
+                calculateAndDisplayRoute(directionsService, directionsDisplay);
+            }
+
+        }))
+
+        directionsDisplay.setMap(map);
     }
 
     function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         directionsService.route({
-          origin: document.getElementById('pickup').value,
-          destination: document.getElementById('destination').value,
-          travelMode: 'DRIVING'
-        }, function(response, status) {
-          if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
+            origin: document.getElementById('pickup').value,
+            destination: document.getElementById('destination').value,
+            travelMode: 'DRIVING'
+        }, function (response, status) {
+            if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
         });
-      }
+    }
 
     $(function () {
         $('#datetimepicker1').datetimepicker();
@@ -396,5 +409,6 @@
 
 {!! HTML::script("js/Moment.js") !!}
 {!! HTML::script("js/bootstrap.datetimepicker.js") !!}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>
 @stop

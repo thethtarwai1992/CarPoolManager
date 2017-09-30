@@ -24,15 +24,11 @@
 
                 <div class="col-md-3 col-sm-3 col-xs-12">
                     <div class="field">
-                        <select id="destination" name="destination">
-                            <option value="default">From</option>
-                            <option>Sofia</option>
-                            <option>Plovdiv</option>
-                            <option>Hamburg</option>
-                            <option>Milano</option>
-                            <option>Paris</option>
-                            <option>Madrid</option>
-                            <option>Berlin</option>
+                        <select id="pickup" name="pickup">
+                            <option value="default">Pickup Point</option>
+                            <option value="orchard, sg">Orchard</option>
+                            <option value="woodlands, sg">Woodlands</option>
+                            <option value="taiseng, sg">Tai Seng</option> 
                         </select>
                     </div>
                 </div>
@@ -41,17 +37,25 @@
 
                     <div class="field">
                         <select id="destination" name="destination">
-                            <option value="default">To</option>
-                            <option>Sofia</option>
-                            <option>Plovdiv</option>
-                            <option>Hamburg</option>
-                            <option>Milano</option>
-                            <option>Paris</option>
-                            <option>Madrid</option>
-                            <option>Berlin</option>
+                            <option value="default">Destination</option>
+                            <option value="orchard, sg">Orchard</option>
+                            <option value="woodlands, sg">Woodlands</option>
+                            <option value="taiseng, sg">Tai Seng</option> 
                         </select>
                     </div>
 
+                </div>
+
+                <div class="col-md-3 col-sm-3 col-xs-12">
+
+                    <div class="field">
+                        <select id="" name="destination">
+                            <option value="default">Number of seats</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="col-md-3 col-sm-3 col-xs-12">
@@ -60,19 +64,6 @@
                         <input name="event" type="text" placeholder="Date" class="datepicker">
                     </div>
 
-
-                </div>
-
-                <div class="col-md-3 col-sm-3 col-xs-12">
-
-                    <div class="field">
-                        <select id="destination" name="destination">
-                            <option value="default">Number of seats</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                    </div>
 
                 </div>
 
@@ -315,12 +306,16 @@
 </div><!-- end .container -->
 
 @stop
-
-
 @section('scripts')
 <script>
+    var pick = "default";
+    var dest = "default";
     function myMap() {
         var marker = null;
+
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+
         var mapProp = {
             center: new google.maps.LatLng(1.290270, 103.851959),
             zoom: 11
@@ -335,7 +330,7 @@
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-
+                
                 //infoWindow.setPosition(pos);
                 //infoWindow.setContent('Your Location');
                 //infoWindow.open(map);
@@ -344,7 +339,7 @@
                 marker = new google.maps.Marker({
                     position: pos,
                     draggable: false,
-                    animation: google.maps.Animation.DROP,
+                    animation: google.maps.Animation.DROP
                 });
 
                 marker.setMap(map);
@@ -356,8 +351,48 @@
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
         }
+ 
+        if ($("#pickup").change(function () {
+            pick = $(this).val();
+            if (pick !== "default" && dest !== "default") {
+                calculateAndDisplayRoute(directionsService, directionsDisplay);
+            }
 
+        }))
+    if ($("#destination").change(function () {
+            dest = $(this).val();
+            if (pick !== "default" && dest !== "default") {
+                calculateAndDisplayRoute(directionsService, directionsDisplay);
+            }
+
+        }))
+
+        directionsDisplay.setMap(map);
     }
+
+    function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        directionsService.route({
+            origin: document.getElementById('pickup').value,
+            destination: document.getElementById('destination').value,
+            travelMode: 'DRIVING'
+        }, function (response, status) {
+            if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    }
+
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
+
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>
+
+
+{!! HTML::script("js/Moment.js") !!}
+{!! HTML::script("js/bootstrap.datetimepicker.js") !!}
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>
 @stop
