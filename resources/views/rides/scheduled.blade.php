@@ -1,6 +1,7 @@
 @extends('main')
 @section('title', '- Rides') 
 @section('styles')
+{!! HTML::style("css/bootstrap.datetimepicker.css") !!}
 <style>
     .ride-content{
         float: right;
@@ -11,6 +12,16 @@
     .sendRequest{
         margin-top: 24px;
     }
+    #datetimepicker1 fa{
+        color:#63a599 ;   
+    }
+    .datetimepicker-cus{
+        border : none; 
+        background: #f4f1e3;
+        border-bottom-right-radius: 3px;
+        border-top-right-radius: 3px;
+        width: 2em;
+    } 
 </style>
 @stop
 @section('search-for-rides')
@@ -24,15 +35,11 @@
 
                 <div class="col-md-3 col-sm-3 col-xs-12">
                     <div class="field">
-                        <select id="destination" name="destination">
-                            <option value="default">From</option>
-                            <option>Sofia</option>
-                            <option>Plovdiv</option>
-                            <option>Hamburg</option>
-                            <option>Milano</option>
-                            <option>Paris</option>
-                            <option>Madrid</option>
-                            <option>Berlin</option>
+                        <select id="pickup" name="pickup">
+                            <option value="default">Pickup Point</option>
+                            <option value="orchard, sg">Orchard</option>
+                            <option value="woodlands, sg">Woodlands</option>
+                            <option value="taiseng, sg">Tai Seng</option> 
                         </select>
                     </div>
                 </div>
@@ -41,32 +48,19 @@
 
                     <div class="field">
                         <select id="destination" name="destination">
-                            <option value="default">To</option>
-                            <option>Sofia</option>
-                            <option>Plovdiv</option>
-                            <option>Hamburg</option>
-                            <option>Milano</option>
-                            <option>Paris</option>
-                            <option>Madrid</option>
-                            <option>Berlin</option>
+                            <option value="default">Destination</option>
+                            <option value="orchard, sg">Orchard</option>
+                            <option value="woodlands, sg">Woodlands</option>
+                            <option value="taiseng, sg">Tai Seng</option> 
                         </select>
                     </div>
 
                 </div>
 
                 <div class="col-md-3 col-sm-3 col-xs-12">
-
+                    
                     <div class="field">
-                        <input name="event" type="text" placeholder="Date" class="datepicker">
-                    </div>
-
-
-                </div>
-
-                <div class="col-md-3 col-sm-3 col-xs-12">
-
-                    <div class="field">
-                        <select id="destination" name="destination">
+                        <select id="" name="destination">
                             <option value="default">Number of seats</option>
                             <option>1</option>
                             <option>2</option>
@@ -78,8 +72,19 @@
 
                 <div class="col-md-3 col-sm-3 col-xs-12">
 
+                    <div class="field"> 
+                        <div class='input-group date' id='datetimepicker1'>
+                            <input type='text' placeholder="Date and Time"  class="form-control"/>
+                            <span class="input-group-addon datetimepicker-cus">
+                                <span class="fa fa-calendar-o" style="color :#63a599;"></span>
+                            </span>
+                        </div> 
+                    </div>
+                </div> 
+                <div class="col-md-3 col-sm-3 col-xs-12">
+
                     <div class="field buttons">
-                        <button type="submit" class="btn btn-lg green-color">Search</button>
+                        <button type="submit" id="submit" class="btn btn-lg green-color">Search</button>
                     </div>
 
                 </div>
@@ -321,6 +326,10 @@
 <script>
     function myMap() {
         var marker = null;
+        
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+
         var mapProp = {
             center: new google.maps.LatLng(1.290270, 103.851959),
             zoom: 11
@@ -347,8 +356,8 @@
                     animation: google.maps.Animation.DROP,
                 });
 
-                marker.setMap(map);
-
+                marker.setMap(map);     
+        
             }, function () {
                 handleLocationError(true, infoWindow, map.getCenter());
             });
@@ -356,8 +365,36 @@
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
         }
-
+ 
+        var onChangeHandler = function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
+        };        
+        document.getElementById('pickup').addEventListener('change', onChangeHandler);
+        document.getElementById('destination').addEventListener('change', onChangeHandler);
     }
+
+    function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        directionsService.route({
+          origin: document.getElementById('pickup').value,
+          destination: document.getElementById('destination').value,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
+
 </script>
+
+
+{!! HTML::script("js/Moment.js") !!}
+{!! HTML::script("js/bootstrap.datetimepicker.js") !!}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>
 @stop
