@@ -32,7 +32,7 @@
         {!! HTML::script("js/modernizr.js") !!}
 
         <!-- Fonts -->
-<!--        {!!  HTML::style("css/font-awesome.min.css") !!}-->
+        <!--        {!!  HTML::style("css/font-awesome.min.css") !!}-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 
@@ -45,10 +45,10 @@
         @yield('styles')
         <style type="text/css"> 
             .main-navigation {
-                margin: 2.5em 0 0;
+                margin: 0.5em 0 0;
             }
             .logo h1{
-                font-size: 42px;
+                font-size: 35px;
             }
             .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content{
                 min-height: 450px;
@@ -67,7 +67,7 @@
             .nav .dropdown > a, .nav .dropdown > a:hover, .nav .dropdown > a:focus{
                 background-color: transparent!important;
             } 
-            .dropdown-menu {
+            .open .dropdown-menu {
                 min-width: 195px;
                 background-color: #63a599;
             }
@@ -81,6 +81,15 @@
             .main-navigation ul > li ul{
                 top: 86px;
             }
+            @media only screen and (min-width: 320px) and (max-width: 980px){
+                .user-log { padding: 0.6em;}
+                .logo h1 {font-size: 25px;}
+                .page-sub-title h2{ font-size: 1em;}
+                .main-header-container {margin: 1em 0;}
+                .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content {min-height: 375px;}
+                
+                .ride-content{float: none;}
+            }
         </style>
     </head>
 
@@ -93,7 +102,7 @@
                 <section class="container">
                     <div class="row">
 
-                        <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
                             <div class="user-log">
                                 @if(!Auth::check())  
                                 <nav class="navbar">
@@ -115,29 +124,19 @@
                                 <a data-toggle="modal" data-target="#loginModal">
                                     Log in
                                 </a> /
-                                    <a data-toggle="modal" data-target="#regModal">
-                                        Sign up
-                                    </a>         
-                                    @endif
+                                <a data-toggle="modal" data-target="#regModal">
+                                    Sign up
+                                </a>         
+                                @endif
 
                             </div><!-- end .user-log -->
-                            
+
                         </div><!-- end .col-sm-4 -->
-                        <div class="col-md-8 col-sm-8 col-xs-12"> 
+                        <div class="col-md-8 col-sm-8 col-xs-6"> 
                             <ul class="social-icons"> 
                                 <li>
                                     <a class="facebook" href="#">
                                         <i class="fa fa-facebook"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="twitter" href="#">
-                                        <i class="fa fa-twitter"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="google" href="#">
-                                        <i class="fa fa-google-plus"></i>
                                     </a>
                                 </li>
                             </ul>
