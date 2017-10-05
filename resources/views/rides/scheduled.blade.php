@@ -3,8 +3,8 @@
 @section('styles')
 {!! HTML::style("css/bootstrap.datetimepicker.css") !!}
 <style>
-    .ride-content{
-        float: right;
+    .ride-content h3{
+       font-size: 14px;
     }
     .rides-list{
         padding-left: 30px;
@@ -104,6 +104,7 @@
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
+                                    <option>4</option>
                                 </select>
                             </div>
 
@@ -127,10 +128,9 @@
         </div>
         <div class="col-md-6 col-sm-12 col-xs-12">
             
-
             <div id="floading-panel">
                 <span class="output-text"><i class="fa fa-taxi"></i> Standard Taxi </span>
-                <span id="output-price">SGD:...</span> <br>
+                <span id="output-price"></span> <br>
                 <span id="output"></span>
             </div>
             <div id="googleMap" style="width:100%;height:500px;"></div> 
@@ -151,11 +151,21 @@
 
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="rides-list">
+                
+                <div class="post-pagination pagination-margin clearfix">
 
+                    <div class="text-center">
+                        <h3>  Book from Schedule rides</h3>
+                    </div>
+
+                </div><!-- end .post-pagination -->                   
+
+                <div class="clearfix"></div>
+                
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From Plovdiv to Sofia</a></h3> <i class="fa fa-money"></i> 6
+                        <h3><a href="#">From <b>Woodlands</b> to <b>Bishan</b></a></h3> <i class="fa fa-money"></i> 16
                     </div>
 
                     <ul class="ride-meta">
@@ -172,14 +182,7 @@
                                 <i class="fa fa-user"></i>
                                 1
                             </a>
-                        </li><!-- end .ride-people -->
-
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-file"></i>
-                                Read more
-                            </a>
-                        </li>
+                        </li><!-- end .ride-people --> 
 
                     </ul><!-- end .ride-meta -->
 
@@ -188,7 +191,7 @@
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From Milano to Rome</a></h3> <i class="fa fa-money"></i> 20
+                        <h3><a href="#">From <b>Orchard</b> to <b>Bugis</b></a></h3> <i class="fa fa-money"></i> 8
                     </div>
 
                     <ul class="ride-meta">
@@ -205,14 +208,7 @@
                                 <i class="fa fa-user"></i>
                                 4
                             </a>
-                        </li><!-- end .ride-people -->
-
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-file"></i>
-                                Read more
-                            </a>
-                        </li>
+                        </li><!-- end .ride-people --> 
 
                     </ul><!-- end .ride-meta -->
 
@@ -221,7 +217,7 @@
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From Lyon to Paris</a></h3> <i class="fa fa-money"></i> 12
+                        <h3><a href="#">From <b>Kranji</b> to <b>Boon Lay</b></a></h3> <i class="fa fa-money"></i> 24
                     </div>
 
                     <ul class="ride-meta">
@@ -238,14 +234,7 @@
                                 <i class="fa fa-user"></i>
                                 3
                             </a>
-                        </li><!-- end .ride-people -->
-
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-file"></i>
-                                Read more
-                            </a>
-                        </li>
+                        </li><!-- end .ride-people --> 
 
                     </ul><!-- end .ride-meta -->
 
@@ -254,7 +243,7 @@
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From Barcelona to Madrid</a></h3> <i class="fa fa-money"></i> 15
+                        <h3><a href="#">From <b>Red Hill</b> to <b>Paya Laber</b></a></h3> <i class="fa fa-money"></i> 20
                     </div>
 
                     <ul class="ride-meta">
@@ -272,13 +261,7 @@
                                 2
                             </a>
                         </li><!-- end .ride-people -->
-
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-file"></i>
-                                Read more
-                            </a>
-                        </li>
+ 
                     </ul><!-- end .ride-meta -->
 
                 </article><!-- end .ride-box -->
@@ -286,7 +269,7 @@
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From Munich to Berlin</a></h3> <i class="fa fa-money"></i> 32
+                        <h3><a href="#">From <b>Jurong East</b> to <b>Pioneer</b></a></h3> <i class="fa fa-money"></i> 12
                     </div>
 
                     <ul class="ride-meta">
@@ -304,13 +287,7 @@
                                 1
                             </a>
                         </li><!-- end .ride-people -->
-
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-file"></i>
-                                Read more
-                            </a>
-                        </li>
+ 
 
                     </ul><!-- end .ride-meta -->
 
@@ -331,9 +308,7 @@
 
             </div><!-- end .events-list -->
 
-        </div><!-- end .page-content -->
-
-
+        </div><!-- end .page-content --> 
 
     </div><!-- end .row -->
 </div><!-- end .container -->

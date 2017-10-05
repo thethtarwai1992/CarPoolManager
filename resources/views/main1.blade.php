@@ -82,6 +82,9 @@
             .main-header-container{
                 margin: 2em 0;
             }
+            .log-facebook{
+                width: 100%;
+            }
             @media only screen and (min-width: 320px) and (max-width: 980px){
                 .user-log { padding: 0.6em;}
                 .logo h1 {font-size: 25px;}
@@ -105,7 +108,7 @@
 
                         <div class="col-md-4 col-sm-4 col-xs-6">
                             <div class="user-log">
-                                @if(!Auth::check())  
+                                @if(Auth::check())  
                                 <nav class="navbar">
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
