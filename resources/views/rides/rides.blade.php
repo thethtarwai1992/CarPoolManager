@@ -1,4 +1,4 @@
-@extends('main')
+@extends('main1')
 @section('title', '- Rides') 
 @section('styles')
 <style>
@@ -15,78 +15,73 @@
         margin: 0;
     } 
 </style>
-@stop
-@section('search-for-rides')
-<div class="row">
-
-    <div class="col-md-12 col-sm-12 col-xs-12">
-
-        <div class="page-sub-title textcenter">
-            <h2>Now</h2>
-            <div class="line"></div>
-        </div><!-- end .page-sub-title -->
-
-    </div><!-- end .col-md-12 col-sm-12 col-xs-12 -->
-    <div class="col-md-12 col-sm-12 col-xs-12">
-
-        <div class="search-content">
-
-            <form action="" novalidate autocomplete="off" class="idealforms searchtours">
-
-                <div class="row">
-
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="field">
-                            <select id="pickup" name="pickup">
-                                <option value="default">Pickup Point</option>
-                                <option value="orchard, sg">Orchard</option>
-                                <option value="woodlands, sg">Woodlands</option>
-                                <option value="taiseng, sg">Tai Seng</option> 
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-
-                        <div class="field">
-                            <select id="destination" name="destination">
-                                <option value="default">Destination</option>
-                                <option value="orchard, sg">Orchard</option>
-                                <option value="woodlands, sg">Woodlands</option>
-                                <option value="taiseng, sg">Tai Seng</option> 
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-
-                        <div class="field">
-                            <select id="" name="numberOfseats">
-                                <option value="default">Number of seats</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="field">
-                            <input name="event" type="text" placeholder="Date" class="datepicker">
-                        </div> 
-                    </div>
-
-                </div> 
-            </form>
-        </div><!-- end .search-content -->
-    </div>
-</div>
-@stop
+@stop 
 
 @section('content')
 
 <div class="container"> 
     <div class="row">  
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <div class="page-sub-title textcenter">
+                <h2>Now</h2>
+                <div class="line"></div>
+            </div><!-- end .page-sub-title -->
+
+        </div><!-- end .col-md-12 col-sm-12 col-xs-12 -->
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <div class="search-content">
+
+                <form action="" novalidate autocomplete="off" class="idealforms searchtours">
+
+                    <div class="row">
+
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                            <div class="field">
+                                <select id="pickup" name="pickup">
+                                    <option value="default">Pickup Point</option>
+                                    <option value="orchard, sg">Orchard</option>
+                                    <option value="woodlands, sg">Woodlands</option>
+                                    <option value="taiseng, sg">Tai Seng</option> 
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+
+                            <div class="field">
+                                <select id="destination" name="destination">
+                                    <option value="default">Destination</option>
+                                    <option value="orchard, sg">Orchard</option>
+                                    <option value="woodlands, sg">Woodlands</option>
+                                    <option value="taiseng, sg">Tai Seng</option> 
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+
+                            <div class="field">
+                                <select id="" name="numberOfseats">
+                                    <option value="default">Number of seats</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                            <div class="field">
+                                <input name="event" type="text" placeholder="Date" class="datepicker">
+                            </div> 
+                        </div>
+
+                    </div> 
+                </form>
+            </div><!-- end .search-content -->
+        </div> 
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div id="googleMap" style="width:100%;height:500px;"></div> 
 

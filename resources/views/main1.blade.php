@@ -49,10 +49,7 @@
             }
             .logo h1{
                 font-size: 35px;
-            }
-            .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content{
-                min-height: 500px;
-            }
+            } 
             .navbar-nav > li > a{
                 color: #465057!important;
                 font-size: 15px;
@@ -178,7 +175,7 @@
 
             <div class="main-baner">
 
-                <div class="fullscreen background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
+                <div class="background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
 
                     <div class="main-parallax-content">
 
