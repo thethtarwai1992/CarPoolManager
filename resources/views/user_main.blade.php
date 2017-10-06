@@ -49,10 +49,7 @@
             }
             .logo h1{
                 font-size: 35px;
-            }
-            .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content{
-                min-height: 500px;
-            }
+            } 
             .navbar-nav > li > a{
                 color: #465057!important;
                 font-size: 15px;
@@ -84,7 +81,7 @@
             } 
             .main-header-container{
                 margin: 2em 0;
-            }            
+            }
             .log-facebook{
                 width: 100%;
             }
@@ -193,7 +190,7 @@
 
             <div class="main-baner">
 
-                <div class="fullscreen background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
+                <div class="background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
 
                     <div class="main-parallax-content">
 
@@ -219,28 +216,14 @@
 
                                                 <ul class="navigation">
                                                     <li>
-                                                        <a href="{{URL::to('/')}}">Home</a>
+                                                        <a href="{{URL::to('/')}}"> Home </a>
+                                                    </li>  
+                                                    <li>
+                                                        <a href="{{URL::to('user/edit')}}">Edit Profile </a>
+                                                    </li>  
+                                                    <li>
+                                                        <a href="{{URL::to('user/change-pw')}}">Change Password</a>
                                                     </li> 
-                                                    <li>
-                                                        <a href="#">Rides</a>
-                                                        <ul class="sub-menu">
-                                                            <li>
-                                                                <a href="{{URL::to('rides')}}">Now</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{URL::to('rides/scheduled')}}">Schedule</a>
-                                                            </li> 
-                                                        </ul>
-                                                    </li>
-                                                    <li>
-                                                        <a href="add-ride.html">FAQ</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="add-ride.html">About Us</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="contact-page.html">Contact</a>
-                                                    </li>
                                                 </ul>
 
                                             </nav><!-- end .main-navigation -->
