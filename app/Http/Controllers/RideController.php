@@ -27,6 +27,7 @@ class RideController extends Controller {
 
     public function show() {
         
+        return view('rides.myrides');
     }
 
     public function edit($id) {
