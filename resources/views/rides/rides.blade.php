@@ -1,9 +1,9 @@
-@extends('main')
+@extends('main1')
 @section('title', '- Rides') 
 @section('styles')
 <style>
-    .ride-content{
-        float: right;
+    .ride-content h3{
+        font-size: 14px;
     }
     .rides-list{
         padding-left: 30px;
@@ -14,81 +14,105 @@
     .search-content{
         margin: 0;
     } 
+    #floading-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+        width : 40%;
+    }
+    #output-price, #output{
+        font-size: 10px;
+        float: right;
+    }
+    .output-text{
+        float: left;
+    }
 </style>
-@stop
-@section('search-for-rides')
-<div class="row">
-
-    <div class="col-md-12 col-sm-12 col-xs-12">
-
-        <div class="page-sub-title textcenter">
-            <h2>Now</h2>
-            <div class="line"></div>
-        </div><!-- end .page-sub-title -->
-
-    </div><!-- end .col-md-12 col-sm-12 col-xs-12 -->
-    <div class="col-md-12 col-sm-12 col-xs-12">
-
-        <div class="search-content">
-
-            <form action="" novalidate autocomplete="off" class="idealforms searchtours">
-
-                <div class="row">
-
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="field">
-                            <select id="pickup" name="pickup">
-                                <option value="default">Pickup Point</option>
-                                <option value="orchard, sg">Orchard</option>
-                                <option value="woodlands, sg">Woodlands</option>
-                                <option value="taiseng, sg">Tai Seng</option> 
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-
-                        <div class="field">
-                            <select id="destination" name="destination">
-                                <option value="default">Destination</option>
-                                <option value="orchard, sg">Orchard</option>
-                                <option value="woodlands, sg">Woodlands</option>
-                                <option value="taiseng, sg">Tai Seng</option> 
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-
-                        <div class="field">
-                            <select id="" name="numberOfseats">
-                                <option value="default">Number of seats</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="field">
-                            <input name="event" type="text" placeholder="Date" class="datepicker">
-                        </div> 
-                    </div>
-
-                </div> 
-            </form>
-        </div><!-- end .search-content -->
-    </div>
-</div>
-@stop
+@stop 
 
 @section('content')
 
 <div class="container"> 
     <div class="row">  
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <div class="page-sub-title textcenter">
+                <h2>Now</h2>
+                <div class="line"></div>
+            </div><!-- end .page-sub-title -->
+
+        </div><!-- end .col-md-12 col-sm-12 col-xs-12 -->
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <div class="search-content">
+
+                <form action="" novalidate autocomplete="off" class="idealforms searchtours">
+
+                    <div class="row">
+
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                            <div class="field">
+                                <select id="pickup" name="pickup">
+                                    <option value="default">Pickup Point</option>
+                                    <option value="orchard, sg">Orchard</option>
+                                    <option value="woodlands, sg">Woodlands</option>
+                                    <option value="taiseng, sg">Tai Seng</option> 
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+
+                            <div class="field">
+                                <select id="destination" name="destination">
+                                    <option value="default">Destination</option>
+                                    <option value="orchard, sg">Orchard</option>
+                                    <option value="woodlands, sg">Woodlands</option>
+                                    <option value="taiseng, sg">Tai Seng</option> 
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+
+                            <div class="field">
+                                <select id="" name="numberOfseats">
+                                    <option value="default">Number of seats</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                            <div class="field">
+                                <input name="event" type="text" placeholder="Date" class="datepicker">
+                            </div> 
+                        </div>
+
+                    </div> 
+                </form>
+            </div><!-- end .search-content -->
+        </div> 
         <div class="col-md-6 col-sm-12 col-xs-12">
+
+            <div id="floading-panel">
+                <span class="output-text"><i class="fa fa-taxi"></i> Standard Taxi </span>
+                <span id="output-price"></span> <br>
+                <span id="output"></span>
+            </div>
             <div id="googleMap" style="width:100%;height:500px;"></div> 
+
 
             @if(Auth::check())  
             <div class="field buttons sendRequest">
@@ -104,13 +128,25 @@
         </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12">
+                 
             <div class="rides-list"> 
+
+                <div class="post-pagination pagination-margin clearfix">
+
+                    <div class="text-center">
+                        <h3>  Book from Today's Schedule rides</h3>
+                    </div>
+
+                </div><!-- end .post-pagination -->                   
+
+                <div class="clearfix"></div>
+                
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From Plovdiv to Sofia</a></h3> <i class="fa fa-money"></i> 6
+                        <h3><a href="#">From <b>Woodlands</b> to <b>Bishan</b></a></h3> <i class="fa fa-money"></i> 16
                     </div>
-
+                    
                     <ul class="ride-meta">
 
                         <li class="ride-date">
@@ -125,14 +161,7 @@
                                 <i class="fa fa-user"></i>
                                 1
                             </a>
-                        </li><!-- end .ride-people -->
-
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-file"></i>
-                                Read more
-                            </a>
-                        </li>
+                        </li><!-- end .ride-people --> 
 
                     </ul><!-- end .ride-meta -->
 
@@ -141,7 +170,7 @@
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From Milano to Rome</a></h3> <i class="fa fa-money"></i> 20
+                        <h3><a href="#">From <b>Orchard</b> to <b>Bugis</b></a></h3> <i class="fa fa-money"></i> 8
                     </div>
 
                     <ul class="ride-meta">
@@ -158,14 +187,7 @@
                                 <i class="fa fa-user"></i>
                                 4
                             </a>
-                        </li><!-- end .ride-people -->
-
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-file"></i>
-                                Read more
-                            </a>
-                        </li>
+                        </li><!-- end .ride-people --> 
 
                     </ul><!-- end .ride-meta -->
 
@@ -174,7 +196,7 @@
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From Lyon to Paris</a></h3> <i class="fa fa-money"></i> 12
+                        <h3><a href="#">From <b>Kranji</b> to <b>Boon Lay</b></a></h3> <i class="fa fa-money"></i> 24
                     </div>
 
                     <ul class="ride-meta">
@@ -191,14 +213,7 @@
                                 <i class="fa fa-user"></i>
                                 3
                             </a>
-                        </li><!-- end .ride-people -->
-
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-file"></i>
-                                Read more
-                            </a>
-                        </li>
+                        </li><!-- end .ride-people --> 
 
                     </ul><!-- end .ride-meta -->
 
@@ -207,7 +222,7 @@
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From Barcelona to Madrid</a></h3> <i class="fa fa-money"></i> 15
+                        <h3><a href="#">From <b>Red Hill</b> to <b>Paya Laber</b></a></h3> <i class="fa fa-money"></i> 20
                     </div>
 
                     <ul class="ride-meta">
@@ -226,12 +241,6 @@
                             </a>
                         </li><!-- end .ride-people -->
 
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-file"></i>
-                                Read more
-                            </a>
-                        </li>
                     </ul><!-- end .ride-meta -->
 
                 </article><!-- end .ride-box -->
@@ -239,7 +248,7 @@
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From Munich to Berlin</a></h3> <i class="fa fa-money"></i> 32
+                        <h3><a href="#">From <b>Jurong East</b> to <b>Pioneer</b></a></h3> <i class="fa fa-money"></i> 12
                     </div>
 
                     <ul class="ride-meta">
@@ -258,12 +267,6 @@
                             </a>
                         </li><!-- end .ride-people -->
 
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-file"></i>
-                                Read more
-                            </a>
-                        </li>
 
                     </ul><!-- end .ride-meta -->
 
@@ -284,7 +287,8 @@
 
             </div><!-- end .events-list -->
 
-        </div><!-- end .page-content --> 
+        </div><!-- end .page-content -->
+
     </div><!-- end .row -->
 </div><!-- end .container -->
 
@@ -294,6 +298,9 @@
 <script>
     var pick = "default";
     var dest = "default";
+    var outputDiv = document.getElementById('output');
+    var outputPrice = document.getElementById('output-price');
+
     function myMap() {
         var marker = null;
 
@@ -340,6 +347,7 @@
             pick = $(this).val();
             if (pick !== "default" && dest !== "default") {
                 calculateAndDisplayRoute(directionsService, directionsDisplay);
+                calculateDistance();
             }
 
         }))
@@ -347,6 +355,7 @@
                 dest = $(this).val();
                 if (pick !== "default" && dest !== "default") {
                     calculateAndDisplayRoute(directionsService, directionsDisplay);
+                    calculateDistance();
                 }
 
             }))
@@ -367,6 +376,32 @@
         });
     }
 
+    function calculateDistance() {
+        var service = new google.maps.DistanceMatrixService;
+        service.getDistanceMatrix({
+            origins: [document.getElementById('pickup').value],
+            destinations: [document.getElementById('destination').value],
+            travelMode: 'DRIVING',
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+        }, function (response, status) {
+            if (status !== 'OK') {
+                alert('Error was: ' + status);
+            } else {
+                outputDiv.innerHTML = '';
+                outputPrice.innerHTML = '';
+                var results = response.rows[0].elements;
+                console.log(results[0].distance.text);
+                console.log(results[0].duration.text);
+                outputDiv.innerHTML += results[0].distance.text + ' in ' +
+                        results[0].duration.text + '<br>';
+                outputPrice.innerHTML += 'SGD: 10';
+
+
+            }
+        });
+    }
 </script> 
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>

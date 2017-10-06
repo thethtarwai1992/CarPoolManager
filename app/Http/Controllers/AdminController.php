@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 
-class RideController extends Controller {
+class AdminController extends Controller {
 
     public function index() {
         
@@ -13,7 +13,7 @@ class RideController extends Controller {
     
     public function scheduled() {
         
-        return view('rides.scheduled');
+        return view('admin.admin');
     }
 
 
@@ -26,8 +26,7 @@ class RideController extends Controller {
     }
 
     public function show() {
-        
-        return view('rides.myrides');
+        return view('admin.details');
     }
 
     public function edit($id) {

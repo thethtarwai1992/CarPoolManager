@@ -49,10 +49,7 @@
             }
             .logo h1{
                 font-size: 35px;
-            }
-            .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content{
-                min-height: 500px;
-            }
+            } 
             .navbar-nav > li > a{
                 color: #465057!important;
                 font-size: 15px;
@@ -84,7 +81,7 @@
             } 
             .main-header-container{
                 margin: 2em 0;
-            }            
+            }
             .log-facebook{
                 width: 100%;
             }
@@ -94,9 +91,9 @@
                 .page-sub-title h2{ font-size: 1em;}
                 .main-header-container {margin: 1em 0;}
                 .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content {min-height: 375px;}
-                
+
                 .ride-content{float: none;}
-            }
+            } 
             @media only screen and (min-width: 1186px) and (max-width: 1329px){
                 .logo{ padding: 1.5em 1em; }
                 .logo h1{ font-size: 35px;}
@@ -123,7 +120,7 @@
 
                         <div class="col-md-4 col-sm-4 col-xs-6">
                             <div class="user-log">
-                                @if(!Auth::check())  
+                                @if(Auth::check())  
                                 <nav class="navbar">
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
@@ -193,7 +190,7 @@
 
             <div class="main-baner">
 
-                <div class="fullscreen background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
+                <div class="background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
 
                     <div class="main-parallax-content">
 
