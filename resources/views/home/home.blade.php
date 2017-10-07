@@ -123,10 +123,10 @@
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
 
-                    <div class="page-sub-title textcenter">
+<!--                    <div class="page-sub-title textcenter">
                         <h2>How it works</h2>
                         <div class="line"></div>
-                    </div><!-- end .page-sub-title -->
+                    </div> end .page-sub-title -->
 
                 </div>
 

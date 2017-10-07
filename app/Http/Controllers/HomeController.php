@@ -8,9 +8,9 @@ class HomeController extends Controller {
     
     public function getIndex(){
         
-        return view('home.home'); 
+        return view('home.home');
     }    
-
+//foldername.filename
 //    public function postLogin() {
 //        $email = Input::get('email');
 //        $password = Input::get('password');

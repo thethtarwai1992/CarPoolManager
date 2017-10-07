@@ -84,6 +84,9 @@
             } 
             .main-header-container{
                 margin: 2em 0;
+            }            
+            .log-facebook{
+                width: 100%;
             }
             @media only screen and (min-width: 320px) and (max-width: 980px){
                 .user-log { padding: 0.6em;}
@@ -93,6 +96,18 @@
                 .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content {min-height: 375px;}
                 
                 .ride-content{float: none;}
+            }
+            @media only screen and (min-width: 1186px) and (max-width: 1329px){
+                .logo{ padding: 1.5em 1em; }
+                .logo h1{ font-size: 35px;}
+            }
+
+            @media only screen and (min-width: 980px) and (max-width: 1186px){
+                /*                 .logo{ padding: 1.5em 1em; }
+                                 .logo h1{ font-size: 35px;}*/
+                .main-header-container .col-md-5, .main-header-container .col-md-7{width: 100%;}
+                .main-navigation{text-align: center;}
+
             }
         </style>
     </head>
@@ -115,8 +130,8 @@
                                             <li class="dropdown">
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> Yuting <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="#">My Account</a></li>
-                                                    <li><a href="#">My Rides</a></li>
+                                                    <li><a href="{{URL::to('user')}}">My Account</a></li>
+                                                    <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
                                                     <li><a href="#">My Favorites</a></li>
                                                     <li><a href="{{URL::to('driver/register')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
                                                 </ul>
@@ -198,7 +213,7 @@
 
                                         </div><!-- end .col-sm-4 -->
 
-                                        <div class="col-md-7 col-sm-8 col-xs-12">
+                                        <div class="col-md-7 col-sm-12 col-xs-12">
 
                                             <nav id="nav" class="main-navigation">
 
