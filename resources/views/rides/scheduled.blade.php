@@ -146,7 +146,7 @@
                     <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
                 </div>
             </a> 
-            @endif 
+            @endif
         </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12">
