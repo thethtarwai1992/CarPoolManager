@@ -36,6 +36,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 
+        <!-- popup notification -->
+        <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+        
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -110,12 +113,15 @@
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
                                             <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> Thet Htar <span class="caret"></span></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> Yuting <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="#">My Account</a></li>
                                                     <li><a href="#">My Rides</a></li>
                                                     <li><a href="#">My Favorites</a></li>
-                                                    <li><a href="#">Switch to Drive? <i class="fa fa-cab"></i></a></li>
+                                                    <li><a href="{{URL::to('driver/route')}}">My Routes</a></li>
+                                                    <li><a href="{{URL::to('driver/task')}}">My Tasks</a></li>
+                                                    <li><a href="#">Switch to Passenger?</a></li>
+                                                    <li><a href="#">Log Out</a></li>
                                                 </ul>
                                             </li> 
                                         </ul> 
@@ -204,13 +210,13 @@
                                                         <a href="{{URL::to('/')}}">Home</a>
                                                     </li> 
                                                     <li>
-                                                        <a href="#">Rides</a>
+                                                        <a href="#">Booking</a>
                                                         <ul class="sub-menu">
                                                             <li>
-                                                                <a href="{{URL::to('rides')}}">Now</a>
+                                                                <a href="{{URL::to('driver/booking_now')}}">Ride Now</a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{URL::to('rides/scheduled')}}">Schedule</a>
+                                                                <a href="{{URL::to('driver/new_request')}}">New Request</a>
                                                             </li> 
                                                         </ul>
                                                     </li>
@@ -293,6 +299,7 @@
         {!! HTML::script("js/bootstrap-rating-input.min.js") !!}
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
+         <!-- timepicker  -->
         <script type="text/javascript">
 
 

@@ -113,12 +113,12 @@
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
                                             <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> Thet Htar <span class="caret"></span></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> Yuting <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="#">My Account</a></li>
                                                     <li><a href="#">My Rides</a></li>
                                                     <li><a href="#">My Favorites</a></li>
-                                                    <li><a href="#">Switch to Drive? <i class="fa fa-cab"></i></a></li>
+                                                    <li><a href="{{URL::to('driver/register')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
                                                 </ul>
                                             </li> 
                                         </ul> 
