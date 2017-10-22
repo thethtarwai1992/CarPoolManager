@@ -108,7 +108,7 @@
                 .main-header-container .col-md-5, .main-header-container .col-md-7{width: 100%;}
                 .main-navigation{text-align: center;}
 
-            }
+            } 
         </style>
     </head>
 
@@ -143,12 +143,12 @@
                                     </div>
                                 </nav>
                                 @else
-                                <a data-toggle="modal" data-target="#loginModal">
+                                <a href = "{{ URL::to('/login') }}">
                                     Log in
                                 </a> /
-                                <a data-toggle="modal" data-target="#regModal">
+                                <a href = "{{ URL::to('/register') }}">
                                     Sign up
-                                </a>         
+                                </a>           
                                 @endif
 
                             </div><!-- end .user-log -->
@@ -315,6 +315,8 @@
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
          <!-- timepicker  -->
+        <!-- Scripts -->
+        <script src="{{ asset('js/app.js') }}"></script>
         <script type="text/javascript">
 
 

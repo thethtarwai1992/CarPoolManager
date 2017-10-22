@@ -29,7 +29,7 @@
         {!!  HTML::style("css/style.css") !!}
 
         <!-- Modernizr -->
-        {!! HTML::script("js/modernizr.js") !!}
+        {!! HTML::script("js/modernizr.js") !!} 
 
         <!-- Fonts -->
         <!--        {!!  HTML::style("css/font-awesome.min.css") !!}-->
@@ -88,10 +88,7 @@
             .log-facebook{
                 width: 100%;
             }
-            .login-cus{
-                padding-left: 10px;
-                padding-right: 10px;
-            }
+            
             @media only screen and (min-width: 320px) and (max-width: 980px){
                 .user-log { padding: 0.6em;}
                 .logo h1 {font-size: 25px;}
@@ -144,10 +141,10 @@
                                     </div>
                                 </nav>
                                 @else
-                                <a data-toggle="modal" data-target="#loginModal">
+                                <a href = "{{ URL::to('/login') }}">
                                     Log in
                                 </a> /
-                                <a data-toggle="modal" data-target="#regModal">
+                                <a href = "{{ URL::to('/register') }}">
                                     Sign up
                                 </a>         
                                 @endif
@@ -321,6 +318,7 @@
         {!! HTML::script("js/bootstrap-rating-input.min.js") !!}
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
+        
         <script type="text/javascript">
 
 

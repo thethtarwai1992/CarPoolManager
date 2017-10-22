@@ -1,13 +1,26 @@
-@extends('layouts.app')
+@extends('main1')
+
+@section('styles')
+<style>
+    .login-cus{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+ 
+</style>
+@endsection
 
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+        <div class="col-md-8">
+            <div class="panel panel-default"> 
 
                 <div class="panel-body">
+                    <div class="log-header">
+                        <span class="log-in">Log in</span>
+                    </div>
+
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
 
@@ -18,9 +31,9 @@
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
 
                                 @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
                                 @endif
                             </div>
                         </div>
@@ -32,34 +45,38 @@
                                 <input id="password" type="password" class="form-control" name="password" required>
 
                                 @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+
+                        <div class="form-group login-cus">
+
+                            <div class="col-md-6">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
                                     </label>
                                 </div>
                             </div>
+                            <div class="col-md-6">  
+                                <a class="pull-right" data-toggle="modal" data-target="#regModal">Forgot Your Password?</a>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
+                            <div class="field buttons">
+                                <button type="submit" class="submit btn btn-primary">Log in</button> 
                             </div>
+
                         </div>
+                        <div class="form-group">
+                            <a href="#" class="log-facebook facebook"><i class="fa fa-facebook"></i>Facebook</a>
+                        </div>  
                     </form>
                 </div>
             </div>
