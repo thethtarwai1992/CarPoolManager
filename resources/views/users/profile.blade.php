@@ -19,7 +19,7 @@
                         <img src="{{ asset('img/avatar-1.jpg') }}" alt="" class="img-rounded img-responsive" />
                     </div>
                     <div class="col-sm-6 col-md-8">
-                        <h4>{{ Auth::user()->name }} </h4>
+                        <h4>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} </h4>
                         <small><cite>Username: {{ Auth::user()->name }}</cite></small>
                         <br><br>
                         <p>
