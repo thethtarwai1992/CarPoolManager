@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `booking`
 --
 
-CREATE TABLE `booking` (
+CREATE TABLE `bookings` (
   `booking_id` int(11) NOT NULL,
   `request_time` datetime DEFAULT NULL,
   `passenger_id` int(11) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `booking` (
 -- Table structure for table `car`
 --
 
-CREATE TABLE `car` (
+CREATE TABLE `cars` (
   `plate_no` int(11) NOT NULL,
   `model` varchar(45) DEFAULT NULL,
   `manufacture_year` varchar(45) DEFAULT NULL
@@ -55,7 +55,7 @@ CREATE TABLE `car` (
 -- Table structure for table `driver`
 --
 
-CREATE TABLE `driver` (
+CREATE TABLE `drivers` (
   `driving_license_no` varchar(45) NOT NULL,
   `driving_license_valid_from` date DEFAULT NULL,
   `User_userID` int(11) NOT NULL
@@ -67,7 +67,7 @@ CREATE TABLE `driver` (
 -- Table structure for table `driver_car`
 --
 
-CREATE TABLE `driver_car` (
+CREATE TABLE `driver_cars` (
   `driver_driving_license_no` varchar(45) NOT NULL,
   `car_plate_no` int(11) NOT NULL,
   `register_date` date DEFAULT NULL
@@ -79,7 +79,7 @@ CREATE TABLE `driver_car` (
 -- Table structure for table `location`
 --
 
-CREATE TABLE `location` (
+CREATE TABLE `locations` (
   `address` varchar(100) NOT NULL,
   `postal_code` int(6) NOT NULL,
   `location_id` int(11) NOT NULL
@@ -91,7 +91,7 @@ CREATE TABLE `location` (
 -- Table structure for table `preference`
 --
 
-CREATE TABLE `preference` (
+CREATE TABLE `preferences` (
   `userID` int(11) NOT NULL,
   `total_pax` int(11) DEFAULT NULL,
   `tripdate` date DEFAULT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE `preference` (
 -- Table structure for table `route`
 --
 
-CREATE TABLE `route` (
+CREATE TABLE `routes` (
   `route_id` int(11) NOT NULL,
   `seats_offered` int(11) NOT NULL,
   `created_date` date NOT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE `status` (
 -- Table structure for table `user`
 --
 
-CREATE TABLE `user` (
+CREATE TABLE `users` (
   `userID` int(11) NOT NULL,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) DEFAULT NULL,

@@ -1,7 +1,8 @@
 <!DOCTYPE html> 
 <!--[if IE 7]>                  <html class="ie7 no-js" lang="en">     <![endif]-->
 <!--[if lte IE 8]>              <html class="ie8 no-js" lang="en">     <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--> <html class="not-ie no-js" lang="{{ app()->getLocale() }}">  <!--<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> 
+<html class="not-ie no-js" lang="{{ app()->getLocale() }}">  <!--<![endif]-->
     <head>
 
         <!-- Basic Page Needs -->
@@ -128,7 +129,7 @@
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
                                             <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> Yuting <span class="caret"></span></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->name }}  <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{URL::to('user')}}">My Account</a></li>
                                                     <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
@@ -290,10 +291,7 @@
 
         </footer><!-- end #footer -->
 
-        @yield('modals')
-        @if(!Auth::check())
-        @include('home/sign_in_up_model')        
-        @endif
+        @yield('modals') 
         <!-- Javascript -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- Bootstrap -->
@@ -316,7 +314,7 @@
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
          <!-- timepicker  -->
         <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}"></script>
+<!--        <script src="{{ asset('js/app.js') }}"></script>-->
         <script type="text/javascript">
 
 

@@ -1,4 +1,4 @@
-@extends('user_main')
+@extends('layouts.user_main')
 @section('title', '- Change Password') 
 @section('styles')
 <style> 

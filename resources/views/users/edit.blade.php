@@ -1,4 +1,4 @@
-@extends('user_main')
+@extends('layouts.user_main')
 @section('title', '- Profile') 
 @section('styles')
 <style> 
@@ -15,11 +15,11 @@
                     <input type="hidden" name="_method" value="PUT">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" name="name" value="Thet Htar Wai" class="form-control">
+                        <input type="text" name="name" value="{{ Auth::user()->name }}" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" value="email@example.com" class="form-control">
+                        <input type="email" name="email" value="{{ Auth::user()->email }}" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="email">Phone Number</label>

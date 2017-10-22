@@ -120,12 +120,12 @@
 
                         <div class="col-md-4 col-sm-4 col-xs-6">
                             <div class="user-log">
-                                @if(!Auth::check())  
+                                @if(Auth::check())  
                                 <nav class="navbar">
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
                                             <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> Thet Htar <span class="caret"></span></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->name }}  <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{URL::to('user')}}">My Account</a></li>
                                                     <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
@@ -137,12 +137,12 @@
                                     </div>
                                 </nav>
                                 @else
-                                <a data-toggle="modal" data-target="#loginModal">
+                                <a href = "{{ URL::to('/login') }}">
                                     Log in
                                 </a> /
-                                <a data-toggle="modal" data-target="#regModal">
+                                <a href = "{{ URL::to('/register') }}">
                                     Sign up
-                                </a>         
+                                </a>        
                                 @endif
 
                             </div><!-- end .user-log -->
@@ -223,6 +223,9 @@
                                                     </li>  
                                                     <li>
                                                         <a href="{{URL::to('user/change-pw')}}">Change Password</a>
+                                                    </li> 
+                                                    <li>
+                                                        <a href="{{URL::to('/logout')}}">Logout</a>
                                                     </li> 
                                                 </ul>
 

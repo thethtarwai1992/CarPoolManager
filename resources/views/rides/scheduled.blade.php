@@ -1,4 +1,4 @@
-@extends('main1')
+@extends('layouts.design')
 @section('title', '- Rides') 
 @section('styles')
 {!! HTML::style("css/bootstrap.datetimepicker.css") !!}

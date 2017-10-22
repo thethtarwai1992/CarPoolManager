@@ -1,4 +1,4 @@
-@extends('main1')
+@extends('layouts.design')
 
 @section('styles')
 <style>
@@ -8,7 +8,7 @@
     }
  
 </style>
-@endsection
+@stop
 
 @section('content')
 <div class="container">
@@ -63,7 +63,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">  
-                                <a class="pull-right" data-toggle="modal" data-target="#regModal">Forgot Your Password?</a>
+                                  <a class="pull-right" href="{{ route('password.request') }}"> Forgot Your Password?</a>
                             </div>
                         </div>
 

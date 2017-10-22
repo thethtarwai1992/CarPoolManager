@@ -6,7 +6,7 @@
  */
 Route::get('register', 'Auth/RegisterController@register');
 Route::get('/', 'HomeController@index'); 
-//Route::post('/home/login', 'HomeController@postLogin');
+Route::get('/home', 'HomeController@index');
 Route::get('driver/register','DriverRegisterController@index');
 
 Route::get('driver/route', 'RouteController@index'); 
