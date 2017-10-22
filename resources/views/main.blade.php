@@ -88,6 +88,10 @@
             .log-facebook{
                 width: 100%;
             }
+            .login-cus{
+                padding-left: 10px;
+                padding-right: 10px;
+            }
             @media only screen and (min-width: 320px) and (max-width: 980px){
                 .user-log { padding: 0.6em;}
                 .logo h1 {font-size: 25px;}
@@ -123,7 +127,7 @@
 
                         <div class="col-md-4 col-sm-4 col-xs-6">
                             <div class="user-log">
-                                @if(!Auth::check())  
+                                @if(Auth::check())  
                                 <nav class="navbar">
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
@@ -166,7 +170,7 @@
                 </section><!-- end .container -->
 
             </div><!-- end .top-menu -->
-
+ 
 
             @if (Session::has('failure'))
             <div class="row">
@@ -182,6 +186,12 @@
             @if (Session::has('success'))
             <div class="row">
                 <div class="col-sm-12">
+                    
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
                     <div class="alert alert-success alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <i class="fa fa-thumbs-up"></i> Success: {{ Session::get('success') }}
