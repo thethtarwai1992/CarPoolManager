@@ -3,10 +3,12 @@
   |--------------------------------------------------------------------------
   | Routes
   |--------------------------------------------------------------------------
- */
-Route::get('register', 'Auth/RegisterController@register');
+ */ 
+Route::get('logout', 'Auth\LoginController@logout'); 
+
 Route::get('/', 'HomeController@index'); 
 Route::get('/home', 'HomeController@index');
+
 Route::get('driver/register','DriverRegisterController@index');
 
 Route::get('driver/route', 'RouteController@index'); 
@@ -22,8 +24,9 @@ Route::get('/admin/details','AdminController@show');
 Route::get('rides/myrides', 'RideController@show'); 
 Route::get('rides/scheduled', 'RideController@scheduled'); 
 
-Route::get('user/change-pw', 'UserController@changePassword'); 
-Route::get('user/edit', 'UserController@edit'); 
+Route::get('user/change-pw', 'UserController@changePassword');
+Route::get('user/edit', 'UserController@edit');
+ 
 /*
   |--------------------------------------------------------------------------
   | Resource Contollers

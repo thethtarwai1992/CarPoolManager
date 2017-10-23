@@ -25,9 +25,9 @@
                         <p>
                             <i class="fa fa-map-marker"></i> Singapore 
                             <br>
-                            <i class="fa fa-envelope"></i>{{ Auth::user()->email }}
+                            <i class="fa fa-envelope"></i> {{ Auth::user()->email }}
                             <br /> 
-                        <i class="fa fa-phone"></i> 95321111
+                        <i class="fa fa-phone"></i> {{ Auth::user()->contactNO }}
                             <br />
                         </p>
 

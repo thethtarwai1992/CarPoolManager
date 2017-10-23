@@ -174,8 +174,7 @@
                     </div>
                 </div>
             </div>
-            @endif
-
+            @endif 
             @if (Session::has('success'))
             <div class="row">
                 <div class="col-sm-12">
@@ -219,13 +218,13 @@
                                                         <a href="{{URL::to('/')}}"> Home </a>
                                                     </li>  
                                                     <li>
-                                                        <a href="{{URL::to('user/edit')}}">Edit Profile </a>
+                                                        <a href="{{ URL::to('user/edit') }}">Edit Profile </a>
                                                     </li>  
                                                     <li>
                                                         <a href="{{URL::to('user/change-pw')}}">Change Password</a>
                                                     </li> 
                                                     <li>
-                                                        <a href="{{URL::to('/logout')}}">Logout</a>
+                                                        <a href="{{URL::to('logout')}}">Logout</a>
                                                     </li> 
                                                 </ul>
 
@@ -274,9 +273,7 @@
         </footer><!-- end #footer -->
 
         @yield('modals')
-        @if(!Auth::check())
-        @include('home/sign_in_up_model')        
-        @endif
+ 
         <!-- Javascript -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- Bootstrap -->
