@@ -9,7 +9,7 @@ Route::get('logout', 'Auth\LoginController@logout');
 Route::get('/', 'HomeController@index'); 
 Route::get('/home', 'HomeController@index');
 
-Route::get('driver/register','DriverRegisterController@index');
+Route::get('driver/register','DriverController@register');
 
 Route::get('driver/route', 'RouteController@index'); 
 
@@ -34,8 +34,9 @@ Route::get('user/edit', 'UserController@edit');
  */
  
 Route::resource('user', 'UserController'); 
+Route::resource('driver', 'DriverController');  
 Route::resource('rides', 'RideController'); 
-Route::resource('driver', 'RouteController');  
+Route::resource('route', 'RouteController');  
 
 //To test login
 Auth::routes();

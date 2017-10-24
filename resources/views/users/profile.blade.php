@@ -21,7 +21,9 @@
                     <div class="col-sm-6 col-md-8">
                         <h4>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} </h4>
                         <small><cite>Username: {{ Auth::user()->name }}</cite></small>
-                        <br><br>
+                        <br>
+                        @if(Auth::user()->is_driver) <small><cite> <i class="fa fa-car"></i> Driver</cite></small> @endif
+                        <br>
                         <p>
                             <i class="fa fa-map-marker"></i> Singapore 
                             <br>

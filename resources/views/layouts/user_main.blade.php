@@ -129,8 +129,12 @@
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{URL::to('user')}}">My Account</a></li>
                                                     <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
-                                                    <li><a href="#">My Favorites</a></li>
-                                                    <li><a href="#">Switch to Drive? <i class="fa fa-cab"></i></a></li>
+                                                    <li><a href="#">My Favorites</a></li>                                                    
+                                                    @if(Auth::user()->is_driver)
+                                                    <li><a href="{{URL::to('driver')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
+                                                    @else                                                    
+                                                    <li><a href="{{URL::to('driver/register')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
+                                                    @endif
                                                 </ul>
                                             </li> 
                                         </ul> 

@@ -137,7 +137,7 @@
                                                     <li><a href="{{URL::to('driver/route')}}">My Routes</a></li>
                                                     <li><a href="{{URL::to('driver/task')}}">My Tasks</a></li>
                                                     <li><a href="#">Switch to Passenger?</a></li>
-                                                    <li><a href="#">Log Out</a></li>
+                                                    <li><a href="{{URL::to('logout')}}">Log Out</a></li>
                                                 </ul>
                                             </li> 
                                         </ul> 
@@ -225,6 +225,8 @@
                                                     <li>
                                                         <a href="{{URL::to('/')}}">Home</a>
                                                     </li> 
+<!--                                                    if login user is driver and switched to driver mode, show driver menu-->
+                                                    @if(Auth::check() && Auth::user()->is_driver && switchToDriver())  
                                                     <li>
                                                         <a href="#">Booking</a>
                                                         <ul class="sub-menu">
@@ -235,7 +237,20 @@
                                                                 <a href="{{URL::to('driver/new_request')}}">New Request</a>
                                                             </li> 
                                                         </ul>
+                                                    </li>                                                    
+                                                    @else
+                                                    <li>
+                                                        <a href="#">Rides</a>
+                                                        <ul class="sub-menu">
+                                                            <li>
+                                                                <a href="{{URL::to('rides')}}">Now</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{URL::to('rides/scheduled')}}">Schedule</a>
+                                                            </li> 
+                                                        </ul>
                                                     </li>
+                                                    @endif
                                                     <li>
                                                         <a href="add-ride.html">FAQ</a>
                                                     </li>
