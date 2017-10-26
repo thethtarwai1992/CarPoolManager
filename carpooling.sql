@@ -121,14 +121,16 @@ CREATE TABLE `preferences` (
 
 CREATE TABLE `routes` (
   `route_id` int(11) NOT NULL,
-  `seats_offered` int(11) NOT NULL,
-  `created_date` date NOT NULL,
-  `route_start_time` datetime NOT NULL,
+  `seats` int(11) NOT NULL,
+  `start` datetime NOT NULL,
+  `end` datetime NOT NULL,
   `comment` varchar(100) DEFAULT NULL,
-  `start_point` int(11) NOT NULL,
+  `pickup` int(11) NOT NULL,
   `destination` int(11) NOT NULL,
   `driver_car_driver_driving_license_no` varchar(45) NOT NULL,
-  `driver_car_car_plate_no` int(11) NOT NULL
+  `driver_car_car_plate_no` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -216,7 +218,7 @@ ALTER TABLE `preferences`
 ALTER TABLE `routes`
   ADD PRIMARY KEY (`route_id`,`driver_car_driver_driving_license_no`,`driver_car_car_plate_no`),
   ADD KEY `fk_route_driver_car1_idx` (`driver_car_driver_driving_license_no`,`driver_car_car_plate_no`),
-  ADD KEY `fk_route_Location1_idx` (`start_point`),
+  ADD KEY `fk_route_Location1_idx` (`pickup`),
   ADD KEY `fk_route_Location2_idx` (`destination`);
 
 --
@@ -283,8 +285,8 @@ ALTER TABLE `preferences`
 -- Constraints for table `routes`
 --
 ALTER TABLE `routes`
-  ADD CONSTRAINT `fk_route_Location1` FOREIGN KEY (`start_point`) REFERENCES `locations` (`postal_code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_route_Location2` FOREIGN KEY (`destination`) REFERENCES `locations` (`location_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+--   ADD CONSTRAINT `fk_route_Location1` FOREIGN KEY (`pickup`) REFERENCES `locations` (`postal_code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+--   ADD CONSTRAINT `fk_route_Location2` FOREIGN KEY (`destination`) REFERENCES `locations` (`location_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_route_driver_car1` FOREIGN KEY (`driver_car_driver_driving_license_no`,`driver_car_car_plate_no`) REFERENCES `driver_cars` (`driver_driving_license_no`, `car_plate_no`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 

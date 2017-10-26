@@ -5,17 +5,19 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
+
     use Notifiable;
+
     protected $primaryKey = 'userID';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','first_name', 'contactNo'
+        'name', 'email', 'password', 'first_name', 'contactNo'
     ];
 
     /**
@@ -26,9 +28,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
-     protected $casts = [
+    protected $casts = [
         'is_driver' => 'boolean',
-    ]; 
-    
+    ];
+
 }

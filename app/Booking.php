@@ -1,13 +1,13 @@
 <?php
 
-namespace App; 
+namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model; 
 
-class Booking extends Model
-{
- 
+class Booking extends Model {
+
     protected $primaryKey = 'booking_id';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +23,14 @@ class Booking extends Model
      * @var array
      */
     protected $hidden = [
-        'passenger_id', 'route_id' , 'drivers_driving_license_no'
+        'passenger_id', 'route_id', 'drivers_driving_license_no'
     ];
+
+    public function route() {
+        return $this->hasOne('App\Route');
+    }
+    public function passenger() {
+        return $this->hasOne('App\User');
+    }
+
 }
