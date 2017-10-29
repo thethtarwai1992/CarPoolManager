@@ -15,7 +15,7 @@ Route::post('driver/register/store', 'DriverController@store');
 Route::get('driver/route', 'RouteController@show'); 
 Route::post('driver/route/store', 'RouteController@store'); 
 
-Route::get('driver/route', 'RouteController@index'); 
+Route::get('driver/route', 'RouteController@show'); 
 Route::get('driver/task', 'TaskController@index'); 
 
 Route::get('driver/booking_now', 'BookingController@booknow'); 
