@@ -52,7 +52,7 @@
             </div>
 
             <div class="modal-body">
-                <form action="" novalidate autocomplete="off" class="idealforms reg">
+                <form action="register" method="post" novalidate autocomplete="off" class="idealforms reg">
 
                     <div class="log-header">
                         <span class="log-in">Sign up</span>

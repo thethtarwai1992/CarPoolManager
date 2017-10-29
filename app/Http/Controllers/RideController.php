@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth; 
 use App\Http\Controllers\Controller;
+use App\Booking;
 
 class RideController extends Controller {
 
@@ -26,8 +28,10 @@ class RideController extends Controller {
     }
 
     public function show() {
-        
-        return view('rides.myrides');
+        $rides = Booking::where('passenger_id', Auth::user()->id)
+                ->with('route')
+                ->get();  
+        return view('rides.myrides', compact ('rides'));
     }
 
     public function edit($id) {

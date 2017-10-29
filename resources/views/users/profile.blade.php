@@ -1,4 +1,4 @@
-@extends('user_main')
+@extends('layouts.user_main')
 @section('title', '- Profile') 
 @section('styles')
 <style> 
@@ -19,15 +19,17 @@
                         <img src="{{ asset('img/avatar-1.jpg') }}" alt="" class="img-rounded img-responsive" />
                     </div>
                     <div class="col-sm-6 col-md-8">
-                        <h4>Thet Htar Wai</h4>
-                        <small><cite>Username: Thet Htar</cite></small>
-                        <br><br>
+                        <h4>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} </h4>
+                        <small><cite>Username: {{ Auth::user()->name }}</cite></small>
+                        <br>
+                        @if(Auth::user()->is_driver) <small><cite> <i class="fa fa-car"></i> Driver</cite></small> @endif
+                        <br>
                         <p>
                             <i class="fa fa-map-marker"></i> Singapore 
                             <br>
-                            <i class="fa fa-envelope"></i> email@example.com
+                            <i class="fa fa-envelope"></i> {{ Auth::user()->email }}
                             <br /> 
-                        <i class="fa fa-phone"></i> 95321111
+                        <i class="fa fa-phone"></i> {{ Auth::user()->contactNO }}
                             <br />
                         </p>
 

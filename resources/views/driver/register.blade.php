@@ -1,4 +1,4 @@
-@extends('main1')
+@extends('layouts.design')
 @section('title', '- Rides') 
 @section('styles')
 <style>
@@ -36,9 +36,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <form action="" novalidate autocomplete="off" class="idealforms reg">
-
-
+                <form action="register/store" novalidate autocomplete="off" class="idealforms reg" method="post">
+                     {{ csrf_field() }}
                     <div class="field">
                         <input name="plateNo" type="text" placeholder="Car Plate No">
                         <span class="error"></span>
@@ -63,7 +62,10 @@
                         <input name="licenseNo" type="text"  placeholder="Driving License No">
                         <span class="error"></span>
                     </div>
-                                    
+                    <div class="field">
+                        <input name="expiryDate" type="text"  placeholder="Driving License Valid Till" class="datepicker">
+                        <span class="error"></span>
+                    </div>                
                     
                     <div class="field buttons">
                         <button type="submit" class="submit btn green-color ">Submit</button> 

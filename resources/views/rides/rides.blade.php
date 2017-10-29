@@ -1,4 +1,4 @@
-@extends('main1')
+@extends('layouts.design')
 @section('title', '- Rides') 
 @section('styles')
 <style>
@@ -59,27 +59,15 @@
                     <div class="row">
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
-                            <div class="field">
-                                <select id="pickup" name="pickup">
-                                    <option value="default">Pickup Point</option>
-                                    <option value="orchard, sg">Orchard</option>
-                                    <option value="woodlands, sg">Woodlands</option>
-                                    <option value="taiseng, sg">Tai Seng</option> 
-                                </select>
-                            </div>
+                            <div class="field"> 
+                                <input id="pickup" placeholder="Pickup Address" onFocus="geolocate()" type="text"></input>
+                            </div> 
                         </div>
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
-
-                            <div class="field">
-                                <select id="destination" name="destination">
-                                    <option value="default">Destination</option>
-                                    <option value="orchard, sg">Orchard</option>
-                                    <option value="woodlands, sg">Woodlands</option>
-                                    <option value="taiseng, sg">Tai Seng</option> 
-                                </select>
+                            <div class="field"> 
+                                <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text"></input>
                             </div>
-
                         </div>
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -128,7 +116,7 @@
         </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12">
-                 
+
             <div class="rides-list"> 
 
                 <div class="post-pagination pagination-margin clearfix">
@@ -140,13 +128,13 @@
                 </div><!-- end .post-pagination -->                   
 
                 <div class="clearfix"></div>
-                
+
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
                         <h3><a href="#">From <b>Woodlands</b> to <b>Bishan</b></a></h3> <i class="fa fa-money"></i> 16
                     </div>
-                    
+
                     <ul class="ride-meta">
 
                         <li class="ride-date">
@@ -300,12 +288,42 @@
     var dest = "default";
     var outputDiv = document.getElementById('output');
     var outputPrice = document.getElementById('output-price');
+    var directionsService, directionsDisplay;
+    var autocompletePickup, autocompleteDest;
+    var typingTimer;                //timer identifier
+    var doneTypingInterval = 5000;  //time in ms (5 seconds)
+
+    function geolocate() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var geolocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                var circle = new google.maps.Circle({
+                    center: geolocation,
+                    radius: position.coords.accuracy
+                });
+                autocompletePickup.setBounds(circle.getBounds());
+                autocompleteDest.setBounds(circle.getBounds());
+            });
+        }
+    }
 
     function myMap() {
+        autocompletePickup = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('pickup')),
+                {types: ['geocode']});
+        autocompletePickup.setComponentRestrictions({'country': ['sg']});
+        autocompleteDest = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('destination')),
+                {types: ['geocode']});
+        autocompleteDest.setComponentRestrictions({'country': ['sg']});
+        
         var marker = null;
 
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
+        directionsService = new google.maps.DirectionsService;
+        directionsDisplay = new google.maps.DirectionsRenderer;
 
         var mapProp = {
             center: new google.maps.LatLng(1.290270, 103.851959),
@@ -322,9 +340,6 @@
                     lng: position.coords.longitude
                 };
 
-                //infoWindow.setPosition(pos);
-                //infoWindow.setContent('Your Location');
-                //infoWindow.open(map);
                 map.setCenter(pos);
                 map.setZoom(15);
                 marker = new google.maps.Marker({
@@ -342,26 +357,27 @@
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
         }
-
-        if ($("#pickup").change(function () {
-            pick = $(this).val();
-            if (pick !== "default" && dest !== "default") {
-                calculateAndDisplayRoute(directionsService, directionsDisplay);
-                calculateDistance();
+        $("#pickup").keyup(function () {
+            clearTimeout(typingTimer);
+            if ($('#pickup').val()) {
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
             }
-
-        }))
-            if ($("#destination").change(function () {
-                dest = $(this).val();
-                if (pick !== "default" && dest !== "default") {
-                    calculateAndDisplayRoute(directionsService, directionsDisplay);
-                    calculateDistance();
-                }
-
-            }))
-                directionsDisplay.setMap(map);
+        });
+        $("#destination").keyup(function () {
+            clearTimeout(typingTimer);
+            if ($('#destination').val()) {
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            }
+        });
+        directionsDisplay.setMap(map);
     }
-
+    function doneTyping() {
+        if (pick && dest) {
+            console.log("ok");
+            calculateAndDisplayRoute(directionsService, directionsDisplay);
+            calculateDistance();
+        }
+    }
     function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         directionsService.route({
             origin: document.getElementById('pickup').value,
@@ -404,5 +420,6 @@
     }
 </script> 
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&libraries=places&callback=myMap"></script>
+
 @stop

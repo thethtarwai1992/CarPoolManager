@@ -3,14 +3,20 @@
   |--------------------------------------------------------------------------
   | Routes
   |--------------------------------------------------------------------------
- */
-//Get
-Route::get('/', 'HomeController@getIndex'); 
-Route::post('/home/login', 'HomeController@postLogin');
-Route::get('driver/register','DriverRegisterController@index');
+ */ 
+Route::get('logout', 'Auth\LoginController@logout'); 
 
-Route::get('driver/route', 'RouteController@index'); 
+Route::get('/', 'HomeController@index'); 
+Route::get('/home', 'HomeController@index');
+
+Route::get('driver/register','DriverRegisterController@index');
+Route::post('driver/register/store', 'DriverRegisterController@store'); 
+
+Route::get('driver/route', 'RouteController@show'); 
+Route::post('driver/route/store', 'RouteController@store'); 
+
 Route::get('driver/task', 'TaskController@index'); 
+
 Route::get('driver/booking_now', 'BookingController@booknow'); 
 Route::get('driver/new_request', 'BookingController@newrequest'); 
 
@@ -20,8 +26,9 @@ Route::get('/admin/details','AdminController@show');
 Route::get('rides/myrides', 'RideController@show'); 
 Route::get('rides/scheduled', 'RideController@scheduled'); 
 
-Route::get('user/change-pw', 'UserController@changePassword'); 
-Route::get('user/edit', 'UserController@edit'); 
+Route::get('user/change-pw', 'UserController@changePassword');
+Route::get('user/edit', 'UserController@edit');
+ 
 /*
   |--------------------------------------------------------------------------
   | Resource Contollers
@@ -29,5 +36,9 @@ Route::get('user/edit', 'UserController@edit');
  */
  
 Route::resource('user', 'UserController'); 
+Route::resource('driver', 'DriverController');  
 Route::resource('rides', 'RideController'); 
-Route::resource('driver', 'RouteController'); 
+Route::resource('route', 'RouteController');  
+
+//To test login
+Auth::routes();

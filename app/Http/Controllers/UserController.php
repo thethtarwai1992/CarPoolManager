@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth; 
+use Illuminate\Http\Request;
+use App\User;
 
 class UserController extends Controller {
 
     public function __construct() {
-//        $this->middleware('auth');
+        
+        $this->middleware('auth');  
 //
 //        $this->middleware('log')->only('index');
 //
@@ -18,31 +21,32 @@ class UserController extends Controller {
 
         return view('users.profile');
     }
-
-    public function create() {
-        
-    }
-
-    public function store(Request $request) {
-        
-    }
-
+    
     public function show() {
         return view('users.profile');
     }
 
-    public function edit() {
-
-        return view('users.edit');
+    public function edit() { 
+        $user = Auth::user(); 
+         return view('users.edit', compact('user'));
     }
 
-    public function update() {
-//        $user = Auth::user();
-//
-//        Flash::message('Your account has been updated!');
-//        return Redirect::to('/account');
+    public function update(Request $request, $id) {
+
+        //My Profile update
+        request()->validate([
+            'name' => 'required',
+            'first_name' => 'required',
+            'email' => 'required',
+            'contactNO' => 'required',
+        ]);
+
+        User::find($id)->update($request->all());
+ 
+       return redirect()->route('user.index')
+                        ->with('success', 'User profile updated successfully');
     }
-    
+
     public function changePassword(){
         return view('users.change_pw');
     } 
