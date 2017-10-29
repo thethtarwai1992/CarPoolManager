@@ -1,4 +1,4 @@
-@extends('layouts.driver_main')
+@extends('layouts.design')
 @section('title', '- Tasks') 
 @section('styles')
 <style>

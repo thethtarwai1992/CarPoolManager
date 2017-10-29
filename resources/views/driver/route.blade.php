@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.design')
 @section('title', '- Rides') 
 @section('styles')
 <style>

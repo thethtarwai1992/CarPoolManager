@@ -29,6 +29,5 @@ class Route extends Model {
     public function booking() {
         return $this->belongsTo('App\Booking', 'foreign_key');
     }
-    
-    
+
 }

@@ -32,12 +32,12 @@
 
         <!-- Modernizr -->
         {!! HTML::script("js/modernizr.js") !!}
-       
+
         <!-- Fonts -->
         <!--        {!!  HTML::style("css/font-awesome.min.css") !!}-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-  
+
         <!-- popup notification -->
         <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
         
@@ -47,7 +47,6 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-
         @yield('styles')
         <style type="text/css"> 
             .main-navigation {
@@ -331,7 +330,11 @@
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
          <!-- timepicker  -->
         <!-- Scripts -->
+<<<<<<< HEAD:resources/views/main1.blade.php
+        <script src="{{ asset('js/app.js') }}"></script>
+=======
 <!--        <script src="{{ asset('js/app.js') }}"></script>-->
+>>>>>>> c7d04c8ced1f44534332a6135f84927a9991aa09:resources/views/layouts/design.blade.php
         <script type="text/javascript">
 
 

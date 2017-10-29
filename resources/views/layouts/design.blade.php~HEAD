@@ -1,7 +1,8 @@
 <!DOCTYPE html> 
 <!--[if IE 7]>                  <html class="ie7 no-js" lang="en">     <![endif]-->
 <!--[if lte IE 8]>              <html class="ie8 no-js" lang="en">     <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--> <html class="not-ie no-js" lang="{{ app()->getLocale() }}">  <!--<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> 
+<html class="not-ie no-js" lang="{{ app()->getLocale() }}">  <!--<![endif]-->
     <head>
 
         <!-- Basic Page Needs -->
@@ -19,6 +20,7 @@
 
         <!-- Bootstrap -->
         {!!  HTML::style("css/bootstrap.min.css") !!}
+        {!!  HTML::style("css/bootstrap-datetimepicker.min.css") !!}
         <!-- Forms -->
         {!!  HTML::style("css/jquery.idealforms.css") !!}
         <!-- Select  -->
@@ -30,12 +32,12 @@
 
         <!-- Modernizr -->
         {!! HTML::script("js/modernizr.js") !!}
-
+       
         <!-- Fonts -->
         <!--        {!!  HTML::style("css/font-awesome.min.css") !!}-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-
+  
         <!-- popup notification -->
         <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
         
@@ -45,6 +47,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+
         @yield('styles')
         <style type="text/css"> 
             .main-navigation {
@@ -128,7 +131,7 @@
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
                                             <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> Yuting <span class="caret"></span></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->name }}  <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{URL::to('user')}}">My Account</a></li>
                                                     <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
@@ -136,7 +139,7 @@
                                                     <li><a href="{{URL::to('driver/route')}}">My Routes</a></li>
                                                     <li><a href="{{URL::to('driver/task')}}">My Tasks</a></li>
                                                     <li><a href="#">Switch to Passenger?</a></li>
-                                                    <li><a href="#">Log Out</a></li>
+                                                    <li><a href="{{URL::to('logout')}}">Log Out</a></li>
                                                 </ul>
                                             </li> 
                                         </ul> 
@@ -224,6 +227,8 @@
                                                     <li>
                                                         <a href="{{URL::to('/')}}">Home</a>
                                                     </li> 
+<!--                                                    if login user is driver and switched to driver mode, show driver menu-->
+                                                    @if(Auth::check() && Auth::user()->is_driver && switchToDriver())  
                                                     <li>
                                                         <a href="#">Booking</a>
                                                         <ul class="sub-menu">
@@ -234,7 +239,20 @@
                                                                 <a href="{{URL::to('driver/new_request')}}">New Request</a>
                                                             </li> 
                                                         </ul>
+                                                    </li>                                                    
+                                                    @else
+                                                    <li>
+                                                        <a href="#">Rides</a>
+                                                        <ul class="sub-menu">
+                                                            <li>
+                                                                <a href="{{URL::to('rides')}}">Now</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{URL::to('rides/scheduled')}}">Schedule</a>
+                                                            </li> 
+                                                        </ul>
                                                     </li>
+                                                    @endif
                                                     <li>
                                                         <a href="add-ride.html">FAQ</a>
                                                     </li>
@@ -290,10 +308,7 @@
 
         </footer><!-- end #footer -->
 
-        @yield('modals')
-        @if(!Auth::check())
-        @include('home/sign_in_up_model')        
-        @endif
+        @yield('modals') 
         <!-- Javascript -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- Bootstrap -->
@@ -316,7 +331,7 @@
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
          <!-- timepicker  -->
         <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}"></script>
+<!--        <script src="{{ asset('js/app.js') }}"></script>-->
         <script type="text/javascript">
 
 
