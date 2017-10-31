@@ -8,9 +8,10 @@ Route::get('logout', 'Auth\LoginController@logout');
 
 Route::get('/', 'HomeController@index'); 
 Route::get('/home', 'HomeController@index');
-
-Route::get('driver/register','DriverController@index');
-Route::post('driver/register/store', 'DriverController@store'); 
+ 
+Route::get('driver/register','DriverController@register');
+Route::get('driver/switch-to-driver','DriverController@switchToDriver');  
+Route::post('driver/register/store', 'DriverController@store');  
 
 Route::get('driver/route', 'RouteController@show'); 
 Route::post('driver/route/store', 'RouteController@store'); 
