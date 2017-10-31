@@ -50,5 +50,5 @@ class UserController extends Controller {
     public function changePassword(){
         return view('users.change_pw');
     } 
-
+    
 }

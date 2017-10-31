@@ -84,7 +84,7 @@
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="field">
-                                <input name="event" type="text" placeholder="Date" class="datepicker">
+                                <input name="date" type="text" value="{{ date("d-m-Y") }}" placeholder="Date" class="datepicker" disabled>
                             </div> 
                         </div>
 
@@ -95,7 +95,7 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
 
             <div id="floading-panel">
-                <span class="output-text"><i class="fa fa-taxi"></i> Standard Taxi </span>
+                <span class="output-text"><i class="fa fa-taxi"></i> Estimated Price </span>
                 <span id="output-price"></span> <br>
                 <span id="output"></span>
             </div>
@@ -107,7 +107,7 @@
                 <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
             </div> 
             @else
-            <a data-toggle="modal" data-target="#loginModal">
+            <a href ="{{ URL::to('register') }}">
                 <div class="field buttons sendRequest" >
                     <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
                 </div>
@@ -122,17 +122,20 @@
                 <div class="post-pagination pagination-margin clearfix">
 
                     <div class="text-center">
-                        <h3>  Book from Today's Schedule rides</h3>
+                        <h3>  Book from Today's Posts </h3>
                     </div>
 
                 </div><!-- end .post-pagination -->                   
 
-                <div class="clearfix"></div>
+                <div class="clearfix"></div> 
+                @if(count($driverposts) > 0 )
+
+                @foreach ($driverposts as $post)
 
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From <b>Woodlands</b> to <b>Bishan</b></a></h3> <i class="fa fa-money"></i> 16
+                        <h3><a href="#">From <b> {{ $post->start_point }} </b> to <b> {{ $post->destination }}</b></a></h3> <i class="fa fa-money"></i>  {{ $post->price }}
                     </div>
 
                     <ul class="ride-meta">
@@ -140,138 +143,28 @@
                         <li class="ride-date">
                             <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
                                 <i class="fa fa-calendar"></i>
-                                July 20, 2014 at 19:00 PM
+                                {{ $post->route_start_time }}
                             </a>
                         </li><!-- end .ride-date -->
 
                         <li class="ride-people">
                             <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
                                 <i class="fa fa-user"></i>
-                                1
-                            </a>
-                        </li><!-- end .ride-people --> 
-
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
-
-                <article class="ride-box clearfix">
-
-                    <div class="ride-content">
-                        <h3><a href="#">From <b>Orchard</b> to <b>Bugis</b></a></h3> <i class="fa fa-money"></i> 8
-                    </div>
-
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                July 18, 2014 at 06:00 AM
-                            </a>
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                <i class="fa fa-user"></i>
-                                4
-                            </a>
-                        </li><!-- end .ride-people --> 
-
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
-
-                <article class="ride-box clearfix">
-
-                    <div class="ride-content">
-                        <h3><a href="#">From <b>Kranji</b> to <b>Boon Lay</b></a></h3> <i class="fa fa-money"></i> 24
-                    </div>
-
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                July 15, 2014 at 20:00 PM
-                            </a>
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                <i class="fa fa-user"></i>
-                                3
-                            </a>
-                        </li><!-- end .ride-people --> 
-
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
-
-                <article class="ride-box clearfix">
-
-                    <div class="ride-content">
-                        <h3><a href="#">From <b>Red Hill</b> to <b>Paya Laber</b></a></h3> <i class="fa fa-money"></i> 20
-                    </div>
-
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                July 10, 2014 at 09:00 AM
-                            </a>
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                <i class="fa fa-user"></i>
-                                2
+                                {{ $post->seats }}
                             </a>
                         </li><!-- end .ride-people -->
 
                     </ul><!-- end .ride-meta -->
 
                 </article><!-- end .ride-box -->
-
+                @endforeach 
+                @else
                 <article class="ride-box clearfix">
-
                     <div class="ride-content">
-                        <h3><a href="#">From <b>Jurong East</b> to <b>Pioneer</b></a></h3> <i class="fa fa-money"></i> 12
+                        Sorry, currently no post from our drivers.
                     </div>
-
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                July 08, 2014 at 22:00 PM
-                            </a>
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                <i class="fa fa-user"></i>
-                                1
-                            </a>
-                        </li><!-- end .ride-people -->
-
-
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
-
-                <div class="clearfix"></div>
-
-                <div class="post-pagination pagination-margin clearfix">
-
-                    <div class="next pull-right">
-                        <a href="#">
-                            Next
-                            <i class="fa fa-chevron-right"></i>
-                        </a>
-                    </div>
-
-                </div><!-- end .post-pagination -->
+                </article> 
+                @endif
 
             </div><!-- end .events-list -->
 
@@ -319,7 +212,7 @@
                 /** @type {!HTMLInputElement} */(document.getElementById('destination')),
                 {types: ['geocode']});
         autocompleteDest.setComponentRestrictions({'country': ['sg']});
-        
+
         var marker = null;
 
         directionsService = new google.maps.DirectionsService;

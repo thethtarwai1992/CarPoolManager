@@ -10,6 +10,7 @@ Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index');
 
 Route::get('driver/register','DriverController@register');
+Route::get('driver/switch-to-driver','DriverController@switchToDriver');
 
 Route::get('driver/route', 'RouteController@index'); 
 

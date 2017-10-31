@@ -5,17 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth; 
 use App\Http\Controllers\Controller;
 use App\Booking;
+use App\Route;
 
 class RideController extends Controller {
 
     public function index() {
-        
-        return view('rides.rides');
+        $driverposts = Route::whereDate('created_date', date('Y-m-d'))->where('status','Open')->get();
+        return view('rides.rides', compact ('driverposts'));
     }
     
     public function scheduled() {
         
-        return view('rides.scheduled');
+        $driverposts = Route::where('status','Open')->get();
+        return view('rides.scheduled', compact ('driverposts')); 
     }
 
 
