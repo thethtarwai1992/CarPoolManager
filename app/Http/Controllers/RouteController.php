@@ -3,19 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-# use Input;
+use Illuminate\Support\Facades\Auth; 
 use Illuminate\Http\Request;
 use DB;
 use App\Route;
+use App\Driver;
 
 class RouteController extends Controller {
 
-   /* 
     public function __construct() {
 
         $this->middleware('auth');
     }
-    */
     
     public function index() {
         
@@ -33,33 +32,29 @@ class RouteController extends Controller {
      */
 
     public function store(Request $request) {
-        $pickup=$request->input('pickup');
-        $destination=$request->input('destination');
-        $dateTime=date('Y-m-d', strtotime(str_replace('-', '/', $request->input('dateTime'))));
-        $licenseNo="xs123456"; // testing
-        $plateNo="1234"; // testing
+
+        $driver = Driver::where('User_userID', Auth::user()->userID)->get();
         
-        //Store location    
-        $data=array('seats'=>3,"route_start_datetime"=>$dateTime,"comment"=>"testing","driver_car_driver_driving_license_no"=>$licenseNo,"driver_car_car_plate_no"=>$plateNo,"pick_up_point"=>$pickup,"destination_point"=>$destination);
+       $licenseNo = $driver[0]->driving_license_no;
+  
+         $route= Route::create([
+                        'seats' => $request->input('seats'), // Need to valid if seats no over capacity
+                        'route_datetime' => date('Y-m-d', strtotime(str_replace('-', '/', $request->input('dateTime')))),
+                        'comment' => "testing",  // add comment.
+                        'pick_up_point'=>$request->input('pickup'),
+                        'destination_point'=>$request->input('destination'),
+                        'drivers_driving_license_no'=>$driver[0]->driving_license_no,
+        ]);
         
-        if(DB::table('routes')->insert($data)){
-           $notification = array(
-                'message'=>'New Route is posted successfully',
-                'alert-type' => 'success'
-            );
-        }else{
-            $notification = array(
-                'message'=>'New Route is posted unsuccessfully',
-                'alert-type' => 'fail'
-            );
-        }
+        $route->save();
         
-         return back()->with($notification);
+         return back();
     }
 
     public function show() {
-        $licenseNo="xs123456";
-        $routes = Route::where('driver_car_driver_driving_license_no', $licenseNo)
+        $driver = Driver::where('User_userID', Auth::user()->userID)->get();
+   
+        $routes = Route::where('drivers_driving_license_no', $driver[0]->driving_license_no)
                 ->get();  
         return view('driver.route', compact ('routes'));
     }
@@ -69,6 +64,11 @@ class RouteController extends Controller {
     } 
     
     public function cancel($id) {
-        
+  echo $id;
+  
+       $route  = Route::find($id);
+       $route->delete();
+       
+      //  return back();
     } 
 }

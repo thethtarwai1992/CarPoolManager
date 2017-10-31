@@ -14,6 +14,7 @@ Route::post('driver/register/store', 'DriverController@store');
 
 Route::get('driver/route', 'RouteController@show'); 
 Route::post('driver/route/store', 'RouteController@store'); 
+Route::get('driver/route/cancel/{id}', 'RouteController@cancel'); 
 
 Route::get('driver/route', 'RouteController@show'); 
 Route::get('driver/task', 'TaskController@index'); 

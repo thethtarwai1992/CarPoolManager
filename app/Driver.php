@@ -14,7 +14,7 @@ class Driver extends Model
      * @var array
      */
     protected $fillable = [
-        'driving_license_valid_from', 'remarks'
+        'driving_license_no','driving_license_valid_till', 'remarks','status','User_userID'
     ];
 
     /**
@@ -23,6 +23,17 @@ class Driver extends Model
      * @var array
      */
     protected $hidden = [
-        'userID' 
+        'User_userID' 
     ];
+    
+    public function user() {
+        return $this->hasOne('App\User');
+    }
+    
+     public function route() {
+        return $this->belongsTo('App\Route', 'foreign_key');
+    }
+    
+    public  $timestamps = false;
+    public $incrementing = false;
 }

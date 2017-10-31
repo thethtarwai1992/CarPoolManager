@@ -63,7 +63,7 @@
                         <span class="error"></span>
                     </div>
                     <div class="field">
-                        <input name="expiryDate" type="text"  placeholder="Driving License Valid Till" class="datepicker">
+                        <input name="expiryDate" type="text"  placeholder="Driving License Valid Till" class="datepicker" data-date-format="dd MM yyyy">
                         <span class="error"></span>
                     </div>                
                     
@@ -85,7 +85,23 @@
 @stop
 
 @section('scripts')
-
+<script type="text/javascript" src="./jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+<script type="text/javascript">
+                                    $('.datepicker').datetimepicker({
+                                       language:  'fr',
+                                                weekStart: 1,
+                                                todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 0,
+                                            minDate: 0
+                                    });
+</script>  
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>
 @stop

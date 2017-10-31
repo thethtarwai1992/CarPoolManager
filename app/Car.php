@@ -14,7 +14,7 @@ class Car extends Model
      * @var array
      */
     protected $fillable = [
-        'model', 'manufacture_year','capacity'
+        'plate_no','model', 'manufacture_year','capacity','driver_register_date','driving_license_no'
     ];
 
     /**
@@ -25,4 +25,10 @@ class Car extends Model
     protected $hidden = [
          
     ];
+    
+     public function driver() {
+        return $this->hasOne('App\Driver');
+    }
+    public  $timestamps = false;
+    public $incrementing = false;
 }

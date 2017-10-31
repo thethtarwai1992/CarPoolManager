@@ -60,6 +60,12 @@
                                 <input name="dateTime" type="text" placeholder="Date" class="datetimepicker" >
                             </div> 
                         </div>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+
+                            <div class="field">
+                                <input id="seats" placeholder="Seats" type="text" name="seats"></input>
+                            </div>
+                        </div>
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="field">
@@ -71,9 +77,6 @@
                     </div> 
                 </form>
             </div><!-- end .search-content -->
-        </div> 
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div id="googleMap" style="width:100%;height:500px;"></div> 
         </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12">
@@ -104,7 +107,7 @@
                         </li> <!-- end .edit route info. 3 days in advance for updating info  -->
 
                         <li>
-                            <a href="#">
+                            <a href="{{URL::to('route/cancel/')}}">
                                 <i class="fa fa-file"></i>
                                 Cancel
                             </a>

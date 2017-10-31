@@ -17,7 +17,7 @@ class User extends Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'first_name', 'contactNo'
+        'last_name', 'email', 'first_name', 'contactNo','gender','password'
     ];
 
     /**
@@ -32,4 +32,5 @@ class User extends Authenticatable {
         'is_driver' => 'boolean',
     ];
 
+    public  $timestamps = false;
 }
