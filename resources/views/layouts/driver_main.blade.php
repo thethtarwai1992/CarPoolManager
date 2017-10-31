@@ -1,8 +1,7 @@
 <!DOCTYPE html> 
 <!--[if IE 7]>                  <html class="ie7 no-js" lang="en">     <![endif]-->
 <!--[if lte IE 8]>              <html class="ie8 no-js" lang="en">     <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--> 
-<html class="not-ie no-js" lang="{{ app()->getLocale() }}">  <!--<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="not-ie no-js" lang="{{ app()->getLocale() }}">  <!--<![endif]-->
     <head>
 
         <!-- Basic Page Needs -->
@@ -20,7 +19,6 @@
 
         <!-- Bootstrap -->
         {!!  HTML::style("css/bootstrap.min.css") !!}
-        {!!  HTML::style("css/bootstrap-datetimepicker.min.css") !!}
         <!-- Forms -->
         {!!  HTML::style("css/jquery.idealforms.css") !!}
         <!-- Select  -->
@@ -31,16 +29,13 @@
         {!!  HTML::style("css/style.css") !!}
 
         <!-- Modernizr -->
-        {!! HTML::script("js/modernizr.js") !!}
+        {!! HTML::script("js/modernizr.js") !!} 
 
         <!-- Fonts -->
         <!--        {!!  HTML::style("css/font-awesome.min.css") !!}-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 
-        <!-- popup notification -->
-        <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-        
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -54,7 +49,10 @@
             }
             .logo h1{
                 font-size: 35px;
-            } 
+            }
+            .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content{
+                min-height: 500px;
+            }
             .navbar-nav > li > a{
                 color: #465057!important;
                 font-size: 15px;
@@ -86,19 +84,20 @@
             } 
             .main-header-container{
                 margin: 2em 0;
-            }
+            }            
             .log-facebook{
                 width: 100%;
             }
+            
             @media only screen and (min-width: 320px) and (max-width: 980px){
                 .user-log { padding: 0.6em;}
                 .logo h1 {font-size: 25px;}
                 .page-sub-title h2{ font-size: 1em;}
                 .main-header-container {margin: 1em 0;}
                 .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content {min-height: 375px;}
-
+                
                 .ride-content{float: none;}
-            } 
+            }
             @media only screen and (min-width: 1186px) and (max-width: 1329px){
                 .logo{ padding: 1.5em 1em; }
                 .logo h1{ font-size: 35px;}
@@ -110,7 +109,7 @@
                 .main-header-container .col-md-5, .main-header-container .col-md-7{width: 100%;}
                 .main-navigation{text-align: center;}
 
-            } 
+            }
         </style>
     </head>
 
@@ -130,21 +129,15 @@
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
                                             <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->name }}  <span class="caret"></span></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> Yuting <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="{{URL::to('user')}}">My Account</a></li>
+                                                   <li><a href="{{URL::to('user')}}">My Account</a></li>
                                                     <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
                                                     <li><a href="#">My Favorites</a></li>
                                                     <li><a href="{{URL::to('driver/route')}}">My Routes</a></li>
                                                     <li><a href="{{URL::to('driver/task')}}">My Tasks</a></li>
-                                                    @if(Auth::check() && Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())
-                                                    <li><a href="{{URL::to('driver/switch-to-driver')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
-                                                    @elseif(Auth::check() && !Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())                                                    
-                                                    <li><a href="{{URL::to('driver/register')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
-                                                    @elseif(Auth::check() && Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())
-                                                    <li><a href="#">Switch to Passenger?</a></li>
-                                                    @endif
-                                                    <li><a href="{{URL::to('logout')}}">Log Out</a></li>
+                                                    <li><a href="{{URL::to('/')}}">Switch to Passenger?</a></li>
+                                                    <li><a href="#">Log Out</a></li>
                                                 </ul>
                                             </li> 
                                         </ul> 
@@ -156,7 +149,7 @@
                                 </a> /
                                 <a href = "{{ URL::to('/register') }}">
                                     Sign up
-                                </a>           
+                                </a>         
                                 @endif
 
                             </div><!-- end .user-log -->
@@ -177,7 +170,7 @@
                 </section><!-- end .container -->
 
             </div><!-- end .top-menu -->
-
+ 
 
             @if (Session::has('failure'))
             <div class="row">
@@ -193,6 +186,12 @@
             @if (Session::has('success'))
             <div class="row">
                 <div class="col-sm-12">
+                    
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
                     <div class="alert alert-success alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <i class="fa fa-thumbs-up"></i> Success: {{ Session::get('success') }}
@@ -201,19 +200,10 @@
             </div>
             @endif
 
-            @if (Session::has('driver'))
-            <div class="row">
-                <div class="col-sm-12"> 
-                    <div class="alert alert-warning alert-dismissable"> 
-                        <i class="fa fa-thumbs-up"></i> {{ Session::get('driver') }}
-                    </div>
-                </div>
-            </div>
-            @endif
 
             <div class="main-baner">
 
-                <div class="background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
+                <div class="fullscreen background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
 
                     <div class="main-parallax-content">
 
@@ -241,10 +231,8 @@
                                                     <li>
                                                         <a href="{{URL::to('/')}}">Home</a>
                                                     </li> 
-<!--                                                    if login user is driver and switched to driver mode, show driver menu-->
-                                                    @if(Auth::check() && Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())  
                                                     <li>
-                                                        <a href="#">Bookings</a>
+                                                        <a href="#">Booking</a>
                                                         <ul class="sub-menu">
                                                             <li>
                                                                 <a href="{{URL::to('driver/booking_now')}}">Ride Now</a>
@@ -253,20 +241,7 @@
                                                                 <a href="{{URL::to('driver/new_request')}}">New Request</a>
                                                             </li> 
                                                         </ul>
-                                                    </li>                                                    
-                                                    @else
-                                                    <li>
-                                                        <a href="#">Rides</a>
-                                                        <ul class="sub-menu">
-                                                            <li>
-                                                                <a href="{{URL::to('rides')}}">Now</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{URL::to('rides/scheduled')}}">Schedule</a>
-                                                            </li> 
-                                                        </ul>
                                                     </li>
-                                                    @endif
                                                     <li>
                                                         <a href="add-ride.html">FAQ</a>
                                                     </li>
@@ -322,7 +297,10 @@
 
         </footer><!-- end #footer -->
 
-        @yield('modals') 
+        @yield('modals')
+        @if(!Auth::check())
+        @include('home/sign_in_up_model')        
+        @endif
         <!-- Javascript -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- Bootstrap -->
@@ -343,13 +321,7 @@
         {!! HTML::script("js/bootstrap-rating-input.min.js") !!}
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
-         <!-- timepicker  -->
-        <!-- Scripts -->
-<<<<<<< HEAD:resources/views/main1.blade.php
-        <script src="{{ asset('js/app.js') }}"></script>
-=======
-<!--        <script src="{{ asset('js/app.js') }}"></script>-->
->>>>>>> c7d04c8ced1f44534332a6135f84927a9991aa09:resources/views/layouts/design.blade.php
+        
         <script type="text/javascript">
 
 
