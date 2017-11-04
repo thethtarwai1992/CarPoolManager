@@ -14,7 +14,7 @@ class Driver extends Model
      * @var array
      */
     protected $fillable = [
-        'driving_license_no','driving_license_valid_till', 'remarks','status','User_userID'
+        'driving_license_no','driving_license_valid_till', 'remarks','status'
     ];
 
     /**
@@ -23,12 +23,12 @@ class Driver extends Model
      * @var array
      */
     protected $hidden = [
-        'User_userID' 
+        'userID' 
     ];
     
     public function scopeDriver($query,$id)
     {
-        return $query->where('User_userID', $id);
+        return $query->where('userID', $id);
     }
     
     public function user() {

@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller; 
-
-use DB;
+ 
 use App\Driver;
 use App\Car;
 
@@ -18,11 +17,10 @@ class DriverController extends Controller {
     }
 
     public function index() {
-        $driver = Driver::where('User_userID', Auth::user()->userID)->get();
+        $driver = Driver::where('userID', Auth::user()->userID)->first();
  
-         $driverData=DB::table('drivers')
-            ->join('cars', 'drivers.driving_license_no', '=', 'cars.driving_license_no')
-            ->where('drivers.driving_license_no', $driver[0]->driving_license_no)
+         $driverData=Driver::join('cars', 'drivers.driving_license_no', '=', 'cars.driving_license_no')
+            ->where('drivers.driving_license_no', $driver->driving_license_no)
             ->first();
         return view('driver.mydriveinfo', compact ('driverData'));
 
@@ -34,7 +32,7 @@ class DriverController extends Controller {
                         'driving_license_no' => $request->input('licenseNo'),
                         'driving_license_valid_till' => date('Y-m-d', strtotime(str_replace('-', '/', $request->input('expiryDate')))),
                         'status' => "Pending",
-                        'User_userID'=>Auth::user()->userID,  
+                        'userID'=>Auth::user()->userID,  
         ]);
         
         $driver->save();

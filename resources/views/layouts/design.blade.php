@@ -133,11 +133,11 @@
                                                     <li><a href="#">My Favorites</a></li>
                                                     <li><a href="{{URL::to('driver/route')}}">My Routes</a></li>
                                                     <li><a href="{{URL::to('driver/task')}}">My Tasks</a></li>
-                                                    @if(Auth::check() && Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())
+                                                    @if(Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())
                                                     <li><a href="{{URL::to('driver/switch-to-driver')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
-                                                    @elseif(Auth::check() && !Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())                                                    
+                                                    @elseif(!Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())                                                    
                                                     <li><a href="{{URL::to('driver/register')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
-                                                    @elseif(Auth::check() && Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())
+                                                    @elseif(Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())
                                                     <li><a href="#">Switch to Passenger?</a></li>
                                                     @endif
                                                     <li><a href="{{URL::to('logout')}}">Log Out</a></li>
@@ -332,16 +332,10 @@
         <!-- Menu -->
         {!! HTML::script("js/hoverIntent.js") !!}
         {!! HTML::script("js/superfish.js") !!}
-        <!-- Counter-Up  -->
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js")></script>
-        {!! HTML::script("js/jquery.counterup.min.js") !!} 
-        <!-- Rating  -->
-        {!! HTML::script("js/bootstrap-rating-input.min.js") !!}
+
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
          <!-- timepicker  -->
-        <!-- Scripts -->
-<!--        <script src="{{ asset('js/app.js') }}"></script>-->
         <script type="text/javascript">
         </script>
 

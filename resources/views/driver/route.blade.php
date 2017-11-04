@@ -88,7 +88,7 @@
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From <b> {{ $route->pick_up_point }} </b> to <b> {{ $route->destination_point }}</b></a></h3> 
+                        <h3><a href="#">From <b> {{ $route->pickup }} </b> to <b> {{ $route->destination }}</b></a></h3> 
                         <i class="fa fa-money"></i> {{ $route->price }} 
                     </div>
 
@@ -96,7 +96,7 @@
                         <li class="ride-date">
                             <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
                                 <i class="fa fa-calendar"></i>
-                                {{ $route->created_date }}  
+                                {{ $route->created_at }}  
                             </a>
                         </li><!-- end .ride-date --> 
                         <li>

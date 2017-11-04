@@ -14,7 +14,7 @@ class Route extends Model {
      * @var array
      */
     protected $fillable = [
-        'seats', 'comment', 'status','destination_point', 'pick_up_point','route_datetime','drivers_driving_license_no'
+        'seats', 'comment', 'status','destination', 'pickup','start','end'
     ];
 
     /**
@@ -23,7 +23,7 @@ class Route extends Model {
      * @var array
      */
     protected $hidden = [
-         'drivers_driving_license_no'
+         
     ];
 
     public function booking() {

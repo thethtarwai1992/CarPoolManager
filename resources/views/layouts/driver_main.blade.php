@@ -182,13 +182,7 @@
 
             @if (Session::has('success'))
             <div class="row">
-                <div class="col-sm-12">
-                    
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                <div class="col-sm-12"> 
                     <div class="alert alert-success alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <i class="fa fa-thumbs-up"></i> Success: {{ Session::get('success') }}
@@ -200,7 +194,7 @@
 
             <div class="main-baner">
 
-                <div class="fullscreen background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
+                <div class="background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
 
                     <div class="main-parallax-content">
 

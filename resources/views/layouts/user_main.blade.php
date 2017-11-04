@@ -300,12 +300,7 @@
         {!! HTML::script("js/jquery-ui-1.10.4.custom.min.js") !!}
         <!-- Menu -->
         {!! HTML::script("js/hoverIntent.js") !!}
-        {!! HTML::script("js/superfish.js") !!}
-        <!-- Counter-Up  -->
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js")></script>
-        {!! HTML::script("js/jquery.counterup.min.js") !!} 
-        <!-- Rating  -->
-        {!! HTML::script("js/bootstrap-rating-input.min.js") !!}
+        {!! HTML::script("js/superfish.js") !!} 
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
         <script type="text/javascript">

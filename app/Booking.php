@@ -14,7 +14,7 @@ class Booking extends Model {
      * @var array
      */
     protected $fillable = [
-        'request_time', 'status', 'price'
+        'start', 'status', 'price'
     ];
 
     /**
@@ -23,7 +23,7 @@ class Booking extends Model {
      * @var array
      */
     protected $hidden = [
-        'passenger_id', 'route_id', 'drivers_driving_license_no'
+        'passenger_id', 'route_id'
     ];
 /*
     public function route() {
