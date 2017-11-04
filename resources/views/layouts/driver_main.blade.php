@@ -19,6 +19,7 @@
 
         <!-- Bootstrap -->
         {!!  HTML::style("css/bootstrap.min.css") !!}
+         {!!  HTML::style("css/bootstrap-datetimepicker.min.css") !!}
         <!-- Forms -->
         {!!  HTML::style("css/jquery.idealforms.css") !!}
         <!-- Select  -->
@@ -131,13 +132,9 @@
                                             <li class="dropdown">
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> Yuting <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
-                                                   <li><a href="{{URL::to('user')}}">My Account</a></li>
-                                                    <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
-                                                    <li><a href="#">My Favorites</a></li>
-                                                    <li><a href="{{URL::to('driver/route')}}">My Routes</a></li>
-                                                    <li><a href="{{URL::to('driver/task')}}">My Tasks</a></li>
+                                                   <li><a href="{{URL::to('driver/profile')}}">My Account</a></li>                
                                                     <li><a href="{{URL::to('/')}}">Switch to Passenger?</a></li>
-                                                    <li><a href="#">Log Out</a></li>
+                                                    <li><a href="{{URL::to('logout')}}">Log Out</a></li>
                                                 </ul>
                                             </li> 
                                         </ul> 
@@ -232,15 +229,18 @@
                                                         <a href="{{URL::to('/')}}">Home</a>
                                                     </li> 
                                                     <li>
-                                                        <a href="#">Booking</a>
+                                                        <a href="{{URL::to('driver/task')}}">Tasks</a>
                                                         <ul class="sub-menu">
                                                             <li>
-                                                                <a href="{{URL::to('driver/booking_now')}}">Ride Now</a>
+                                                                <a href="{{URL::to('driver/scheduled')}}">Scheduled Booking</a>
                                                             </li>
                                                             <li>
                                                                 <a href="{{URL::to('driver/new_request')}}">New Request</a>
                                                             </li> 
                                                         </ul>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{URL::to('driver/route')}}">Routes</a>
                                                     </li>
                                                     <li>
                                                         <a href="add-ride.html">FAQ</a>

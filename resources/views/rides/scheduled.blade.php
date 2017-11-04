@@ -4,7 +4,7 @@
 {!! HTML::style("css/bootstrap.datetimepicker.css") !!}
 <style>
     .ride-content h3{
-       font-size: 14px;
+        font-size: 14px;
     }
     .rides-list{
         padding-left: 30px;
@@ -41,14 +41,14 @@
         line-height: 30px;
         padding-left: 10px;
         width : 40%;
-      }
-      #output-price, #output{
-          font-size: 10px;
-          float: right;
-      }
-      .output-text{
-          float: left;
-      }
+    }
+    #output-price, #output{
+        font-size: 10px;
+        float: right;
+    }
+    .output-text{
+        float: left;
+    }
 </style>
 @stop 
 
@@ -73,27 +73,15 @@
                     <div class="row">
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
-                            <div class="field">
-                                <select id="pickup" name="pickup">
-                                    <option value="default">Pickup Point</option>
-                                    <option value="orchard, sg">Orchard</option>
-                                    <option value="woodlands, sg">Woodlands</option>
-                                    <option value="taiseng, sg">Tai Seng</option> 
-                                </select>
-                            </div>
+                            <div class="field"> 
+                                <input id="pickup" placeholder="Pickup Address" onFocus="geolocate()" type="text"></input>
+                            </div> 
                         </div>
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
-
-                            <div class="field">
-                                <select id="destination" name="destination">
-                                    <option value="default">Destination</option>
-                                    <option value="orchard, sg">Orchard</option>
-                                    <option value="woodlands, sg">Woodlands</option>
-                                    <option value="taiseng, sg">Tai Seng</option> 
-                                </select>
+                            <div class="field"> 
+                                <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text"></input>
                             </div>
-
                         </div>
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -127,21 +115,21 @@
             </div><!-- end .search-content -->
         </div>
         <div class="col-md-6 col-sm-12 col-xs-12">
-            
+
             <div id="floading-panel">
-                <span class="output-text"><i class="fa fa-taxi"></i> Standard Taxi </span>
+                <span class="output-text"><i class="fa fa-taxi"></i> Estimated Price </span>
                 <span id="output-price"></span> <br>
                 <span id="output"></span>
             </div>
             <div id="googleMap" style="width:100%;height:500px;"></div> 
-             
+
 
             @if(Auth::check())  
             <div class="field buttons sendRequest">
                 <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
             </div> 
             @else
-            <a data-toggle="modal" data-target="#loginModal">
+            <a href ="{{ URL::to('register') }}">
                 <div class="field buttons sendRequest" >
                     <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
                 </div>
@@ -151,7 +139,7 @@
 
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="rides-list">
-                
+
                 <div class="post-pagination pagination-margin clearfix">
 
                     <div class="text-center">
@@ -161,11 +149,14 @@
                 </div><!-- end .post-pagination -->                   
 
                 <div class="clearfix"></div>
-                
+                @if(count($driverposts) > 0 )
+
+                @foreach ($driverposts as $post)
+
                 <article class="ride-box clearfix">
 
                     <div class="ride-content">
-                        <h3><a href="#">From <b>Woodlands</b> to <b>Bishan</b></a></h3> <i class="fa fa-money"></i> 16
+                        <h3><a href="#">From <b> {{ $post->start_point }} </b> to <b> {{ $post->destination }}</b></a></h3> <i class="fa fa-money"></i>  {{ $post->price }}
                     </div>
 
                     <ul class="ride-meta">
@@ -173,138 +164,28 @@
                         <li class="ride-date">
                             <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
                                 <i class="fa fa-calendar"></i>
-                                July 20, 2014 at 19:00 PM
+                                {{ $post->route_start_time }}
                             </a>
                         </li><!-- end .ride-date -->
 
                         <li class="ride-people">
                             <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
                                 <i class="fa fa-user"></i>
-                                1
-                            </a>
-                        </li><!-- end .ride-people --> 
-
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
-
-                <article class="ride-box clearfix">
-
-                    <div class="ride-content">
-                        <h3><a href="#">From <b>Orchard</b> to <b>Bugis</b></a></h3> <i class="fa fa-money"></i> 8
-                    </div>
-
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                July 18, 2014 at 06:00 AM
-                            </a>
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                <i class="fa fa-user"></i>
-                                4
-                            </a>
-                        </li><!-- end .ride-people --> 
-
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
-
-                <article class="ride-box clearfix">
-
-                    <div class="ride-content">
-                        <h3><a href="#">From <b>Kranji</b> to <b>Boon Lay</b></a></h3> <i class="fa fa-money"></i> 24
-                    </div>
-
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                July 15, 2014 at 20:00 PM
-                            </a>
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                <i class="fa fa-user"></i>
-                                3
-                            </a>
-                        </li><!-- end .ride-people --> 
-
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
-
-                <article class="ride-box clearfix">
-
-                    <div class="ride-content">
-                        <h3><a href="#">From <b>Red Hill</b> to <b>Paya Laber</b></a></h3> <i class="fa fa-money"></i> 20
-                    </div>
-
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                July 10, 2014 at 09:00 AM
-                            </a>
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                <i class="fa fa-user"></i>
-                                2
+                                {{ $post->seats }}
                             </a>
                         </li><!-- end .ride-people -->
- 
+
                     </ul><!-- end .ride-meta -->
 
                 </article><!-- end .ride-box -->
-
+                @endforeach 
+                @else
                 <article class="ride-box clearfix">
-
                     <div class="ride-content">
-                        <h3><a href="#">From <b>Jurong East</b> to <b>Pioneer</b></a></h3> <i class="fa fa-money"></i> 12
+                        Sorry, currently no post from our drivers.
                     </div>
-
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                July 08, 2014 at 22:00 PM
-                            </a>
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                <i class="fa fa-user"></i>
-                                1
-                            </a>
-                        </li><!-- end .ride-people -->
- 
-
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
-
-                <div class="clearfix"></div>
-
-                <div class="post-pagination pagination-margin clearfix">
-
-                    <div class="next pull-right">
-                        <a href="#">
-                            Next
-                            <i class="fa fa-chevron-right"></i>
-                        </a>
-                    </div>
-
-                </div><!-- end .post-pagination -->
+                </article> 
+                @endif
 
             </div><!-- end .events-list -->
 
@@ -315,20 +196,48 @@
 
 @stop
 
-
 @section('scripts')
 <script>
     var pick = "default";
     var dest = "default";
     var outputDiv = document.getElementById('output');
     var outputPrice = document.getElementById('output-price');
-           
+    var directionsService, directionsDisplay;
+    var autocompletePickup, autocompleteDest;
+    var typingTimer;                //timer identifier
+    var doneTypingInterval = 5000;  //time in ms (5 seconds)
+
+    function geolocate() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var geolocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                var circle = new google.maps.Circle({
+                    center: geolocation,
+                    radius: position.coords.accuracy
+                });
+                autocompletePickup.setBounds(circle.getBounds());
+                autocompleteDest.setBounds(circle.getBounds());
+            });
+        }
+    }
 
     function myMap() {
+        autocompletePickup = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('pickup')),
+                {types: ['geocode']});
+        autocompletePickup.setComponentRestrictions({'country': ['sg']});
+        autocompleteDest = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('destination')),
+                {types: ['geocode']});
+        autocompleteDest.setComponentRestrictions({'country': ['sg']});
+
         var marker = null;
 
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
+        directionsService = new google.maps.DirectionsService;
+        directionsDisplay = new google.maps.DirectionsRenderer;
 
         var mapProp = {
             center: new google.maps.LatLng(1.290270, 103.851959),
@@ -345,9 +254,6 @@
                     lng: position.coords.longitude
                 };
 
-                //infoWindow.setPosition(pos);
-                //infoWindow.setContent('Your Location');
-                //infoWindow.open(map);
                 map.setCenter(pos);
                 map.setZoom(15);
                 marker = new google.maps.Marker({
@@ -365,24 +271,27 @@
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
         }
-
-        if ($("#pickup").change(function () {
-            pick = $(this).val();
-            if (pick !== "default" && dest !== "default") {
-                calculateAndDisplayRoute(directionsService, directionsDisplay);
-                calculateDistance();
+        $("#pickup").keyup(function () {
+            clearTimeout(typingTimer);
+            if ($('#pickup').val()) {
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
             }
-        }))
-            if ($("#destination").change(function () {
-                dest = $(this).val();
-                if (pick !== "default" && dest !== "default") {
-                    calculateAndDisplayRoute(directionsService, directionsDisplay);
-                    calculateDistance();
-                }
-            }))
-                directionsDisplay.setMap(map);
+        });
+        $("#destination").keyup(function () {
+            clearTimeout(typingTimer);
+            if ($('#destination').val()) {
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            }
+        });
+        directionsDisplay.setMap(map);
     }
-
+    function doneTyping() {
+        if (pick && dest) {
+            console.log("ok");
+            calculateAndDisplayRoute(directionsService, directionsDisplay);
+            calculateDistance();
+        }
+    }
     function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         directionsService.route({
             origin: document.getElementById('pickup').value,
@@ -390,12 +299,12 @@
             travelMode: 'DRIVING'
         }, function (response, status) {
             if (status === 'OK') {
-                directionsDisplay.setDirections(response); 
+                directionsDisplay.setDirections(response);
             } else {
                 window.alert('Directions request failed due to ' + status);
             }
         });
-    }    
+    }
 
     function calculateDistance() {
         var service = new google.maps.DistanceMatrixService;
@@ -415,24 +324,19 @@
                 var results = response.rows[0].elements;
                 console.log(results[0].distance.text);
                 console.log(results[0].duration.text);
-                 outputDiv.innerHTML += results[0].distance.text + ' in ' +
-                    results[0].duration.text + '<br>';
-                 outputPrice.innerHTML += 'SGD: 10';
-            
+                outputDiv.innerHTML += results[0].distance.text + ' in ' +
+                        results[0].duration.text + '<br>';
+                outputPrice.innerHTML += 'SGD: 10';
+
 
             }
         });
     }
-    
-    $(function () {
-        $('#datetimepicker1').datetimepicker();
-    });
-
-</script>
-
+</script> 
 
 {!! HTML::script("js/Moment.js") !!}
 {!! HTML::script("js/bootstrap.datetimepicker.js") !!}
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script> 
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&libraries=places&callback=myMap"></script>
+
 @stop

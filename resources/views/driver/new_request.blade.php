@@ -1,4 +1,4 @@
-@extends('layouts.design')
+@extends('layouts.driver_main')
 @section('title', '- Rides') 
 @section('styles')
 <style>
@@ -97,10 +97,6 @@
                 </form>
             </div><!-- end .search-content -->
         </div> 
-        
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div id="googleMap" style="width:100%;height:500px;"></div> 
-        </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="rides-list"> 

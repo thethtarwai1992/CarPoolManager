@@ -21,10 +21,6 @@ class RouteController extends Controller {
         return view('driver.route');
     }
     
-    public function manage() {
-        
-        
-    }
 
     /**
      * Store a newly created route
@@ -41,6 +37,7 @@ class RouteController extends Controller {
                         'seats' => $request->input('seats'), // Need to valid if seats no over capacity
                         'route_datetime' => date('Y-m-d', strtotime(str_replace('-', '/', $request->input('dateTime')))),
                         'comment' => "testing",  // add comment.
+                         'status' => "Open",  // add comment.
                         'pick_up_point'=>$request->input('pickup'),
                         'destination_point'=>$request->input('destination'),
                         'drivers_driving_license_no'=>$driver[0]->driving_license_no,
@@ -59,16 +56,15 @@ class RouteController extends Controller {
         return view('driver.route', compact ('routes'));
     }
 
-    public function edit($id) {
+    public function update($id) {
         
     } 
     
     public function cancel($id) {
-  echo $id;
-  
+
        $route  = Route::find($id);
        $route->delete();
        
-      //  return back();
+       return back();
     } 
 }

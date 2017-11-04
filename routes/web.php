@@ -12,16 +12,18 @@ Route::get('/home', 'HomeController@index');
 Route::get('driver/register','DriverController@register');
 Route::get('driver/switch-to-driver','DriverController@switchToDriver');  
 Route::post('driver/register/store', 'DriverController@store');  
+Route::get('driver/profile','DriverController@index');  
 
 Route::get('driver/route', 'RouteController@show'); 
 Route::post('driver/route/store', 'RouteController@store'); 
 Route::get('driver/route/cancel/{id}', 'RouteController@cancel'); 
+Route::get('driver/route/update/{id}', 'RouteController@update'); 
 
 Route::get('driver/route', 'RouteController@show'); 
-Route::get('driver/task', 'TaskController@index'); 
-
-Route::get('driver/booking_now', 'BookingController@booknow'); 
-Route::get('driver/new_request', 'BookingController@newrequest'); 
+Route::get('driver/task', 'TaskController@show'); 
+Route::get('driver/task/cancel/{id}', 'TaskController@cancel'); 
+Route::get('driver/scheduled', 'TaskController@showScheduled'); 
+Route::get('driver/new_request', 'TaskController@newRequest'); 
 
 Route::get('/admin', 'AdminController@scheduled');
 Route::get('/admin/details','AdminController@show');

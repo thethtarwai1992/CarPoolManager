@@ -1,4 +1,4 @@
-@extends('layouts.design')
+@extends('layouts.driver_main')
 @section('title', '- Rides') 
 @section('styles')
 <style>
@@ -100,14 +100,14 @@
                             </a>
                         </li><!-- end .ride-date --> 
                         <li>
-                            <a href="#">
+                            <a href="route/update/{{$route->route_id}}">
                                 <i class="fa fa-file"></i>
                                 Edit
                             </a>
                         </li> <!-- end .edit route info. 3 days in advance for updating info  -->
 
                         <li>
-                            <a href="{{URL::to('route/cancel/')}}">
+                            <a href="route/cancel/{{$route->route_id}}">
                                 <i class="fa fa-file"></i>
                                 Cancel
                             </a>
