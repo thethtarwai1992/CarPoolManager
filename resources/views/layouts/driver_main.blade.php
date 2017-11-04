@@ -297,10 +297,7 @@
 
         </footer><!-- end #footer -->
 
-        @yield('modals')
-        @if(!Auth::check())
-        @include('home/sign_in_up_model')        
-        @endif
+        @yield('modals') 
         <!-- Javascript -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- Bootstrap -->

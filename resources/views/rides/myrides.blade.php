@@ -35,7 +35,7 @@
                 @foreach ($rides as $ride)
                 <article class="ride-box clearfix">
                     <div class="ride-content">
-                        <h3><a href="#">From <b> {{ $ride->start_point }} </b> to <b> {{ $ride->destination }}</b></a></h3> 
+                        <h3><a href="#">From <b> {{ $ride->pickup }} </b> to <b> {{ $ride->destination }}</b></a></h3> 
                         <i class="fa fa-money"></i> {{ $ride->price }} 
                     </div>
 

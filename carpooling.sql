@@ -22,21 +22,12 @@ SET time_zone = "+00:00";
 -- Database: `carpooling`
 --
 
--- --------------------------------------------------------
-
---
--- Table structure for table `bookings`
---
-
-CREATE TABLE `bookings` (
-  `booking_id` int(11) NOT NULL,
-  `request_time` datetime NOT NULL,
-  `status` varchar(10) NOT NULL,
-  `price` decimal(2,0) DEFAULT NULL,
-  `drivers_driving_license_no` varchar(45) NOT NULL,
-  `passenger_id` int(11) NOT NULL,
-  `route_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `bookings`;
+DROP TABLE IF EXISTS `cars`;
+DROP TABLE IF EXISTS `drivers`;
+DROP TABLE IF EXISTS `preferences`;
+DROP TABLE IF EXISTS `routes`;
+DROP TABLE IF EXISTS `users`;
 
 -- --------------------------------------------------------
 
@@ -71,14 +62,14 @@ CREATE TABLE `drivers` (
   `driving_license_valid_till` date NOT NULL,
   `status` varchar(15) NOT NULL,
   `remarks` varchar(100) DEFAULT NULL,
-  `User_userID` int(11) NOT NULL
+  `userID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `drivers`
 --
 
-INSERT INTO `drivers` (`driving_license_no`, `driving_license_valid_till`, `status`, `remarks`, `User_userID`) VALUES
+INSERT INTO `drivers` (`driving_license_no`, `driving_license_valid_till`, `status`, `remarks`, `userID`) VALUES
 ('SG458167', '2018-07-07', 'Pending', NULL, 4);
 
 -- --------------------------------------------------------
@@ -97,29 +88,42 @@ CREATE TABLE `preferences` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `bookings`
+--
 
+CREATE TABLE `bookings` (
+  `booking_id` int(11) NOT NULL,
+  `request_time` datetime NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `price` decimal(2,0) DEFAULT NULL,
+  `passenger_id` int(11) NOT NULL,
+  `driver_id` int(11) NOT NULL,
+  `route_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `routes`
 --
 
 CREATE TABLE `routes` (
   `route_id` int(11) NOT NULL,
+  `status` varchar(25) NOT NULL DEFAULT 'Open',
   `seats` int(11) NOT NULL,
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `route_datetime` datetime NOT NULL,
+  `start` datetime DEFAULT NULL ,
+  `end` datetime  DEFAULT NULL,
   `comment` varchar(100) DEFAULT NULL,
-  `pick_up_point` varchar(100) NOT NULL,
-  `destination_point` varchar(100) NOT NULL,
-  `drivers_driving_license_no` varchar(45) NOT NULL
+  `pickup` int(11) NOT NULL,
+  `destination` int(11) NOT NULL,
+  `drivers_driving_license_no` varchar(45)  DEFAULT NULL,
+  `driver_car_car_plate_no` int(11) DEFAULT NULL,
+  `posted_by` int(11) NOT NULL,
+  `posted_type` varchar(25) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `routes`
---
-
-INSERT INTO `routes` (`route_id`, `seats`, `created_date`, `route_datetime`, `comment`, `pick_up_point`, `destination_point`, `drivers_driving_license_no`) VALUES
-(1, 3, '2017-10-31 07:05:05', '2017-11-03 00:00:00', 'testing', 'Tampines Street 81 Singapore', 'Boon Lay Drive Singapore', 'SG458167');
-
+ 
 -- --------------------------------------------------------
 
 --
@@ -128,23 +132,28 @@ INSERT INTO `routes` (`route_id`, `seats`, `created_date`, `route_datetime`, `co
 
 CREATE TABLE `users` (
   `userID` int(11) NOT NULL,
+  `name` varchar(45) NOT NULL,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) DEFAULT NULL,
-  `gender` varchar(1) NOT NULL,
+  `gender` varchar(1) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
   `contactNO` int(8) NOT NULL,
-  `password` varchar(100) NOT NULL
+  `password` varchar(100) NOT NULL,
+  `is_driver` int(11) NOT NULL DEFAULT '0',
+  `remember_token` text,
+  `created_at` datetime NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`userID`, `first_name`, `last_name`, `gender`, `email`, `contactNO`, `password`) VALUES
-(1, 'Thet', NULL, 'F', 'thethw001@mymail.sim.edu.sg', 11111111, 'a642a77abd7d4f51bf9226ceaf891fcbb5b299b8'),
-(2, 'Yuting', 'Wang', 'F', 'ywang084@mymail.sim.edu.sg', 22222222, 'f638e2789006da9bb337fd5689e37a265a70f359'),
-(3, 'Min Thu', NULL, 'F', 'yinmt001@mymail.sim.edu.sg', 33333333, '14993032bd035408dd9ab6f6e6ad0b023eced296'),
-(4, 'WANG YUTING', NULL, 'F', 'cloris910415@gmail.com', 98989898, '$2y$10$KvdY9j/wvQ4DHftSMbZF8er4NGHaiGMmL8Pt2LZK620bhfkD5Y7Da');
+INSERT INTO `users` (`userID`,`name`, `first_name`, `last_name`, `gender`, `email`, `contactNO`, `password`, `created_at`, `updated_at`) VALUES
+(1, 'Thet Htar', 'Thet', NULL, 'F', 'thethw001@mymail.sim.edu.sg', 11111111, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
+(2, 'Yuting', 'Yuting', 'Wang', 'F', 'ywang084@mymail.sim.edu.sg', 22222222, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
+(3, 'Min Thu', 'Min Thu', NULL, 'F', 'yinmt001@mymail.sim.edu.sg', 33333333, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
+(4, 'Yuting', 'WANG YUTING', NULL, 'F', 'cloris910415@gmail.com', 98989898, '$2y$10$KvdY9j/wvQ4DHftSMbZF8er4NGHaiGMmL8Pt2LZK620bhfkD5Y7Da', '2017-10-22 08:06:46', '2017-10-22 00:06:46');
 
 --
 -- Indexes for dumped tables
@@ -156,8 +165,8 @@ INSERT INTO `users` (`userID`, `first_name`, `last_name`, `gender`, `email`, `co
 ALTER TABLE `bookings`
   ADD PRIMARY KEY (`booking_id`),
   ADD KEY `fk_booking_User1_idx` (`passenger_id`),
-  ADD KEY `fk_booking_route1_idx` (`route_id`),
-  ADD KEY `fk_bookings_drivers1_idx` (`drivers_driving_license_no`);
+  ADD KEY `fk_booking_User2_idx` (`driver_id`),
+  ADD KEY `fk_booking_route1_idx` (`route_id`);
 
 --
 -- Indexes for table `cars`
@@ -171,7 +180,7 @@ ALTER TABLE `cars`
 --
 ALTER TABLE `drivers`
   ADD PRIMARY KEY (`driving_license_no`),
-  ADD KEY `fk_driver_User_idx` (`User_userID`);
+  ADD KEY `fk_driver_User_idx` (`userID`);
 
 --
 -- Indexes for table `preferences`
@@ -185,7 +194,7 @@ ALTER TABLE `preferences`
 -- Indexes for table `routes`
 --
 ALTER TABLE `routes`
-  ADD PRIMARY KEY (`route_id`,`drivers_driving_license_no`),
+  ADD PRIMARY KEY (`route_id`),
   ADD KEY `fk_route_driver_car1_idx` (`drivers_driving_license_no`);
 
 --
@@ -226,14 +235,14 @@ ALTER TABLE `users`
 --
 ALTER TABLE `bookings`
   ADD CONSTRAINT `fk_booking_User1` FOREIGN KEY (`passenger_id`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_booking_route1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`route_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_bookings_drivers1` FOREIGN KEY (`drivers_driving_license_no`) REFERENCES `drivers` (`driving_license_no`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_booking_User2` FOREIGN KEY (`driver_id`) REFERENCES `drivers` (`userID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_booking_route1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`route_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `drivers`
 --
 ALTER TABLE `drivers`
-  ADD CONSTRAINT `fk_driver_User` FOREIGN KEY (`User_userID`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_driver_User` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `preferences`

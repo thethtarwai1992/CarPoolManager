@@ -10,7 +10,7 @@ use App\Route;
 class RideController extends Controller {
 
     public function index() {
-        $driverposts = Route::whereDate('created_date', date('Y-m-d'))->where('status','Open')->get();
+        $driverposts = Route::whereDate('created_at', date('Y-m-d'))->where('status','Open')->get();
         return view('rides.rides', compact ('driverposts'));
     }
     
