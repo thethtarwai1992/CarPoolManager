@@ -14,7 +14,7 @@ class Route extends Model {
      * @var array
      */
     protected $fillable = [
-        'seats', 'comment', 'destination_point', 'pick_up_point','route_datetime','drivers_driving_license_no'
+        'seats', 'comment', 'status','destination_point', 'pick_up_point','route_datetime','drivers_driving_license_no'
     ];
 
     /**
@@ -27,7 +27,13 @@ class Route extends Model {
     ];
 
     public function booking() {
+        return $this->hasOne('App\Booking','route_id');
+    }
+    /*
+    public function booking() {
         return $this->belongsTo('App\Booking', 'foreign_key');
     }
+     * 
+     */
     public  $timestamps = false;
 }

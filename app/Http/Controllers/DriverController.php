@@ -17,12 +17,14 @@ class DriverController extends Controller {
         $this->middleware('auth');
     }
 
-    public function index(Request $request) {
-
-        return view('driver.mydriveinfo');
-    }
-
-    public function create() {
+    public function index() {
+        $driver = Driver::where('User_userID', Auth::user()->userID)->get();
+ 
+         $driverData=DB::table('drivers')
+            ->join('cars', 'drivers.driving_license_no', '=', 'cars.driving_license_no')
+            ->where('drivers.driving_license_no', $driver[0]->driving_license_no)
+            ->first();
+        return view('driver.mydriveinfo', compact ('driverData'));
 
     }
 
@@ -50,7 +52,7 @@ class DriverController extends Controller {
         return back();
     }
 
-    public function show() {
+    public function update() {
         
     }
 

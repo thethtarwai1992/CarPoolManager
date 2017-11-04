@@ -26,12 +26,18 @@ class Driver extends Model
         'User_userID' 
     ];
     
+    public function scopeDriver($query,$id)
+    {
+        return $query->where('User_userID', $id);
+    }
+    
     public function user() {
         return $this->hasOne('App\User');
     }
     
-     public function route() {
-        return $this->belongsTo('App\Route', 'foreign_key');
+     public function route()
+    {
+        return $this->hasMany('App\Route');
     }
     
     public  $timestamps = false;

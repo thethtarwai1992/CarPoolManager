@@ -25,12 +25,19 @@ class Booking extends Model {
     protected $hidden = [
         'passenger_id', 'route_id', 'drivers_driving_license_no'
     ];
-
+/*
     public function route() {
         return $this->hasOne('App\Route');
     }
+ * 
+ */
+     public function route() {
+        return $this->belongsTo('App\Route', 'foreign_key');
+    }
+    
     public function passenger() {
         return $this->hasOne('App\User');
     }
 
+       public  $timestamps = false;
 }

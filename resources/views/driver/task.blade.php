@@ -1,4 +1,4 @@
-@extends('layouts.design')
+@extends('layouts.driver_main')
 @section('title', '- Tasks') 
 @section('styles')
 <style>
@@ -54,43 +54,45 @@
                                 <th class="col-md-3 col-sm-6" id="title">From</th>
                                 <th class="col-md-3 col-sm-6">Destination</th>
                                 <th class="col-md-3 col-sm-6">Customer</th>
-                                <th class="col-md-3 col-sm-6">Date & Time.</th>
+                                <th class="col-md-3 col-sm-6">Contact No.</th>
+                                <th class="col-md-3 col-sm-6">Ride Date</th>
                                 <th class="col-md-3 col-sm-6">Status</th>
+                                <th class="col-md-3 col-sm-6">Fare</th>
                                 <th class="col-md-3 col-sm-6">Action</th>
                             </tr>
+                             @if(count($tasks) > 0 )
 
+                            @foreach ($tasks as $task)
                             <tr>
-                                <td class="col-md-3 col-sm-6">Boon Lay</td>
-                                <td class="col-md-3 col-sm-6">Novena </td>
-                                <td class="col-md-3 col-sm-6">Alan Lee</td>
-                                <td class="col-md-3 col-sm-6">July 20, 2017 at 19:00 PM</td>
-                                <td class="col-md-3 col-sm-6">Fulfilled</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a></td>   
+                                <td class="col-md-3 col-sm-6">{{ $task->pick_up_point }} </td>
+                                <td class="col-md-3 col-sm-6">{{ $task->destination_point }}  </td>
+                                <td class="col-md-3 col-sm-6">{{ $task->first_name }} {{ $task->last_name }} </td>
+                                @if( $task->b_status != "Canceled" || $task->b_status != "Closed")
+                                <td class="col-md-3 col-sm-6"><a href="tel: $task->contactNO">{{ $task->contactNO }} </a> </td>
+                                @else
+                                <td class="col-md-3 col-sm-6">{{ $task->contactNO }}********</td>
+                                @endif
+                                <td class="col-md-3 col-sm-6">{{ $task->route_datetime }} </td>
+                                <td class="col-md-3 col-sm-6">{{ $task->b_status }} </td>
+                                 <td class="col-md-3 col-sm-6"><i class="fa fa-money"></i>{{ $task->price }} </td>
+                                <td class="col-md-3 col-sm-6">
+                                @if( $task->b_status== "Scheduled")
+                                <a href="task/cancel/{{$task->booking_id}}">Cancel</a>
+                                @else
+                                N.A
+                                 @endif        
+                                 
+                                </td>   
                             </tr>
-                            <tr>
-                                <td class="col-md-3 col-sm-6">Boon Lay</td>
-                                <td class="col-md-3 col-sm-6">Orchard</td>
-                                <td class="col-md-3 col-sm-6">Jean</td>
-                                <td class="col-md-3 col-sm-6">October 08, 2017 at 08:30 AM</td>
-                                <td class="col-md-3 col-sm-6">Scheduled</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a>  <a href="#">Cancel</a></td>   
+                             @endforeach
+                @else
+                <tr>
+                                <td class="col-md-3 col-sm-6">
+                        No Record Found.
+                    </td>   
                             </tr>
-                            <tr>
-                                <td class="col-md-3 col-sm-6">Orchard</td>
-                                <td class="col-md-3 col-sm-6">Lakeside </td>
-                                <td class="col-md-3 col-sm-6">James</td>
-                                <td class="col-md-3 col-sm-6">September 06, 2017 at 08:00 AM</td>
-                                <td class="col-md-3 col-sm-6">Cancel</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a></td>   
-                            </tr>
-                            <tr>
-                                <td class="col-md-3 col-sm-6">Boon Lay</td>
-                                <td class="col-md-3 col-sm-6">Woodlands </td>
-                                <td class="col-md-3 col-sm-6">Apyt</td>
-                                <td class="col-md-3 col-sm-6">October 07, 2017 at 09:00 AM</td>
-                                <td class="col-md-3 col-sm-6">Ongoing</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a></td>   
-                            </tr>
+                @endif         
+                       
                         </table>
 
                     </div> 

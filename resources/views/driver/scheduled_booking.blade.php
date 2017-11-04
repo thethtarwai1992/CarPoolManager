@@ -1,4 +1,4 @@
-@extends('layouts.design')
+@extends('layouts.driver_main')
 @section('title', '- Rides') 
 @section('styles')
 <style>
@@ -33,7 +33,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
 
             <div class="page-sub-title textcenter">
-                <h2>Ride Now</h2>
+                <h2>Scheduled Booking</h2>
                 <div class="line"></div>
             </div><!-- end .page-sub-title -->
 
@@ -47,55 +47,48 @@
                     <div class="row">
                         <table>
                             <tr>
+                                <th class="col-md-3 col-sm-6" id="title">Booking Id</th>
                                 <th class="col-md-3 col-sm-6" id="title">From</th>
-                                <th class="col-md-3 col-sm-6">Destination</th>
-                                <th class="col-md-3 col-sm-6">Customer</th>    
-                                <th class="col-md-3 col-sm-6">No. of Pax</th>
-                                <th colspan="2" class="col-md-3 col-sm-6" style="text-align: center;">Action</th>
+                                <th class="col-md-3 col-sm-6" id="title">Destination</th>
+                                <th class="col-md-3 col-sm-6" id="title">Customer</th>
+                                <th class="col-md-3 col-sm-6" id="title">Contact No.</th>
+                                <th class="col-md-3 col-sm-6" id="title">Ride Date</th>
+                                <th class="col-md-3 col-sm-6" id="title">No. of Pax</th>
+                                <th class="col-md-3 col-sm-6" id="title">Fare</th>
+                                <th class="col-md-3 col-sm-6" id="title">Action</th>
                             </tr>
+                            @if(count($tasks) > 0 )
 
+                            @foreach ($tasks as $task)
                             <tr>
-                                <td class="col-md-3 col-sm-6">Woodlands</td>
-                                <td class="col-md-3 col-sm-6">Orchard </td>
-                                <td class="col-md-3 col-sm-6">Janice</td>
-                                <td class="col-md-3 col-sm-6">1</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a></td>
-                                <td class="col-md-3 col-sm-6"><a href="#">Accept</a></td>   
+                                <td class="col-md-3 col-sm-6">{{ $task->booking_id}} </td>
+                                <td class="col-md-3 col-sm-6">{{ $task->pick_up_point }} </td>
+                                <td class="col-md-3 col-sm-6">{{ $task->destination_point }}  </td>
+                                <td class="col-md-3 col-sm-6">{{ $task->first_name }} {{ $task->last_name }} </td>
+                                <td class="col-md-3 col-sm-6"><a href="tel: $task->contactNO">{{ $task->contactNO }} </a> </td>
+                                <td class="col-md-3 col-sm-6">{{ $task->route_datetime }} </td>
+                                <td class="col-md-3 col-sm-6">3</td>
+                                 <td class="col-md-3 col-sm-6"><i class="fa fa-money"></i>{{ $task->price }} </td>
+                                <td class="col-md-3 col-sm-6">   
+                                <a href="#">View Notes</a>
+                                <a href="#">Send Msg</a>
+                                <a href="task/cancel/{{$task->booking_id}}">Cancel</a>            
+                                </td>   
                             </tr>
-                            <tr>
-                                <td class="col-md-3 col-sm-6">Boon Lay</td>
-                                <td class="col-md-3 col-sm-6">Orchard</td>
-                                <td class="col-md-3 col-sm-6">Jean</td>
-                                <td class="col-md-3 col-sm-6">2</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a></td>
-                                <td class="col-md-3 col-sm-6"><a href="#">Accept</a></td>   
+                             @endforeach
+                @else
+                <tr>
+                                <td class="col-md-3 col-sm-6">
+                        No Record Found.
+                    </td>   
                             </tr>
-                            <tr>
-                                <td class="col-md-3 col-sm-6">Orchard</td>
-                                <td class="col-md-3 col-sm-6">Lakeside </td>
-                                <td class="col-md-3 col-sm-6">James</td>
-                                <td class="col-md-3 col-sm-6">1</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a></td>
-                                <td class="col-md-3 col-sm-6"><a href="#">Accept</a></td>  
-                            </tr>
-                            <tr>
-                                <td class="col-md-3 col-sm-6">Boon Lay</td>
-                                <td class="col-md-3 col-sm-6">Woodlands </td>
-                                <td class="col-md-3 col-sm-6">Apyt</td>
-                                <td class="col-md-3 col-sm-6">1</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a></td>
-                                <td class="col-md-3 col-sm-6"><a href="#">Accept</a></td> 
-                            </tr>
+                @endif   
                         </table>
 
                     </div> 
                 </form>
             </div><!-- end .search-content -->
         </div> 
-        
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div id="googleMap" style="width:100%;height:500px;"></div> 
-        </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="rides-list"> 
