@@ -84,7 +84,7 @@
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="field">
-                                <input name="event" type="text" placeholder="Date" class="datepicker">
+                                <input name="date" type="text" value="{{ date("d-m-Y") }}" placeholder="Date" class="datepicker" disabled>
                             </div> 
                         </div>
 
@@ -95,7 +95,7 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
 
             <div id="floading-panel">
-                <span class="output-text"><i class="fa fa-taxi"></i> Standard Taxi </span>
+                <span class="output-text"><i class="fa fa-taxi"></i> Estimated Price </span>
                 <span id="output-price"></span> <br>
                 <span id="output"></span>
             </div>
@@ -107,7 +107,7 @@
                 <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
             </div> 
             @else
-            <a data-toggle="modal" data-target="#loginModal">
+            <a href ="{{ URL::to('register') }}">
                 <div class="field buttons sendRequest" >
                     <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
                 </div>
@@ -122,41 +122,50 @@
                 <div class="post-pagination pagination-margin clearfix">
 
                     <div class="text-center">
-                        <h3>  Book from Today's Schedule rides</h3>
+                        <h3>  Book from Today's Posts </h3>
                     </div>
 
                 </div><!-- end .post-pagination -->                   
 
-                <div class="clearfix"></div>
-
+                <div class="clearfix"></div> 
                 @if(count($driverposts) > 0 )
 
                 @foreach ($driverposts as $post)
-               <article class="ride-box clearfix">
+
+                <article class="ride-box clearfix">
+
                     <div class="ride-content">
-                        <h3><a href="#">From <b> {{ $post->pickup }} </b> to <b> {{ $post->destination }}</b></a></h3> 
-                        <i class="fa fa-money"></i> {{ $ride->price }} 
+                        <h3><a href="#">From <b> {{ $post->start_point }} </b> to <b> {{ $post->destination }}</b></a></h3> <i class="fa fa-money"></i>  {{ $post->price }}
                     </div>
 
                     <ul class="ride-meta">
+
                         <li class="ride-date">
                             <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
                                 <i class="fa fa-calendar"></i>
-                                {{ $ride->created_at }}  
+                                {{ $post->start }}
                             </a>
-                        </li><!-- end .ride-date --> 
+                        </li><!-- end .ride-date -->
+
+                        <li class="ride-people">
+                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
+                                <i class="fa fa-user"></i>
+                                {{ $post->seats }}
+                            </a>
+                        </li><!-- end .ride-people -->
 
                     </ul><!-- end .ride-meta -->
 
                 </article><!-- end .ride-box -->
-                @endforeach
+                @endforeach 
                 @else
                 <article class="ride-box clearfix">
                     <div class="ride-content">
-                        No Record Found.
+                        Sorry, currently no post from our drivers.
                     </div>
                 </article> 
-                @endif 
+                @endif
+
             </div><!-- end .events-list -->
 
         </div><!-- end .page-content -->
@@ -203,7 +212,7 @@
                 /** @type {!HTMLInputElement} */(document.getElementById('destination')),
                 {types: ['geocode']});
         autocompleteDest.setComponentRestrictions({'country': ['sg']});
-        
+
         var marker = null;
 
         directionsService = new google.maps.DirectionsService;

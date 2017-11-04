@@ -190,6 +190,16 @@
             </div>
             @endif
 
+            @if (Session::has('driver'))
+            <div class="row">
+                <div class="col-sm-12"> 
+                    <div class="alert alert-warning alert-dismissable"> 
+                        <i class="fa fa-thumbs-up"></i> {{ Session::get('driver') }}
+                    </div>
+                </div>
+            </div>
+            @endif
+
 
             <div class="main-baner">
 

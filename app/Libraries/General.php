@@ -5,8 +5,15 @@ namespace App\Libraries;
 
 class General{
     
-    public function switchToDriver(){
-        return true;
+       public function __construct() {
+    
     }
+    public static function checkIfDriver() { 
+        $driverView = false; 
+        if (request()->session()->exists('driverView')) { 
+            $driverView =true;
+        }
+        return $driverView;
+    }    
     
 }

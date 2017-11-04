@@ -20,7 +20,6 @@
 
         <!-- Bootstrap -->
         {!!  HTML::style("css/bootstrap.min.css") !!}
-        {!!  HTML::style("css/bootstrap-datetimepicker.min.css") !!}
         <!-- Forms -->
         {!!  HTML::style("css/jquery.idealforms.css") !!}
         <!-- Select  -->
@@ -96,20 +95,17 @@
                 .page-sub-title h2{ font-size: 1em;}
                 .main-header-container {margin: 1em 0;}
                 .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content {min-height: 375px;}
-
                 .ride-content{float: none;}
             } 
             @media only screen and (min-width: 1186px) and (max-width: 1329px){
                 .logo{ padding: 1.5em 1em; }
                 .logo h1{ font-size: 35px;}
             }
-
             @media only screen and (min-width: 980px) and (max-width: 1186px){
                 /*                 .logo{ padding: 1.5em 1em; }
                                  .logo h1{ font-size: 35px;}*/
                 .main-header-container .col-md-5, .main-header-container .col-md-7{width: 100%;}
                 .main-navigation{text-align: center;}
-
             } 
         </style>
     </head>
@@ -137,7 +133,13 @@
                                                     <li><a href="#">My Favorites</a></li>
                                                     <li><a href="{{URL::to('driver/route')}}">My Routes</a></li>
                                                     <li><a href="{{URL::to('driver/task')}}">My Tasks</a></li>
+                                                    @if(Auth::check() && Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())
+                                                    <li><a href="{{URL::to('driver/switch-to-driver')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
+                                                    @elseif(Auth::check() && !Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())                                                    
+                                                    <li><a href="{{URL::to('driver/register')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
+                                                    @elseif(Auth::check() && Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())
                                                     <li><a href="#">Switch to Passenger?</a></li>
+                                                    @endif
                                                     <li><a href="{{URL::to('logout')}}">Log Out</a></li>
                                                 </ul>
                                             </li> 
@@ -195,6 +197,15 @@
             </div>
             @endif
 
+            @if (Session::has('driver'))
+            <div class="row">
+                <div class="col-sm-12"> 
+                    <div class="alert alert-warning alert-dismissable"> 
+                        <i class="fa fa-thumbs-up"></i> {{ Session::get('driver') }}
+                    </div>
+                </div>
+            </div>
+            @endif
 
             <div class="main-baner">
 
@@ -227,9 +238,9 @@
                                                         <a href="{{URL::to('/')}}">Home</a>
                                                     </li> 
 <!--                                                    if login user is driver and switched to driver mode, show driver menu-->
-                                                    @if(Auth::check() && Auth::user()->is_driver && switchToDriver())  
+                                                    @if(Auth::check() && Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())  
                                                     <li>
-                                                        <a href="#">Booking</a>
+                                                        <a href="#">Bookings</a>
                                                         <ul class="sub-menu">
                                                             <li>
                                                                 <a href="{{URL::to('driver/booking_now')}}">Ride Now</a>
@@ -330,14 +341,8 @@
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
          <!-- timepicker  -->
         <!-- Scripts -->
-<<<<<<< HEAD:resources/views/main1.blade.php
-        <script src="{{ asset('js/app.js') }}"></script>
-=======
 <!--        <script src="{{ asset('js/app.js') }}"></script>-->
->>>>>>> c7d04c8ced1f44534332a6135f84927a9991aa09:resources/views/layouts/design.blade.php
         <script type="text/javascript">
-
-
         </script>
 
 
