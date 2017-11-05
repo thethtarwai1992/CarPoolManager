@@ -69,7 +69,7 @@
                             <div class="field"> 
 <!--                                <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text">-->
                                 <input id="destination" placeholder="Destination Address" value="Taiseng" onFocus="geolocate()" type="text">
-                                
+
                             </div>
                         </div>
 
@@ -134,32 +134,21 @@
                 @if(count($driverposts) > 0 )
 
                 @foreach ($driverposts as $post)
+                <a href="#" id="view" data-toggle="modal" data-id ={{ $post->route_id }}> 
+                    <article class="ride-box clearfix">
 
-                <article class="ride-box clearfix">
+                        <div class="ride-content">
+                            <h3> <b> {{ $post->pickup }} </b> -> <b> {{ $post->destination }}</b></h3> 
 
-                    <div class="ride-content">
-                        <h3><a href="#">From <b> {{ $post->start_point }} </b> to <b> {{ $post->destination }}</b></a></h3> <i class="fa fa-money"></i>  {{ $post->price }}
-                    </div>
+                            <i class="fa fa-money"></i>  {{ $post->bookings->first()->price }}
+                            <i class="fa fa-calendar"></i> {{ $post->start }}
 
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                {{ $post->start }}
-                            </a>
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                <i class="fa fa-user"></i>
-                                {{ $post->seats }}
-                            </a>
-                        </li><!-- end .ride-people -->
-
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
+                        </div>
+                        <div class="pull-right">
+                            Seat left for {{ $post->available_seats }} <i class="fa fa-user"></i> 
+                        </div> 
+                    </article><!-- end .ride-box -->
+                </a>
                 @endforeach 
                 @else
                 <article class="ride-box clearfix">
@@ -176,6 +165,10 @@
     </div><!-- end .row -->
 </div><!-- end .container -->
 
+@stop
+
+@section('modals')
+@include('rides/details_modal', ['route' => $route])
 @stop
 
 @section('scripts')
@@ -316,8 +309,8 @@
         });
     }
 
-    $("button").click(function (e) { //alert($("#seats").val());
-        var seats = $("#seats").val(); 
+    $("#request").click(function (e) { //alert($("#seats").val());
+        var seats = $("#seats").val();
         var pick = $("#pickup").val();
         var dest = $("#destination").val();
         var token = $("input[name='_token']").val();
@@ -327,7 +320,7 @@
             $.ajax({
                 type: "POST",
                 url: "{{ URL::to('rides/request') }}",
-                dataType : 'json',
+                dataType: 'json',
                 data: {
                     seats: seats,
                     price: price,
@@ -344,11 +337,30 @@
                     alert('error');
                 }
             });
-        }else{
-           alert("Please fill up necessary data!");
-        } 
+        } else {
+            alert("Please fill up necessary data!");
+        }
     });
 
+    $('#view').on('click', function (e) {
+        var route_id = $(this).data('id');
+        //console.log('route' + route_id);
+         e.preventDefault();
+        $.ajax({
+            url: "{{ URL::to('route/view') }}/" + route_id,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                
+                console.log(data);
+                $('#details').modal('show');
+            },
+             error: function (data) {
+                  console.log(data);
+             }
+        });
+    });
+ 
 </script> 
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&libraries=places&callback=myMap"></script>

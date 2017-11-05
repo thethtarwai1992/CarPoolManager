@@ -26,8 +26,8 @@ class Route extends Model {
          'posted_by'
     ];
 
-    public function booking() {
-        return $this->hasOne('App\Booking','route_id');
+    public function bookings() {
+        return $this->hasMany('App\Booking','route_id');
     }
     /*
     public function booking() {

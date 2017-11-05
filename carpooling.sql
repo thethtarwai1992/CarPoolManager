@@ -96,6 +96,7 @@ CREATE TABLE `bookings` (
   `booking_id` int(11) NOT NULL,
   `request_time` datetime NOT NULL,
   `status` varchar(10) NOT NULL,
+  `seats` int(11) NOT NULL,
   `price` decimal(2,0) DEFAULT NULL,
   `passenger_id` int(11) NOT NULL,
   `driver_id` int(11) DEFAULT NULL,
@@ -110,7 +111,7 @@ CREATE TABLE `bookings` (
 CREATE TABLE `routes` (
   `route_id` int(11) NOT NULL,
   `status` varchar(25) NOT NULL DEFAULT 'Open',
-  `seats` int(11) NOT NULL,
+  `available_seats` int(11) NOT NULL,
   `start` datetime DEFAULT NULL ,
   `end` datetime  DEFAULT NULL,
   `comment` varchar(100) DEFAULT NULL,

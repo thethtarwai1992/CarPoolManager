@@ -1,7 +1,7 @@
 @extends('layouts.design')
 @section('title', '- Rides') 
 @section('styles')
-{!! HTML::style("css/bootstrap.datetimepicker.css") !!}
+{!! HTML::style("css/bootstrap.datetimepicker.css") !!} 
 <style>
     .ride-content h3{
         font-size: 14px;
@@ -332,6 +332,10 @@
             }
         });
     }
+    
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
 </script> 
 
 {!! HTML::script("js/Moment.js") !!}

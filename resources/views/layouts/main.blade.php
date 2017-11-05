@@ -334,6 +334,9 @@
         {!! HTML::script("js/superfish.js") !!} 
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
+        <!-- Counter-Up  -->
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js")></script>
+        {!! HTML::script("js/jquery.counterup.min.js") !!} 
         
         <script type="text/javascript">
 

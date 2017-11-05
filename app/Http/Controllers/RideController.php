@@ -13,10 +13,13 @@ class RideController extends Controller {
         //$this->middleware('auth');
     }
     public function index() {
-        $driverposts = Route::whereDate('created_at', date('Y-m-d'))->where('status','Open')
+        $driverposts = Route::with('bookings')
+                ->whereDate('created_at', date('Y-m-d'))->where('status','Open')
+               // ->where('posted_type','Driver')
                 ->orderBy('created_at', 'desc')
                 ->get();
-        return view('rides.rides', compact ('driverposts'));
+        $route = array();
+        return view('rides.rides', compact('driverposts','route'));
     }
     
     public function scheduled() {

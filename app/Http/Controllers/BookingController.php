@@ -29,7 +29,7 @@ class BookingController extends Controller {
 
         if ($request->isMethod('post')) {
             $route = new Route;
-            $route->seats = $request->seats;
+            $route->available_seats = $request->seats;
             $route->pickup = $request->pick;
             $route->destination = $request->dest;
             $route->posted_by = Auth::user()->userID;
@@ -39,6 +39,7 @@ class BookingController extends Controller {
             $booking = new Booking;
             $booking->request_time = date("Y-m-d H:i:s");
             $booking->status = "Open";
+            $booking->seats = $request->seats;
             $booking->price = $request->price;
             $booking->passenger_id = Auth::user()->userID;
             $booking->driver_id = 0;
