@@ -14,7 +14,7 @@ class Route extends Model {
      * @var array
      */
     protected $fillable = [
-        'seats', 'comment', 'status','destination', 'pickup','start','end'
+        'seats', 'comment', 'status','destination', 'pickup'
     ];
 
     /**
@@ -28,6 +28,12 @@ class Route extends Model {
 
     public function bookings() {
         return $this->hasMany('App\Booking','route_id');
+    }
+    public function driver() {
+        return $this->belongsTo('App\User','posted_by');
+    }    
+    public function passenger() {
+        return $this->belongsTo('App\User','posted_by');
     }
     /*
     public function booking() {

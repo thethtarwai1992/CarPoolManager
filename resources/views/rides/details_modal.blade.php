@@ -1,20 +1,59 @@
-<!-- Modal -->
-<div id="details" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+<div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Route Details</h4>
-      </div>
-      <div class="modal-body">
-        <p>{{ $route->pickup or '' }}</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+        <div class="modal-content">
 
-  </div>
-</div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div><!-- end .modal-header -->
+
+            <div class="modal-body"> 
+
+                <form action="{{ URL::to("book") }}" method="POST" autocomplete="off" class="idealforms">
+
+                    <div class="log-header">
+                        <span class="log-in">Route Details</span>
+                    </div>
+                    {{ csrf_field() }}
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="card hovercard">
+                                    <div class="cardheader"> </div>
+                                    <div class="avatar">
+                                        <img alt="" src="{{ asset('img/avatar-1.jpg') }}">
+                                    </div>
+                                    <div class="info">
+                                        <div class="title">
+                                            <span id="driverD">Driver name</span>
+                                        </div> 
+                                        <div>Passionate designer</div>
+                                        <div class="desc" id='contactno'><i class="fa fa-phone"></i> Contact No</div>
+                                        <div class="desc" id='car'><i class="fa fa-car"></i> Car Model </div>
+                                    </div>
+                                    <div class="bottom">
+                                        <div class="col-md-12"> 
+                                            Pickup point : <span id="pickupD"> Woodlands</span><br>
+                                            Destination : <span id="destD"> Orchard</span> <br>
+                                            Price : <span id="priceD"> 10</span><br>
+                                            Seat left : <span id="seats">2</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div> 
+
+                    <div class="field buttons">
+                        <button type="submit" class="submit btn btn-primary">Book</button> 
+                    </div> 
+                </form><!-- end .login -->
+            </div><!-- end .modal-body -->
+
+        </div><!-- end .modal-content -->
+    </div><!-- end .modal-dialog -->
+</div><!-- end .modal -->

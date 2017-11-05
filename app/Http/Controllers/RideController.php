@@ -12,7 +12,7 @@ class RideController extends Controller {
     public function __construct() {
         //$this->middleware('auth');
     }
-    public function index() {
+    public function index() { 
         $driverposts = Route::with('bookings')
                 ->whereDate('created_at', date('Y-m-d'))->where('status','Open')
                // ->where('posted_type','Driver')

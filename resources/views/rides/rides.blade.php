@@ -1,6 +1,7 @@
 @extends('layouts.design')
 @section('title', '- Rides') 
 @section('styles')
+{!! HTML::style("css/view-details-custom.css") !!} 
 <style>
     .ride-content h3{
         font-size: 14px;
@@ -77,7 +78,7 @@
 
                             <div class="field">
                                 <select id="seats" name="numberOfseats">
-                                    <option value="default">Number of seats</option>
+                                    <option value="0">Number of seats</option>
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
@@ -316,7 +317,7 @@
         var token = $("input[name='_token']").val();
         console.log("Seats :" + seats + ", Price :" + price + ", Start: " + pick + ", End: " + dest);
         e.preventDefault();
-        if (seats && price && pick && dest) {
+        if (seats !== 0 && price && pick && dest) {
             $.ajax({
                 type: "POST",
                 url: "{{ URL::to('rides/request') }}",
@@ -330,11 +331,11 @@
                 },
                 success: function (result) {
                     console.log(result);
-                    alert('ok');
+                    //alert('ok');
                 },
                 error: function (result) {
                     console.log(result['responseJSON']['message']);
-                    alert('error');
+                    //alert('error');
                 }
             });
         } else {
@@ -345,22 +346,25 @@
     $('#view').on('click', function (e) {
         var route_id = $(this).data('id');
         //console.log('route' + route_id);
-         e.preventDefault();
+        e.preventDefault();
         $.ajax({
             url: "{{ URL::to('route/view') }}/" + route_id,
             dataType: 'json',
             cache: false,
             success: function (data) {
-                
-                console.log(data);
+                console.log(data); 
+                $('#driverD').html(data['data']['name']);
+                $('#priceD').html(data['data']['price']);
+                $('#pickupD').html(data['data']['pickup']);
+                $('#destD').html(data['data']['destination']);
                 $('#details').modal('show');
             },
-             error: function (data) {
-                  console.log(data);
-             }
+            error: function (data) {
+                console.log(data);
+            }
         });
     });
- 
+
 </script> 
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&libraries=places&callback=myMap"></script>

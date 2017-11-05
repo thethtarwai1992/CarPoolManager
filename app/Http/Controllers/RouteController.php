@@ -65,7 +65,19 @@ class RouteController extends Controller {
     }
 
     public function view($route_id) {
-        $routes = Route::find($route_id);
+        $data = Route::with('driver')
+                ->where('posted_by', 'Driver')
+                ->where('status', 'Open')
+                ->first();
+        $routes = array();
+        if ($data) {
+            $routes['name'] = $data->driver->first_name . " " . $data->driver->last_name;
+            $routes['price'] = $data->price;
+            $routes['pickup'] = $data->pickup;
+            $routes['destination'] = $data->destination;
+        }
+
+
         if ($routes) {
             return response()->json(['response' => 'Success', 'data' => $routes]);
         }
