@@ -9,8 +9,13 @@ use App\Route;
 
 class RideController extends Controller {
 
+    public function __construct() {
+        //$this->middleware('auth');
+    }
     public function index() {
-        $driverposts = Route::whereDate('created_at', date('Y-m-d'))->where('status','Open')->get();
+        $driverposts = Route::whereDate('created_at', date('Y-m-d'))->where('status','Open')
+                ->orderBy('created_at', 'desc')
+                ->get();
         return view('rides.rides', compact ('driverposts'));
     }
     
@@ -39,4 +44,15 @@ class RideController extends Controller {
     public function edit($id) {
         
     } 
+    
+    public function locationUpdate($currentLocation){
+        
+        $driverposts = Route::whereDate('created_at', date('Y-m-d'))->where('status','Open')
+                ->where('start', 'LIKE', '%' . $currentLocation . '%')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        
+        return $driverposts;
+    }
+    
 }

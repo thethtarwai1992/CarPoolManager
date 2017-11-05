@@ -236,7 +236,7 @@
 
                                                 <ul class="navigation">
                                                     <li>
-                                                        <a href="{{URL::to('/')}}">Home</a>
+                                                        <a href="{{URL::to('/home')}}">Home</a>
                                                     </li> 
                                                      @if(Auth::check() && Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())  
                                                     <li>

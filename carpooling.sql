@@ -98,7 +98,7 @@ CREATE TABLE `bookings` (
   `status` varchar(10) NOT NULL,
   `price` decimal(2,0) DEFAULT NULL,
   `passenger_id` int(11) NOT NULL,
-  `driver_id` int(11) NOT NULL,
+  `driver_id` int(11) DEFAULT NULL,
   `route_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -114,10 +114,9 @@ CREATE TABLE `routes` (
   `start` datetime DEFAULT NULL ,
   `end` datetime  DEFAULT NULL,
   `comment` varchar(100) DEFAULT NULL,
-  `pickup` int(11) NOT NULL,
-  `destination` int(11) NOT NULL,
+  `pickup` varchar (255) NOT NULL,
+  `destination` varchar (255) NOT NULL,
   `drivers_driving_license_no` varchar(45)  DEFAULT NULL,
-  `driver_car_car_plate_no` int(11) DEFAULT NULL,
   `posted_by` int(11) NOT NULL,
   `posted_type` varchar(25) NOT NULL,
   `created_at` datetime NOT NULL,
@@ -234,8 +233,7 @@ ALTER TABLE `users`
 -- Constraints for table `bookings`
 --
 ALTER TABLE `bookings`
-  ADD CONSTRAINT `fk_booking_User1` FOREIGN KEY (`passenger_id`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_booking_User2` FOREIGN KEY (`driver_id`) REFERENCES `drivers` (`userID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_booking_User1` FOREIGN KEY (`passenger_id`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE NO ACTION, 
   ADD CONSTRAINT `fk_booking_route1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`route_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --

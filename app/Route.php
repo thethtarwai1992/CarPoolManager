@@ -23,7 +23,7 @@ class Route extends Model {
      * @var array
      */
     protected $hidden = [
-         
+         'posted_by'
     ];
 
     public function booking() {
@@ -34,6 +34,5 @@ class Route extends Model {
         return $this->belongsTo('App\Booking', 'foreign_key');
     }
      * 
-     */
-    public  $timestamps = false;
+     */ 
 }

@@ -57,23 +57,26 @@
                 <form action="" novalidate autocomplete="off" class="idealforms searchtours">
 
                     <div class="row">
-
+                        {{ csrf_field() }}
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="field"> 
-                                <input id="pickup" placeholder="Pickup Address" onFocus="geolocate()" type="text"></input>
+<!--                                <input id="pickup" placeholder="Pickup Address" onFocus="geolocate()" type="text">-->
+                                <input id="pickup" placeholder="Pickup Address" value="Woodlands ring road" type="text">
                             </div> 
                         </div>
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="field"> 
-                                <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text"></input>
+<!--                                <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text">-->
+                                <input id="destination" placeholder="Destination Address" value="Taiseng" onFocus="geolocate()" type="text">
+                                
                             </div>
                         </div>
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
 
                             <div class="field">
-                                <select id="" name="numberOfseats">
+                                <select id="seats" name="numberOfseats">
                                     <option value="default">Number of seats</option>
                                     <option>1</option>
                                     <option>2</option>
@@ -104,10 +107,10 @@
 
             @if(Auth::check())  
             <div class="field buttons sendRequest">
-                <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
+                <button type="submit" id="request" class="btn btn-lg blue-color">Send Request to Drivers</button>
             </div> 
             @else
-            <a href ="{{ URL::to('register') }}">
+            <a href ="{{ URL::to('login') }}">
                 <div class="field buttons sendRequest" >
                     <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
                 </div>
@@ -179,6 +182,7 @@
 <script>
     var pick = "default";
     var dest = "default";
+    var price = 10;
     var outputDiv = document.getElementById('output');
     var outputPrice = document.getElementById('output-price');
     var directionsService, directionsDisplay;
@@ -305,12 +309,46 @@
                 console.log(results[0].duration.text);
                 outputDiv.innerHTML += results[0].distance.text + ' in ' +
                         results[0].duration.text + '<br>';
-                outputPrice.innerHTML += 'SGD: 10';
+                outputPrice.innerHTML += 'SGD: ' + price;
 
 
             }
         });
     }
+
+    $("button").click(function (e) { //alert($("#seats").val());
+        var seats = $("#seats").val(); 
+        var pick = $("#pickup").val();
+        var dest = $("#destination").val();
+        var token = $("input[name='_token']").val();
+        console.log("Seats :" + seats + ", Price :" + price + ", Start: " + pick + ", End: " + dest);
+        e.preventDefault();
+        if (seats && price && pick && dest) {
+            $.ajax({
+                type: "POST",
+                url: "{{ URL::to('rides/request') }}",
+                dataType : 'json',
+                data: {
+                    seats: seats,
+                    price: price,
+                    pick: pick,
+                    dest: dest,
+                    _token: token
+                },
+                success: function (result) {
+                    console.log(result);
+                    alert('ok');
+                },
+                error: function (result) {
+                    console.log(result['responseJSON']['message']);
+                    alert('error');
+                }
+            });
+        }else{
+           alert("Please fill up necessary data!");
+        } 
+    });
+
 </script> 
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&libraries=places&callback=myMap"></script>
