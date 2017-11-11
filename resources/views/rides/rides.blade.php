@@ -79,10 +79,9 @@
                             <div class="field">
                                 <select id="seats" name="numberOfseats">
                                     <option value="0">Number of seats</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                    @for($i = 1; $i <5 ; $i++)
+                                    <option>{{ $i }}</option> 
+                                    @endfor
                                 </select>
                             </div>
                         </div>
@@ -135,29 +134,33 @@
                 @if(count($driverposts) > 0 )
 
                 @foreach ($driverposts as $post)
-                <a href="#" id="view" data-toggle="modal" data-id ={{ $post->route_id }}> 
+                @if(Auth::check())
+                <a href="#" class="view" data-toggle="modal" data-id ={{ $post->route_id }}> 
+                    @else 
+                    <a href ="{{ URL::to('login') }}">
+                        @endif
+                        <article class="ride-box clearfix">
+
+                            <div class="ride-content">
+                                <h3> <b> {{ $post->pickup }} </b> -> <b> {{ $post->destination }}</b></h3> 
+
+                                <i class="fa fa-money"></i>  {{ $post->price }}
+                                <!--<i class="fa fa-calendar"></i> {{ $post->start }} -->
+
+                            </div>
+                            <div class="pull-right">
+                                Available Seat(s) <i class="fa fa-user"></i> {{ $post->available_seats }}  
+                            </div> 
+                        </article><!-- end .ride-box -->
+                    </a>
+                    @endforeach 
+                    @else
                     <article class="ride-box clearfix">
-
                         <div class="ride-content">
-                            <h3> <b> {{ $post->pickup }} </b> -> <b> {{ $post->destination }}</b></h3> 
-
-                            <i class="fa fa-money"></i>  {{ $post->bookings->first()->price }}
-                            <i class="fa fa-calendar"></i> {{ $post->start }}
-
+                            Sorry, currently no post from our drivers.
                         </div>
-                        <div class="pull-right">
-                            Seat left for {{ $post->available_seats }} <i class="fa fa-user"></i> 
-                        </div> 
-                    </article><!-- end .ride-box -->
-                </a>
-                @endforeach 
-                @else
-                <article class="ride-box clearfix">
-                    <div class="ride-content">
-                        Sorry, currently no post from our drivers.
-                    </div>
-                </article> 
-                @endif
+                    </article> 
+                    @endif
 
             </div><!-- end .events-list -->
 
@@ -275,7 +278,7 @@
             destination: document.getElementById('destination').value,
             travelMode: 'DRIVING'
         }, function (response, status) {
-            if (status === 'OK') {
+            if (status == 'OK') {
                 directionsDisplay.setDirections(response);
             } else {
                 window.alert('Directions request failed due to ' + status);
@@ -343,7 +346,7 @@
         }
     });
 
-    $('#view').on('click', function (e) {
+    $('.view').on('click', function (e) {
         var route_id = $(this).data('id');
         //console.log('route' + route_id);
         e.preventDefault();
@@ -352,20 +355,39 @@
             dataType: 'json',
             cache: false,
             success: function (data) {
-                console.log(data); 
-               
+                console.log(data);
+
                 $('#driverD span').html(data['data']['name']);
                 $('#contactno span').html(data['data']['contactno']);
                 $('#car span').html(data['data']['car']);
-                $('#priceD').html(data['data']['price']);
-                $('#pickupD').html(data['data']['pickup']);
-                $('#destD').html(data['data']['destination']);
+                $('#priceD span').html(data['data']['price']);
+                $('#seats span').html(data['data']['seats']);
+                $('#pickupD span').html(data['data']['pickup']);
+                $('#destD span').html(data['data']['destination']);
+
+                $('#route').val(route_id);
                 $('#details').modal('show');
             },
             error: function (data) {
                 console.log(data);
             }
         });
+    });
+
+    $('button.book').on('click', function (e) {
+        var ava_seat = $('#seats span').text();
+        var booking_seats = $("#booking_seats").val();
+        if (booking_seats > ava_seat) {
+            alert("Your booking seats is more than " + ava_seat + " available seat(s)!");
+            return false;
+        } else if (booking_seats == 0) {
+            alert("Please select your booking seats!");
+            return false;
+        } else {
+            alert ("OK " + booking_seats);
+            return true;
+        }
+
     });
 
 </script> 

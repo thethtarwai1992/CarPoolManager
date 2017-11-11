@@ -33,7 +33,7 @@ class Driver extends Model {
     }
 
     public function car() {
-        return $this->hasOne(Car::class);
+        return $this->hasOne(Car::class, 'driving_license_no');
     }
     
     public function user(){

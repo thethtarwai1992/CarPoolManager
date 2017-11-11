@@ -14,8 +14,9 @@ class RideController extends Controller {
     }
     public function index() { 
         $driverposts = Route::with('bookings')
-                ->whereDate('created_at', date('Y-m-d'))->where('status','Open')
-               // ->where('posted_type','Driver')
+                //->whereDate('created_at', date('Y-m-d'))->where('status','Open')
+                ->where('posted_type','Driver')
+                ->where('available_seats', '!=', 0)
                 ->orderBy('created_at', 'desc')
                 ->get();
         $route = array();

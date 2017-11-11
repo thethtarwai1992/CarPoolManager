@@ -65,27 +65,25 @@ class RouteController extends Controller {
     }
 
     public function view($route_id) {
-        $data = Route::with('driver','driver.driver.car')
-                //->where('posted_by', 'Driver')
-             //   ->where('status', 'Open')
+        $data = Route::with('driver', 'driver.driver.car')
+                ->where('posted_type', 'Driver')
+                ->where('status', 'Open')
                 ->find($route_id);
         $routes = array();
-        if ($data) {
-          //  $routes['name'] = $data->driver->first_name . " " . $data->driver->last_name;
-           // $routes['contactno'] = $data->driver->contactno;
-          //  $routes['car'] = $data->driver->car ;
-                    //. " ". $data->driver->car->plate_no;
-//            $routes['price'] = $data->price;
-//            $routes['pickup'] = $data->pickup;
-//            $routes['destination'] = $data->destination;
+        if ($data) { 
+            $routes['data'] = $data;
+            $routes['name'] = $data->driver->first_name . " " . $data->driver->last_name;
+            $routes['contactno'] = $data->driver->contactNO;
+            $routes['car'] = $data->driver->driver->car->model. " ".$data->driver->driver->car->plate_no;
+            $routes['price'] = $data->price;
+            $routes['seats'] = $data->available_seats;
+            $routes['pickup'] = $data->pickup;
+            $routes['destination'] = $data->destination;
         }
-
-
-            return response()->json(['response' => 'Success', 'data' => $data]);
         if ($routes) {
             return response()->json(['response' => 'Success', 'data' => $routes]);
         }
-        return response()->json(['response' => 'Fail', 'data' => array()]);
+        return response()->json(['response' => 'Fail', 'data' => $data]);
     }
 
 }

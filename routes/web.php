@@ -36,6 +36,7 @@ Route::get('rides/scheduled', 'RideController@scheduled');
  /* |--------------------------------------------------------------------------*/
 
 Route::post('rides/request', 'BookingController@store'); 
+Route::post('book', 'BookingController@book'); 
  /* |--------------------------------------------------------------------------*/
 
 Route::get('user/change-pw', 'UserController@changePassword');

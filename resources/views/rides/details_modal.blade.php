@@ -11,11 +11,8 @@
 
                 <form action="{{ URL::to("book") }}" method="POST" autocomplete="off" class="idealforms">
 
-                    <div class="log-header">
-                        <span class="log-in">Route Details</span>
-                    </div>
                     {{ csrf_field() }}
-
+                    <input name='route' id='route' value='' type='hidden'>
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
@@ -29,16 +26,17 @@
                                         <div class="title" id="driverD">
                                             <span>Driver</span>
                                         </div>                                         
-                                        <div class="desc" id='contactno'><span><i class="fa fa-phone"></i> Contact No</span></div>
-                                        <div class="desc" id='car'><span><i class="fa fa-car"></i> Car Model </span></div>
+                                        <div class="desc" id='contactno'><i class="fa fa-phone"></i> <span>Contact No</span></div>
+                                        <div class="desc" id='car'><i class="fa fa-car"></i> <span>Car Model </span></div>
                                     </div>
-                                    <div class="bottom">
-                                        <div class="col-md-12"> 
-                                            Pickup point : <span id="pickupD"> Woodlands</span><br>
-                                            Destination : <span id="destD"> Orchard</span> <br>
-                                            Price : <span id="priceD"> 10</span><br>
-                                            Seat left : <span id="seats">2</span>
-                                        </div>
+                                    <div class="line" style='position: inherit!important;'></div>
+                                    <div class="bottom" style="float: left; text-align: left; margin-top: 15px;">
+                                        <h3> <b> <span id="pickupD"> <span>Woodlands</span></span> </b> -> <b> <span id="destD"> <span>Orchard</span></span> </b></h3> 
+                                        Available Seat(s) <i class="fa fa-user"></i> <span id="seats"><span>2</span></span>
+                                        <div class="pull-right">
+                                            <i class="fa fa-money"></i>  <span id="priceD"> <span>10</span></span>
+                                        </div> 
+
                                     </div>
                                 </div>
 
@@ -47,8 +45,20 @@
                         </div>
                     </div> 
 
+                    <div class="field col-md-6">
+                        <select id="booking_seats" name="booking_seats">
+                            <option value="0">Number of seats</option>
+                            @for($i = 1; $i <5 ; $i++)
+                            <option>{{ $i }}</option> 
+                            @endfor
+                        </select>
+                    </div>
                     <div class="field buttons">
-                        <button type="submit" class="submit btn btn-primary">Book</button> 
+                         @if(Auth::check())  
+                        <button type="submit" class="book btn btn-primary">Book</button> 
+                          @else
+                          <a href ="{{ URL::to('login') }}" class="book btn btn-primary">Book</a>
+                        @endif
                     </div> 
                 </form><!-- end .login -->
             </div><!-- end .modal-body -->
