@@ -169,7 +169,7 @@
 @stop
 
 @section('modals')
-@include('rides/details_modal', ['route' => $route])
+@include('rides/details_modal')
 @stop
 
 @section('scripts')
@@ -317,7 +317,7 @@
         var token = $("input[name='_token']").val();
         console.log("Seats :" + seats + ", Price :" + price + ", Start: " + pick + ", End: " + dest);
         e.preventDefault();
-        if (seats !== 0 && price && pick && dest) {
+        if (seats != 0 && price && pick && dest) {
             $.ajax({
                 type: "POST",
                 url: "{{ URL::to('rides/request') }}",
@@ -331,11 +331,11 @@
                 },
                 success: function (result) {
                     console.log(result);
-                    //alert('ok');
+                    alert('Finding driver for you!');
                 },
                 error: function (result) {
                     console.log(result['responseJSON']['message']);
-                    //alert('error');
+                    alert('error');
                 }
             });
         } else {
@@ -353,7 +353,10 @@
             cache: false,
             success: function (data) {
                 console.log(data); 
-                $('#driverD').html(data['data']['name']);
+               
+                $('#driverD span').html(data['data']['name']);
+                $('#contactno span').html(data['data']['contactno']);
+                $('#car span').html(data['data']['car']);
                 $('#priceD').html(data['data']['price']);
                 $('#pickupD').html(data['data']['pickup']);
                 $('#destD').html(data['data']['destination']);

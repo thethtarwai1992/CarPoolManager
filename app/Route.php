@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
+use App\Booking;
 
 class Route extends Model {
 
@@ -27,13 +29,13 @@ class Route extends Model {
     ];
 
     public function bookings() {
-        return $this->hasMany('App\Booking','route_id');
+        return $this->hasMany(Booking::class,'route_id');
     }
     public function driver() {
-        return $this->belongsTo('App\User','posted_by');
+        return $this->belongsTo(User::class,'posted_by');
     }    
     public function passenger() {
-        return $this->belongsTo('App\User','posted_by');
+        return $this->belongsTo(User::class,'posted_by');
     }
     /*
     public function booking() {

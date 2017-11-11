@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Driver;
 
 class User extends Authenticatable {
 
@@ -17,7 +18,7 @@ class User extends Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'last_name', 'email', 'first_name', 'contactNo','gender','password'
+        'last_name', 'email', 'first_name', 'contactNo', 'gender', 'password'
     ];
 
     /**
@@ -32,5 +33,10 @@ class User extends Authenticatable {
         'is_driver' => 'boolean',
     ];
 
-    public  $timestamps = false;
+    public function driver() {
+        return $this->hasOne(Driver::class);
+    }
+
+    public $timestamps = false;
+
 }

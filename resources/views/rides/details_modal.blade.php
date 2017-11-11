@@ -26,12 +26,11 @@
                                         <img alt="" src="{{ asset('img/avatar-1.jpg') }}">
                                     </div>
                                     <div class="info">
-                                        <div class="title">
-                                            <span id="driverD">Driver name</span>
-                                        </div> 
-                                        <div>Passionate designer</div>
-                                        <div class="desc" id='contactno'><i class="fa fa-phone"></i> Contact No</div>
-                                        <div class="desc" id='car'><i class="fa fa-car"></i> Car Model </div>
+                                        <div class="title" id="driverD">
+                                            <span>Driver</span>
+                                        </div>                                         
+                                        <div class="desc" id='contactno'><span><i class="fa fa-phone"></i> Contact No</span></div>
+                                        <div class="desc" id='car'><span><i class="fa fa-car"></i> Car Model </span></div>
                                     </div>
                                     <div class="bottom">
                                         <div class="col-md-12"> 

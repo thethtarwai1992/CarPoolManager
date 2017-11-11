@@ -38,10 +38,14 @@ class RideController extends Controller {
     }
 
     public function show() {
-        $rides = Booking::where('passenger_id', Auth::user()->id)
-                ->with('route')
-                ->get();  
-        return view('rides.myrides', compact ('rides'));
+        if (Auth::check()){
+            $rides = Booking::where('passenger_id', Auth::user()->id)
+                    ->with('route')
+                    ->get();  
+            return view('rides.myrides', compact ('rides'));
+        }else{
+            return redirect('home');
+        }
     }
 
     public function edit($id) {
