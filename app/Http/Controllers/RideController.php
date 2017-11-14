@@ -13,6 +13,8 @@ class RideController extends Controller {
         //$this->middleware('auth');
     }
     public function index() { 
+        
+       //Need to check if current rides is ongoing..cannot book another rides!!
         $driverposts = Route::with('bookings')
                 //->whereDate('created_at', date('Y-m-d'))->where('status','Open')
                 ->where('posted_type','Driver')
@@ -40,9 +42,11 @@ class RideController extends Controller {
 
     public function show() {
         if (Auth::check()){
-            $rides = Booking::where('passenger_id', Auth::user()->id)
-                    ->with('route')
+            $rides = Booking::with('route')
+                    ->where('passenger_id', Auth::user()->userID)
                     ->get();  
+            
+            //return response()->json(['data' => $rides]);
             return view('rides.myrides', compact ('rides'));
         }else{
             return redirect('home');

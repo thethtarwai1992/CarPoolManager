@@ -2,6 +2,7 @@
 @section('title', '- Rides') 
 @section('styles')
 {!! HTML::style("css/view-details-custom.css") !!} 
+{!! HTML::style("css/loading.css") !!} 
 <style>
     .ride-content h3{
         font-size: 14px;
@@ -36,10 +37,13 @@
     .output-text{
         float: left;
     }
+    #loading { display: none; }
 </style>
 @stop 
 
 @section('content')
+<!--Need to check if user refresh or not after click send for request-->
+<div class="loading" id='loading'> </div>
 
 <div class="container"> 
     <div class="row">  
@@ -172,7 +176,7 @@
 @stop
 
 @section('modals')
-@include('rides/details_modal')
+@include('rides/view_modal')
 @stop
 
 @section('scripts')
@@ -318,7 +322,7 @@
         var pick = $("#pickup").val();
         var dest = $("#destination").val();
         var token = $("input[name='_token']").val();
-        console.log("Seats :" + seats + ", Price :" + price + ", Start: " + pick + ", End: " + dest);
+        //console.log("Seats :" + seats + ", Price :" + price + ", Start: " + pick + ", End: " + dest);
         e.preventDefault();
         if (seats != 0 && price && pick && dest) {
             $.ajax({
@@ -334,6 +338,7 @@
                 },
                 success: function (result) {
                     console.log(result);
+                    //$('#loading').css("display", "block");
                     alert('Finding driver for you!');
                 },
                 error: function (result) {

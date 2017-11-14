@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Route;
-use App\Driver;
+use App\Driver; 
 
 class RouteController extends Controller {
 
@@ -71,7 +71,7 @@ class RouteController extends Controller {
                 ->find($route_id);
         $routes = array();
         if ($data) { 
-            $routes['data'] = $data;
+            //$routes['data'] = $data;
             $routes['name'] = $data->driver->first_name . " " . $data->driver->last_name;
             $routes['contactno'] = $data->driver->contactNO;
             $routes['car'] = $data->driver->driver->car->model. " ".$data->driver->driver->car->plate_no;
@@ -85,5 +85,5 @@ class RouteController extends Controller {
         }
         return response()->json(['response' => 'Fail', 'data' => $data]);
     }
-
+    
 }
