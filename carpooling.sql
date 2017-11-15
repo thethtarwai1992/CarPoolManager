@@ -161,6 +161,7 @@ CREATE TABLE `routes` (
   `route_id` int(11) NOT NULL,
   `status` varchar(25) NOT NULL DEFAULT 'Open',
 <<<<<<< HEAD
+<<<<<<< HEAD
   `available_seats` int(1) NOT NULL,
   `route_datetime` datetime DEFAULT NULL,
   `comment` varchar(100) DEFAULT NULL,
@@ -168,12 +169,17 @@ CREATE TABLE `routes` (
   `destination` varchar(100) NOT NULL,
   `drivers_driving_license_no` varchar(45) DEFAULT NULL,
 =======
+=======
+>>>>>>> 9f9c5f7a067afc61c214ab416badf32d92fb3218
   `available_seats` int(11) NOT NULL,
   `comment` varchar(100) DEFAULT NULL,
   `pickup` varchar (255) NOT NULL,
   `destination` varchar (255) NOT NULL,
   `price` decimal(2,0) DEFAULT NULL,
   `drivers_driving_license_no` varchar(45)  DEFAULT NULL,
+<<<<<<< HEAD
+>>>>>>> 9f9c5f7a067afc61c214ab416badf32d92fb3218
+=======
 >>>>>>> 9f9c5f7a067afc61c214ab416badf32d92fb3218
   `posted_by` int(11) NOT NULL,
   `posted_type` varchar(25) NOT NULL,

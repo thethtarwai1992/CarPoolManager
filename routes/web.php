@@ -37,6 +37,10 @@ Route::get('rides/scheduled', 'RideController@scheduled');
 Route::get('route/view/{id}', 'RouteController@view'); 
  /* |--------------------------------------------------------------------------*/
 
+Route::get('rides/myrides', 'RideController@show'); 
+Route::get('rides/scheduled', 'RideController@scheduled');  
+ /* |--------------------------------------------------------------------------*/
+
 Route::post('rides/request', 'BookingController@store'); 
 Route::post('book', 'BookingController@book'); 
 Route::get('bookings/view/{id}', 'BookingController@view'); 
@@ -45,6 +49,10 @@ Route::get('bookings/view/{id}', 'BookingController@view');
 Route::get('user/change-pw', 'UserController@changePassword');
 Route::get('user/edit', 'UserController@edit');
  Route::post('book', 'BookingController@book'); 
+ /* |--------------------------------------------------------------------------*/
+
+Route::get('user/change-pw', 'UserController@changePassword');
+Route::get('user/edit', 'UserController@edit');
  /* |--------------------------------------------------------------------------*/
 
 Route::get('user/change-pw', 'UserController@changePassword');

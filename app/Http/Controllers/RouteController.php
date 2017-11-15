@@ -24,7 +24,7 @@ class RouteController extends Controller {
      *
      */
     public function store(Request $request) {
-       $driver = Driver::where('userID', Auth::user()->userID)->first();
+        $driver = Driver::where('userID', Auth::user()->userID)->first();
 
         $route = Route::create([
                     'available_seats' => $request->input('seats'), // Need to valid if seats no over capacity
@@ -72,7 +72,6 @@ class RouteController extends Controller {
     }
     
     }
-
 
     public function view($route_id) {
         $data = Route::with('driver', 'driver.driver.car')

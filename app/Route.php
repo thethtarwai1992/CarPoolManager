@@ -28,7 +28,8 @@ class Route extends Model {
          'posted_by'
     ];
 
-   public function bookings() {
+
+  public function bookings() {
         return $this->hasMany(Booking::class,'route_id');
     }
     public function driver() {
