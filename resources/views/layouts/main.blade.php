@@ -236,7 +236,7 @@
 
                                                 <ul class="navigation">
                                                     <li>
-                                                        <a href="{{URL::to('/')}}">Home</a>
+                                                        <a href="{{URL::to('/home')}}">Home</a>
                                                     </li> 
                                                      @if(Auth::check() && Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())  
                                                     <li>
@@ -334,6 +334,9 @@
         {!! HTML::script("js/superfish.js") !!} 
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
+        <!-- Counter-Up  -->
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js")></script>
+        {!! HTML::script("js/jquery.counterup.min.js") !!} 
         
         <script type="text/javascript">
 

@@ -233,24 +233,29 @@
 
                                             <nav id="nav" class="main-navigation">
 
-                                                <ul class="navigation">
+                                                <ul class="navigation"> 
+                                                    @if(!Auth::check())
                                                     <li>
                                                         <a href="{{URL::to('/')}}">Home</a>
                                                     </li> 
+                                                    @endif
 <!--                                                    if login user is driver and switched to driver mode, show driver menu-->
                                                     @if(Auth::check() && Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())  
                                                     <li>
-                                                        <a href="#">Bookings</a>
-                                                        <ul class="sub-menu">
-                                                            <li>
-                                                                <a href="{{URL::to('driver/booking_now')}}">Ride Now</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{URL::to('driver/new_request')}}">New Request</a>
-                                                            </li> 
-                                                        </ul>
-                                                    </li>                                                    
-                                                    @else
+                                                         <a href="{{URL::to('driver/booking_now')}}">Ride Now</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{URL::to('driver/new_request')}}">New Request</a>
+                                                    </li>                                              
+                                                    @elseif(Auth::check() && !Auth::user()->is_driver)
+                                                    <li>
+                                                        <a href="{{URL::to('rides')}}">Now</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{URL::to('rides/scheduled')}}">Schedule</a>
+                                                    </li> 
+                                                    
+                                                    @else 
                                                     <li>
                                                         <a href="#">Rides</a>
                                                         <ul class="sub-menu">
@@ -261,7 +266,7 @@
                                                                 <a href="{{URL::to('rides/scheduled')}}">Schedule</a>
                                                             </li> 
                                                         </ul>
-                                                    </li>
+                                                    </li>    
                                                     @endif
                                                     <li>
                                                         <a href="add-ride.html">FAQ</a>
@@ -335,6 +340,9 @@
 
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
+        <!-- Counter-Up  -->
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js")></script>
+        {!! HTML::script("js/jquery.counterup.min.js") !!} 
          <!-- timepicker  -->
         <script type="text/javascript">
         </script>

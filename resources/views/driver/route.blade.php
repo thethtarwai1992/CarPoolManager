@@ -8,14 +8,29 @@
     .rides-list{
         padding-left: 30px;
     }
-    .sendRequest{
-        margin-top: 24px;
-    } 
     .search-content{
         margin: 0;
     } 
     .route_title{
         text-align: center;
+    }
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+    th{
+        font-size: 100%;
+        font-weight: bold;
+        text-align: center;
+        padding:5px;
+        margin: 5px;
+    }
+    th, td {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
     }
 </style>
 @stop 
@@ -63,10 +78,22 @@
                         <div class="col-md-3 col-sm-6 col-xs-6">
 
                             <div class="field">
-                                <input id="seats" placeholder="Seats" type="text" name="seats"></input>
+                                 <select id="seats" name="seats" placeholder="Max. Available Seats">
+                                    <option value="0">Number of seats</option>
+                                    @for($i = 1; $i <5 ; $i++)
+                                    <option>{{ $i }}</option> 
+                                    @endfor
+                                </select>
+                               
                             </div>
                         </div>
+                         <div class="col-md-3 col-sm-6 col-xs-6">
 
+                            <div class="field">
+                                <textarea id="comments" placeholder="Notes" name="comments" cols="20" rows="3"></textarea>
+                            </div>
+                        </div>
+                        
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="field">
                                 <button type="submit" class="submit btn green-color" style="width: 45%;">Post</button>
@@ -79,51 +106,54 @@
             </div><!-- end .search-content -->
         </div>
 
-        <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="rides-list"> 
-                <h2 class="route_title">My Routes</h2>
-                @if(count($routes) > 0 )
+                <h2 class="route_title">My Routes List</h2>     
+                
+                <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th width="5%" style="text-align:center">#</th>
+                        <th width="20%">From</th>
+                        <th  width="20%">Destination  </th>
+                        <th  width="15%">Ride Date&Time</th>
+                        <th  width="15%">Post Date&Time</th>
+                        <th  width="10%">Seats</th>
+                        <th  width="10%">Status</th>
+                        <th  width="25%" style="text-align:center" colspan="2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   @if(count($routes) > 0 )
 
                 @foreach ($routes as $route)
-                <article class="ride-box clearfix">
+                    <tr>
+                        <th scope="row" style="text-align:center">{{ $route->route_id}}</th>
+                        <td>{{ $route->pickup }}</td>
+                        <td>{{ $route->destination }}</td>
+                        <td><i class="fa fa-calendar"></i> {{ $route->route_datetime }}</td>
+                        <td><i class="fa fa-calendar"></i> {{ $route->created_at }}</td>
+                        <td>{{ $route->available_seats }}</td>
+                         <td>{{ $route->status }}</td>
+                        <td>
+                          @if( $route->status == "Open")
+                            <button type="button" class="btn btn-danger delete" data-toggle="modal" value={{ $route->route_id}}>Delete</button>
+                           @else
+                           <button type="button" class="btn btn-info"> Disabled</button>
+                           @endif
+                            
+                        </td>
 
-                    <div class="ride-content">
-                        <h3><a href="#">From <b> {{ $route->pickup }} </b> to <b> {{ $route->destination }}</b></a></h3> 
-                        <i class="fa fa-money"></i> {{ $route->price }} 
-                    </div>
+                    </tr>
+                    @endforeach
+                    @else
+                    <tr>
+                        <th scope="row" colspan="7">No Record Found.</th>
 
-                    <ul class="ride-meta">
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                {{ $route->created_at }}  
-                            </a>
-                        </li><!-- end .ride-date --> 
-                        <li>
-                            <a href="route/update/{{$route->route_id}}">
-                                <i class="fa fa-file"></i>
-                                Edit
-                            </a>
-                        </li> <!-- end .edit route info. 3 days in advance for updating info  -->
-
-                        <li>
-                            <a href="route/cancel/{{$route->route_id}}">
-                                <i class="fa fa-file"></i>
-                                Cancel
-                            </a>
-                        </li>
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
-                @endforeach
-                @else
-                <article class="ride-box clearfix">
-                    <div class="ride-content">
-                        No Record Found.
-                    </div>
-                </article> 
-                @endif         
-
+                    </tr>
+                    @endif   
+                </tbody>
+            </table>
                 <div class="clearfix"></div>
 
                 <div class="post-pagination pagination-margin clearfix">
@@ -161,6 +191,26 @@
                                         forceParse: 0,
                                         showMeridian: 1
                                     });
+                                    
+ $(document).on('click','.delete',function(e){
+        var id=$(this).val();
+        //alert($(this).val())
+        if(confirm('Are you sure to cancel the route?'))
+        {
+            
+            $.ajax({
+                type    :   "get",
+                url       :   "{{url('driver/route/cancel')}}",
+                data    :   {'id' :id},
+                success:function(data)
+                {
+                   $('.id'+id).remove();
+                }
+            })
+        }else{
+            close();
+        }
+    })
 </script>  
 <script>
     var pick = "default";
@@ -171,7 +221,6 @@
     var autocompletePickup, autocompleteDest;
     var typingTimer;                //timer identifier
     var doneTypingInterval = 5000;  //time in ms (5 seconds)
-
     function geolocate() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -188,7 +237,6 @@
             });
         }
     }
-
     function myMap() {
         autocompletePickup = new google.maps.places.Autocomplete(
                 /** @type {!HTMLInputElement} */(document.getElementById('pickup')),
@@ -198,19 +246,15 @@
                 /** @type {!HTMLInputElement} */(document.getElementById('destination')),
                 {types: ['geocode']});
         autocompleteDest.setComponentRestrictions({'country': ['sg']});
-
         var marker = null;
-
         directionsService = new google.maps.DirectionsService;
         directionsDisplay = new google.maps.DirectionsRenderer;
-
         var mapProp = {
             center: new google.maps.LatLng(1.290270, 103.851959),
             zoom: 11
         };
         var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
         var infoWindow = new google.maps.InfoWindow;
-
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -218,7 +262,6 @@
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-
                 map.setCenter(pos);
                 map.setZoom(15);
                 marker = new google.maps.Marker({
@@ -226,9 +269,7 @@
                     draggable: false,
                     animation: google.maps.Animation.DROP
                 });
-
                 marker.setMap(map);
-
             }, function () {
                 handleLocationError(true, infoWindow, map.getCenter());
             });
@@ -270,7 +311,6 @@
             }
         });
     }
-
     function calculateDistance() {
         var service = new google.maps.DistanceMatrixService;
         service.getDistanceMatrix({
@@ -292,13 +332,12 @@
                 outputDiv.innerHTML += results[0].distance.text + ' in ' +
                         results[0].duration.text + '<br>';
                 outputPrice.innerHTML += 'SGD: 10';
-
-
             }
         });
     }
 </script> 
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&libraries=places&callback=myMap"></script>
+
 
 @stop

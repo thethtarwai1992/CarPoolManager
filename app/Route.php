@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
+use App\Booking;
 
 class Route extends Model {
 
@@ -14,7 +16,7 @@ class Route extends Model {
      * @var array
      */
     protected $fillable = [
-        'seats', 'comment', 'status','destination', 'pickup','start','end'
+        'available_seats', 'comment', 'status','destination', 'pickup','route_datetime','posted_type','posted_by','drivers_driving_license_no'
     ];
 
     /**
@@ -23,17 +25,19 @@ class Route extends Model {
      * @var array
      */
     protected $hidden = [
-         
+         'posted_by'
     ];
 
-    public function booking() {
-        return $this->hasOne('App\Booking','route_id');
+   public function bookings() {
+        return $this->hasMany(Booking::class,'route_id');
     }
-    /*
-    public function booking() {
-        return $this->belongsTo('App\Booking', 'foreign_key');
+    public function driver() {
+        return $this->belongsTo(User::class,'posted_by');
+    }    
+    public function passenger() {
+        return $this->belongsTo(User::class,'posted_by');
     }
-     * 
-     */
-    public  $timestamps = false;
+
+    //public  $timestamps = false;
+
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller; 
  
@@ -22,32 +23,33 @@ class DriverController extends Controller {
          $driverData=Driver::join('cars', 'drivers.driving_license_no', '=', 'cars.driving_license_no')
             ->where('drivers.driving_license_no', $driver->driving_license_no)
             ->first();
+         
         return view('driver.mydriveinfo', compact ('driverData'));
 
     }
-
+    
     public function store(Request $request) {
-   
-        $driver= Driver::firstOrCreate([
-                        'driving_license_no' => $request->input('licenseNo'),
-                        'driving_license_valid_till' => date('Y-m-d', strtotime(str_replace('-', '/', $request->input('expiryDate')))),
-                        'status' => "Pending",
-                        'userID'=>Auth::user()->userID,  
-        ]);
-        
-        $driver->save();
-        
-        $car= Car::firstOrCreate([
-                        'plate_no' => $request->input('plateNo'),
-                        'model' => $request->input('model'),
-                        'manufacture_year' => $request->input('manufactureYear'),
-                        'capacity'=>$request->input('maxPass'), 
-                        'driving_license_no'=>$request->input('licenseNo'),
-        ]);
-        
-        $car->save();
 
-        return back();
+           $driver= Driver::firstOrCreate([
+                          'driving_license_no' => $request->input('licenseNo'),
+                          'driving_license_valid_till' => date('Y-m-d', strtotime(str_replace('-', '/', $request->input('expiryDate')))),
+                          'userID'=>Auth::user()->userID,  
+          ]);
+
+          $driver->save();
+
+          $car= Car::firstOrCreate([
+                          'plate_no' => $request->input('plateNo'),
+                          'model' => $request->input('model'),
+                          'manufacture_year' => $request->input('manufactureYear'),
+                          'capacity'=>$request->input('maxPass'), 
+                          'driving_license_no'=>$request->input('licenseNo'),
+          ]);
+
+          $car->save();
+          
+          return redirect()->route('/home')
+                        ->with('success', 'Driver Registration is submited successfully');
     }
 
     public function update() {

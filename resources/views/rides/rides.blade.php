@@ -1,6 +1,8 @@
 @extends('layouts.design')
 @section('title', '- Rides') 
 @section('styles')
+{!! HTML::style("css/view-details-custom.css") !!} 
+{!! HTML::style("css/loading.css") !!} 
 <style>
     .ride-content h3{
         font-size: 14px;
@@ -35,10 +37,13 @@
     .output-text{
         float: left;
     }
+    #loading { display: none; }
 </style>
 @stop 
 
 @section('content')
+<!--Need to check if user refresh or not after click send for request-->
+<div class="loading" id='loading'> </div>
 
 <div class="container"> 
     <div class="row">  
@@ -57,28 +62,30 @@
                 <form action="" novalidate autocomplete="off" class="idealforms searchtours">
 
                     <div class="row">
-
+                        {{ csrf_field() }}
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="field"> 
-                                <input id="pickup" placeholder="Pickup Address" onFocus="geolocate()" type="text"></input>
+<!--                                <input id="pickup" placeholder="Pickup Address" onFocus="geolocate()" type="text">-->
+                                <input id="pickup" placeholder="Pickup Address" value="Woodlands ring road" type="text">
                             </div> 
                         </div>
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="field"> 
-                                <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text"></input>
+<!--                                <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text">-->
+                                <input id="destination" placeholder="Destination Address" value="Taiseng" onFocus="geolocate()" type="text">
+
                             </div>
                         </div>
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
 
                             <div class="field">
-                                <select id="" name="numberOfseats">
-                                    <option value="default">Number of seats</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                <select id="seats" name="numberOfseats">
+                                    <option value="0">Number of seats</option>
+                                    @for($i = 1; $i <5 ; $i++)
+                                    <option>{{ $i }}</option> 
+                                    @endfor
                                 </select>
                             </div>
                         </div>
@@ -104,10 +111,10 @@
 
             @if(Auth::check())  
             <div class="field buttons sendRequest">
-                <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
+                <button type="submit" id="request" class="btn btn-lg blue-color">Send Request to Drivers</button>
             </div> 
             @else
-            <a href ="{{ URL::to('register') }}">
+            <a href ="{{ URL::to('login') }}">
                 <div class="field buttons sendRequest" >
                     <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
                 </div>
@@ -131,40 +138,33 @@
                 @if(count($driverposts) > 0 )
 
                 @foreach ($driverposts as $post)
+                @if(Auth::check())
+                <a href="#" class="view" data-toggle="modal" data-id ={{ $post->route_id }}> 
+                    @else 
+                    <a href ="{{ URL::to('login') }}">
+                        @endif
+                        <article class="ride-box clearfix">
 
-                <article class="ride-box clearfix">
+                            <div class="ride-content">
+                                <h3> <b> {{ $post->pickup }} </b> -> <b> {{ $post->destination }}</b></h3> 
 
-                    <div class="ride-content">
-                        <h3><a href="#">From <b> {{ $post->start_point }} </b> to <b> {{ $post->destination }}</b></a></h3> <i class="fa fa-money"></i>  {{ $post->price }}
-                    </div>
+                                <i class="fa fa-money"></i>  {{ $post->price }}
+                                <!--<i class="fa fa-calendar"></i> {{ $post->start }} -->
 
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                {{ $post->start }}
-                            </a>
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                <i class="fa fa-user"></i>
-                                {{ $post->seats }}
-                            </a>
-                        </li><!-- end .ride-people -->
-
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
-                @endforeach 
-                @else
-                <article class="ride-box clearfix">
-                    <div class="ride-content">
-                        Sorry, currently no post from our drivers.
-                    </div>
-                </article> 
-                @endif
+                            </div>
+                            <div class="pull-right">
+                                Available Seat(s) <i class="fa fa-user"></i> {{ $post->available_seats }}  
+                            </div> 
+                        </article><!-- end .ride-box -->
+                    </a>
+                    @endforeach 
+                    @else
+                    <article class="ride-box clearfix">
+                        <div class="ride-content">
+                            Sorry, currently no post from our drivers.
+                        </div>
+                    </article> 
+                    @endif
 
             </div><!-- end .events-list -->
 
@@ -175,10 +175,15 @@
 
 @stop
 
+@section('modals')
+@include('rides/view_modal')
+@stop
+
 @section('scripts')
 <script>
     var pick = "default";
     var dest = "default";
+    var price = 10;
     var outputDiv = document.getElementById('output');
     var outputPrice = document.getElementById('output-price');
     var directionsService, directionsDisplay;
@@ -277,7 +282,7 @@
             destination: document.getElementById('destination').value,
             travelMode: 'DRIVING'
         }, function (response, status) {
-            if (status === 'OK') {
+            if (status == 'OK') {
                 directionsDisplay.setDirections(response);
             } else {
                 window.alert('Directions request failed due to ' + status);
@@ -305,12 +310,91 @@
                 console.log(results[0].duration.text);
                 outputDiv.innerHTML += results[0].distance.text + ' in ' +
                         results[0].duration.text + '<br>';
-                outputPrice.innerHTML += 'SGD: 10';
+                outputPrice.innerHTML += 'SGD: ' + price;
 
 
             }
         });
     }
+
+    $("#request").click(function (e) { //alert($("#seats").val());
+        var seats = $("#seats").val();
+        var pick = $("#pickup").val();
+        var dest = $("#destination").val();
+        var token = $("input[name='_token']").val();
+        //console.log("Seats :" + seats + ", Price :" + price + ", Start: " + pick + ", End: " + dest);
+        e.preventDefault();
+        if (seats != 0 && price && pick && dest) {
+            $.ajax({
+                type: "POST",
+                url: "{{ URL::to('rides/request') }}",
+                dataType: 'json',
+                data: {
+                    seats: seats,
+                    price: price,
+                    pick: pick,
+                    dest: dest,
+                    _token: token
+                },
+                success: function (result) {
+                    console.log(result);
+                    //$('#loading').css("display", "block");
+                    alert('Finding driver for you!');
+                },
+                error: function (result) {
+                    console.log(result['responseJSON']['message']);
+                    alert('error');
+                }
+            });
+        } else {
+            alert("Please fill up necessary data!");
+        }
+    });
+
+    $('.view').on('click', function (e) {
+        var route_id = $(this).data('id');
+        //console.log('route' + route_id);
+        e.preventDefault();
+        $.ajax({
+            url: "{{ URL::to('route/view') }}/" + route_id,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                console.log(data);
+
+                $('#driverD span').html(data['data']['name']);
+                $('#contactno span').html(data['data']['contactno']);
+                $('#car span').html(data['data']['car']);
+                $('#priceD span').html(data['data']['price']);
+                $('#seats span').html(data['data']['seats']);
+                $('#pickupD span').html(data['data']['pickup']);
+                $('#destD span').html(data['data']['destination']);
+
+                $('#route').val(route_id);
+                $('#details').modal('show');
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
+    $('button.book').on('click', function (e) {
+        var ava_seat = $('#seats span').text();
+        var booking_seats = $("#booking_seats").val();
+        if (booking_seats > ava_seat) {
+            alert("Your booking seats is more than " + ava_seat + " available seat(s)!");
+            return false;
+        } else if (booking_seats == 0) {
+            alert("Please select your booking seats!");
+            return false;
+        } else {
+            alert ("OK " + booking_seats);
+            return true;
+        }
+
+    });
+
 </script> 
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&libraries=places&callback=myMap"></script>
