@@ -200,7 +200,7 @@ INSERT INTO `users` (`userID`, `first_name`, `last_name`, `gender`, `email`, `co
 (1, 'Thet', NULL, 'F', 'thethw001@mymail.sim.edu.sg', 11111111, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', 0, NULL, '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
 (2, 'Yuting', 'Wang', 'F', 'ywang084@mymail.sim.edu.sg', 22222222, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', 0, NULL, '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
 (3, 'Min Thu', NULL, 'F', 'yinmt001@mymail.sim.edu.sg', 33333333, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', 0, NULL, '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
-(4, 'WANG YUTING', NULL, 'F', 'cloris910415@gmail.com', 98989898, '$2y$10$KvdY9j/wvQ4DHftSMbZF8er4NGHaiGMmL8Pt2LZK620bhfkD5Y7Da', 0, 'pLzqDSoUWyNYdkQoooLs4xCw0MjE0F48MrfhQQhF8h6baPjYf7z5IhWae6wW', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
+(4, 'WANG YUTING', NULL, 'F', 'cloris910415@gmail.com', 98989898, '$2y$10$KvdY9j/wvQ4DHftSMbZF8er4NGHaiGMmL8Pt2LZK620bhfkD5Y7Da', 1, 'pLzqDSoUWyNYdkQoooLs4xCw0MjE0F48MrfhQQhF8h6baPjYf7z5IhWae6wW', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
 (6, 'Yuting', 'Wang', 'Female', 'june1991@qq.com', 98552377, '$2y$10$k9sSN3Jdgz1hSpNJa5rzOOClB6P1YnQ565ZuNx8rjOB8H1ruW6paq', 0, 'uLamdHxE25YwTDy1eyGcfqSg3BbUr8Ee7e6CG7XC8D6oBTsYowp4FS3plJrw', '2017-11-12 12:39:44', '2017-11-12 04:39:44');
 
 --
