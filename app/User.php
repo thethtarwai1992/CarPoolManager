@@ -37,6 +37,6 @@ class User extends Authenticatable {
         return $this->hasOne(Driver::class, 'userID');
     }
 
-    public $timestamps = false;
+    //public $timestamps = false;
 
 }

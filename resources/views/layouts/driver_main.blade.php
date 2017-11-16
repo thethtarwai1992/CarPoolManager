@@ -239,9 +239,7 @@
                                                     <li>
                                                         <a href="add-ride.html">FAQ</a>
                                                     </li>
-                                                    <li>
-                                                        <a href="add-ride.html">About Us</a>
-                                                    </li>
+                                                    
                                                     <li>
                                                         <a href="contact-page.html">Contact</a>
                                                     </li>
