@@ -8,15 +8,14 @@
             </div><!-- end .modal-header -->
 
             <div class="modal-body">  
-                <input name='route' id='route' value='' type='hidden'>
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
 
                             <div class="card hovercard">
                                 <div class="cardheader"> </div>
-                                <div class="avatar">
-                                    <img alt="" src="{{ asset('img/avatar-1.jpg') }}">
+                                <div class="avatar" id="photo">
+                                    <img id="" alt="" src="{{ asset('img/female.jpg') }}">
                                 </div>
                                 <div class="info">
                                     <div class="title" id="driverD">
@@ -28,11 +27,13 @@
                                 <div class="line" style='position: inherit!important;'></div>
                                 <div class="bottom" style="float: left; text-align: left; margin-top: 15px;">
                                     <h3> <b> <span id="pickupD"> <span>Woodlands</span></span> </b> -> <b> <span id="destD"> <span>Orchard</span></span> </b></h3> 
+                                    
+                                    <i class="fa fa-calendar"></i> <span id="startendD"> <span>--</span></span>
+                                    <br>
                                     Booked Seat(s) <i class="fa fa-user"></i> <span id="seats"><span>2</span></span>
                                     <div class="pull-right">
                                         <i class="fa fa-money"></i>  <span id="priceD"> <span>10</span></span>
                                     </div> 
-                                    <i class="fa fa-calendar"></i> <span id="startendD"> <span>--</span></span>
 
                                 </div>
                             </div>

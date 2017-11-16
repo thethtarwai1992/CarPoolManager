@@ -2,10 +2,6 @@
     <div class="row">   
         <div class='col-md-6'> 
             <div class="form-group">
-                <label for="name">Username</label>
-                {!! Form::text('name', null, array('placeholder' => 'Username','class' => 'form-control')) !!} 
-            </div>
-            <div class="form-group">
                 <label for="first_name">First Name</label>
                 {!! Form::text('first_name', null, array('placeholder' => 'First Name','class' => 'form-control')) !!}
             </div>

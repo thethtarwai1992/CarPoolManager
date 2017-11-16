@@ -19,8 +19,15 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `carpoolingmanager`
+-- Database: `carpooling`
 --
+
+DROP TABLE IF EXISTS `bookings`;
+DROP TABLE IF EXISTS `cars`;
+DROP TABLE IF EXISTS `drivers`;
+DROP TABLE IF EXISTS `preferences`;
+DROP TABLE IF EXISTS `routes`;
+DROP TABLE IF EXISTS `users`;
 
 -- --------------------------------------------------------
 
@@ -134,25 +141,6 @@ CREATE TABLE `preferences` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
-<<<<<<< HEAD
-=======
---
--- Table structure for table `bookings`
---
-
-CREATE TABLE `bookings` (
-  `booking_id` int(11) NOT NULL,
-  `request_time` datetime NOT NULL,
-  `status` varchar(10) NOT NULL,
-  `seats` int(11) NOT NULL,
-  `start` datetime DEFAULT NULL ,
-  `end` datetime  DEFAULT NULL,
-  `passenger_id` int(11) NOT NULL,
-  `driver_id` int(11) DEFAULT NULL,
-  `route_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
->>>>>>> 9f9c5f7a067afc61c214ab416badf32d92fb3218
-
 --
 -- Table structure for table `routes`
 --
@@ -160,27 +148,13 @@ CREATE TABLE `bookings` (
 CREATE TABLE `routes` (
   `route_id` int(11) NOT NULL,
   `status` varchar(25) NOT NULL DEFAULT 'Open',
-<<<<<<< HEAD
-<<<<<<< HEAD
   `available_seats` int(1) NOT NULL,
   `route_datetime` datetime DEFAULT NULL,
   `comment` varchar(100) DEFAULT NULL,
   `pickup` varchar(100) NOT NULL,
   `destination` varchar(100) NOT NULL,
+  `price` decimal(2,0) DEFAULT '0',
   `drivers_driving_license_no` varchar(45) DEFAULT NULL,
-=======
-=======
->>>>>>> 9f9c5f7a067afc61c214ab416badf32d92fb3218
-  `available_seats` int(11) NOT NULL,
-  `comment` varchar(100) DEFAULT NULL,
-  `pickup` varchar (255) NOT NULL,
-  `destination` varchar (255) NOT NULL,
-  `price` decimal(2,0) DEFAULT NULL,
-  `drivers_driving_license_no` varchar(45)  DEFAULT NULL,
-<<<<<<< HEAD
->>>>>>> 9f9c5f7a067afc61c214ab416badf32d92fb3218
-=======
->>>>>>> 9f9c5f7a067afc61c214ab416badf32d92fb3218
   `posted_by` int(11) NOT NULL,
   `posted_type` varchar(25) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -212,6 +186,7 @@ CREATE TABLE `users` (
   `contactNO` int(8) NOT NULL,
   `password` varchar(100) NOT NULL,
   `is_driver` int(11) NOT NULL DEFAULT '0',
+  `photo` varchar(100) NOT NULL DEFAULt 'avatar.jpg',
   `remember_token` text,
   `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -225,7 +200,7 @@ INSERT INTO `users` (`userID`, `first_name`, `last_name`, `gender`, `email`, `co
 (1, 'Thet', NULL, 'F', 'thethw001@mymail.sim.edu.sg', 11111111, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', 0, NULL, '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
 (2, 'Yuting', 'Wang', 'F', 'ywang084@mymail.sim.edu.sg', 22222222, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', 0, NULL, '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
 (3, 'Min Thu', NULL, 'F', 'yinmt001@mymail.sim.edu.sg', 33333333, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', 0, NULL, '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
-(4, 'WANG YUTING', NULL, 'F', 'cloris910415@gmail.com', 98989898, '$2y$10$KvdY9j/wvQ4DHftSMbZF8er4NGHaiGMmL8Pt2LZK620bhfkD5Y7Da', 0, 'pLzqDSoUWyNYdkQoooLs4xCw0MjE0F48MrfhQQhF8h6baPjYf7z5IhWae6wW', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
+(4, 'WANG YUTING', NULL, 'F', 'cloris910415@gmail.com', 98989898, '$2y$10$KvdY9j/wvQ4DHftSMbZF8er4NGHaiGMmL8Pt2LZK620bhfkD5Y7Da', 1, 'pLzqDSoUWyNYdkQoooLs4xCw0MjE0F48MrfhQQhF8h6baPjYf7z5IhWae6wW', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
 (6, 'Yuting', 'Wang', 'Female', 'june1991@qq.com', 98552377, '$2y$10$k9sSN3Jdgz1hSpNJa5rzOOClB6P1YnQ565ZuNx8rjOB8H1ruW6paq', 0, 'uLamdHxE25YwTDy1eyGcfqSg3BbUr8Ee7e6CG7XC8D6oBTsYowp4FS3plJrw', '2017-11-12 12:39:44', '2017-11-12 04:39:44');
 
 --
