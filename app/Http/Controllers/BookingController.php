@@ -35,7 +35,7 @@ class BookingController extends Controller {
             $route->price = $request->price;
             $route->posted_by = Auth::user()->userID;
             $route->posted_type = "Passenger";
-            //$route->save();
+            $route->save();
 
             $booking = new Booking;
             $booking->request_time = date("Y-m-d H:i:s");
@@ -44,7 +44,7 @@ class BookingController extends Controller {
             $booking->passenger_id = Auth::user()->userID;
             $booking->driver_id = 0;
             $booking->route_id = $route->route_id;
-            //$booking->save();
+            $booking->save();
 
             return response()->json(['response' => 'Success']);
         }
@@ -83,20 +83,20 @@ class BookingController extends Controller {
 
         return false;
     } 
-    
-    public function view($route_id) {
+    // View details for my rides
+    public function view($booking_id) {
         $data = Booking::with('route', 'driver', 'driver.driver.car')
-                        ->where('status', '!=', 'Open')
+                        //->where('status', '!=', 'Open')
                         ->where('passenger_id', Auth::user()->userID)
-                        ->where('route_id', $route_id)->first();
+                        ->where('booking_id', $booking_id)->first();
         $routes = array();
         if ($data) {
             //$routes['data'] = $data;
             $startend = '';
-            if (date('d-m-Y H:i A', strtotime($data->start))) {
+            if ($data->start) {
                 $startend = date('d-m-Y H:i A', strtotime($data->start));
             }
-            if (date('d-m-Y H:i A', strtotime($data->end))) {
+            if ($data->end) {
                 $startend .= " - " . date('d-m-Y H:i A', strtotime($data->end));
             }
 
@@ -107,12 +107,13 @@ class BookingController extends Controller {
             $routes['seats'] = $data->seats;
             $routes['pickup'] = $data->route->pickup;
             $routes['destination'] = $data->route->destination;
+            $routes['photo'] = $data->driver->photo;
             $routes['startend'] = $startend;
         }
         if ($routes) {
             return response()->json(['response' => 'Success', 'data' => $routes]);
         }
-        return response()->json(['response' => 'Fail', 'data' => $data]);
+        return response()->json(['response' => 'Fail', 'data' => null]);
     } 
 
     public function edit($id) {

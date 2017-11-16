@@ -140,6 +140,7 @@ CREATE TABLE `users` (
   `contactNO` int(8) NOT NULL,
   `password` varchar(100) NOT NULL,
   `is_driver` int(11) NOT NULL DEFAULT '0',
+  `photo` varchar(100) NOT NULL,
   `remember_token` text,
   `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -149,11 +150,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`userID`,`name`, `first_name`, `last_name`, `gender`, `email`, `contactNO`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'Thet Htar', 'Thet', NULL, 'F', 'thethw001@mymail.sim.edu.sg', 11111111, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
-(2, 'Yuting', 'Yuting', 'Wang', 'F', 'ywang084@mymail.sim.edu.sg', 22222222, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
-(3, 'Min Thu', 'Min Thu', NULL, 'F', 'yinmt001@mymail.sim.edu.sg', 33333333, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
-(4, 'Yuting', 'WANG YUTING', NULL, 'F', 'cloris910415@gmail.com', 98989898, '$2y$10$KvdY9j/wvQ4DHftSMbZF8er4NGHaiGMmL8Pt2LZK620bhfkD5Y7Da', '2017-10-22 08:06:46', '2017-10-22 00:06:46');
+INSERT INTO `users` (`userID`,`name`, `first_name`, `last_name`, `gender`, `email`, `contactNO`, `password`,`photo`, `created_at`, `updated_at`) VALUES
+(1, 'Thet Htar', 'Thet', NULL, 'F', 'thethw001@mymail.sim.edu.sg', 11111111, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y','female.jpg', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
+(2, 'Yuting', 'Yuting', 'Wang', 'F', 'ywang084@mymail.sim.edu.sg', 22222222, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y','female.jpg', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
+(3, 'Min Thu', 'Min Thu', NULL, 'F', 'yinmt001@mymail.sim.edu.sg', 33333333, '$2y$10$Gnk1GGQ/rmaOqVYEQCJb1u299A2KLNk4mZsgnh1ZIgbn/enmQfn1y','female.jpg', '2017-10-22 08:06:46', '2017-10-22 00:06:46'),
+(4, 'Yuting', 'WANG YUTING', NULL, 'F', 'cloris910415@gmail.com', 98989898, '$2y$10$KvdY9j/wvQ4DHftSMbZF8er4NGHaiGMmL8Pt2LZK620bhfkD5Y7Da','female.jpg', '2017-10-22 08:06:46', '2017-10-22 00:06:46');
 
 --
 -- Indexes for dumped tables

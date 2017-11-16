@@ -34,15 +34,16 @@
                 @if(count($rides) > 0 )
 
                 @foreach ($rides as $booking)
-                <a href="#" class="viewdetails" data-toggle="modal" data-id ={{ $booking->route_id }}> 
+                <a href="#" class="viewdetails" data-toggle="modal" data-id ={{ $booking->booking_id }}> 
                     <article class="ride-box clearfix">
 
                         <div class="ride-content">
                             <h3> <b> {{ $booking->route->pickup }} </b> -> <b> {{ $booking->route->destination }}</b></h3> 
                         </div>
+                        <br>
+                        <i class="fa fa-calendar"></i> {{ date('d-m-Y H:i A', strtotime($booking->start)) }} @if($booking->end) {{ date('d-m-Y H:i A', strtotime($booking->end)) }} @endif
                         <div class="pull-right">
                             <i class="fa fa-money"></i>  ${{ $booking->route->price }}
-                            <i class="fa fa-calendar"></i> {{ date('d-m-Y H:i A', strtotime($booking->start)) }}
                             Booked Seat(s) <i class="fa fa-user"></i> {{ $booking->seats }}  
                         </div> 
                     </article><!-- end .ride-box -->
@@ -72,11 +73,11 @@
 @section('scripts')
 <script>
     $('.viewdetails').on('click', function (e) {
-        var route_id = $(this).data('id');
+        var booking_id = $(this).data('id');
         //console.log('route' + route_id);
         e.preventDefault();
         $.ajax({
-            url: "{{ URL::to('bookings/view') }}/" + route_id,
+            url: "{{ URL::to('bookings/view') }}/" + booking_id,
             dataType: 'json',
             cache: false,
             success: function (data) {
@@ -90,8 +91,8 @@
                 $('#pickupD span').html(data['data']['pickup']);
                 $('#destD span').html(data['data']['destination']);
                 $('#startendD span').html(data['data']['startend']);
+                $('#photo img').html("../img/" + data['data']['photo']);
 
-                $('#route').val(route_id);
                 $('#viewdetails').modal('show');
             },
             error: function (data) {
