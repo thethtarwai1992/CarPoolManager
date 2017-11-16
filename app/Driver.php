@@ -16,7 +16,7 @@ class Driver extends Model {
      * @var array
      */
     protected $fillable = [
-        'driving_license_no', 'driving_license_valid_till', 'remarks', 'status'
+        'driving_license_no','driving_license_valid_till', 'remarks','status','userID'
     ];
 
     /**

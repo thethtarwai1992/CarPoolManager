@@ -28,7 +28,9 @@ class Booking extends Model {
     protected $hidden = [
         'passenger_id', 'route_id'
     ];
-/*
+
+    
+    /*
     public function route() {
         return $this->hasOne('App\Route');
     }
@@ -46,5 +48,5 @@ class Booking extends Model {
         return $this->belongsTo(User::class, 'driver_id');
     }
 
-       public  $timestamps = false;
+       //public  $timestamps = false;
 }

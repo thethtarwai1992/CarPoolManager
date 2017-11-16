@@ -2,27 +2,41 @@
 @section('title', '- Rides') 
 @section('styles')
 <style>
-    .ride-content{
-        float: right;
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
     }
-    .rides-list{
-        padding-left: 30px;
-    }
-    .sendRequest{
-        margin-top: 24px;
-    } 
-    .search-content{
-        margin: 0;
-    } 
-     th{
+    th{
         font-size: 100%;
         font-weight: bold;
+        text-align: center;
+        padding:5px;
+        margin: 5px;
     }
     th, td {
         padding: 8px;
-        text-align: left;
+        text-align: center;
         border-bottom: 1px solid #ddd;
     }
+    #card_title{
+        font-weight: bold;
+        margin: 5px 30px 5px 0;
+        border-bottom: 1px solid #ddd;
+    }
+    .card_desc{
+        padding:5px;
+        margin: 5px 5px 5px 0;
+        width: 100%;
+    }
+    #card_subtitle{
+        max-width:30px;
+        padding-right: 30px;
+        margin: 30px 30px 30px 0;
+        font-weight: bold;
+    }
+
 </style>
 @stop 
 
@@ -33,188 +47,121 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
 
             <div class="page-sub-title textcenter">
-                <h2>Scheduled Booking</h2>
-                <div class="line"></div>
+                <h2>Scheduled Booking</h2>     
             </div><!-- end .page-sub-title -->
 
-        </div><!-- end .col-md-12 col-sm-12 col-xs-12 -->
-         <div class="col-md-12 col-sm-12 col-xs-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th width="5%" style="text-align:center">Booking #</th>
+                        <th width="20%">From</th>
+                        <th  width="20%">Destination  </th>
+                        <th  width="10%">Customer</th>
+                        <th  width="15%">Ride Date&Time</th>
+                        <th  width="10%" colspan="2">Total Fare</th>
+                        <th  width="10%" colspan="2">Settlement Price</th>
+                        <th  width="15%" style="text-align:center" colspan="2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(count($tasks) > 0 )
 
-            <div class="search-content">
+                    @foreach ($tasks as $task)
+                    <tr class="id{{ $task->booking_id}}">
+                        <th scope="row" style="text-align:center">{{ $task->booking_id}}</th>
+                        <td>{{ $task->pickup }}</td>
+                        <td>{{ $task->destination }}</td>
+                        <td>{{ $task->first_name }} {{ $task->last_name }}</td>
+                        <td>{{ $task->route_datetime }}</td>
+                        <td><i class="fa fa-money"></td><td>{{ $task->price }}</td>
+                        <td><i class="fa fa-money"></td><td>{{ $task->price*0.9 }}</td>
+                        <td style="text-align:center">
+                            <button type="button" class="btn btn-primary view" data-toggle="modal" data-id ={{ $task->booking_id}}>View</button>
+                           </td>
+                        <td style="text-align:center"> 
+                            <button type="button" class="btn btn-danger delete" data-toggle="modal" value={{ $task->booking_id}}>Cancel</button>
+                        </td>
 
-                <form action="" novalidate autocomplete="off" class="idealforms searchtours">
-
-                    <div class="row">
-                        <table>
-                            <tr>
-                                <th class="col-md-3 col-sm-6" id="title">Booking Id</th>
-                                <th class="col-md-3 col-sm-6" id="title">From</th>
-                                <th class="col-md-3 col-sm-6" id="title">Destination</th>
-                                <th class="col-md-3 col-sm-6" id="title">Customer</th>
-                                <th class="col-md-3 col-sm-6" id="title">Contact No.</th>
-                                <th class="col-md-3 col-sm-6" id="title">Ride Date</th>
-                                <th class="col-md-3 col-sm-6" id="title">No. of Pax</th>
-                                <th class="col-md-3 col-sm-6" id="title">Fare</th>
-                                <th class="col-md-3 col-sm-6" id="title">Action</th>
-                            </tr>
-                            @if(count($tasks) > 0 )
-
-                            @foreach ($tasks as $task)
-                            <tr>
-                                <td class="col-md-3 col-sm-6">{{ $task->booking_id}} </td>
-                                <td class="col-md-3 col-sm-6">{{ $task->pick_up_point }} </td>
-                                <td class="col-md-3 col-sm-6">{{ $task->destination_point }}  </td>
-                                <td class="col-md-3 col-sm-6">{{ $task->first_name }} {{ $task->last_name }} </td>
-                                <td class="col-md-3 col-sm-6"><a href="tel: $task->contactNO">{{ $task->contactNO }} </a> </td>
-                                <td class="col-md-3 col-sm-6">{{ $task->route_datetime }} </td>
-                                <td class="col-md-3 col-sm-6">3</td>
-                                 <td class="col-md-3 col-sm-6"><i class="fa fa-money"></i>{{ $task->price }} </td>
-                                <td class="col-md-3 col-sm-6">   
-                                <a href="#">View Notes</a>
-                                <a href="#">Send Msg</a>
-                                <a href="task/cancel/{{$task->booking_id}}">Cancel</a>            
-                                </td>   
-                            </tr>
-                             @endforeach
+                </tr>
+                @endforeach
                 @else
                 <tr>
-                                <td class="col-md-3 col-sm-6">
-                        No Record Found.
-                    </td>   
-                            </tr>
+                    <th scope="row" colspan="8">No Record Found.</th>
+
+                </tr>
                 @endif   
-                        </table>
-
-                    </div> 
-                </form>
-            </div><!-- end .search-content -->
-        </div> 
-
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="rides-list"> 
-                <article class="ride-box clearfix">
-                    <h3>From Woodlands to Orchard</h3>
-                   
-
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                               Estimated Fare:  <i class="fa fa-money"></i> 6
-                  
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                                <i class="fa fa-user"></i>
-                                1
-                        </li><!-- end .ride-people -->
-
-                        <li>
-                                <i class="fa fa-user"></i>
-                                Janice
-                        </li>
-                          <li>
-                           
-                                <i class="fa fa-file"></i>
-                                Note: Wait at Woodlands Shopping Centre Taxi Stand.Thank you! 
-                        `</li>
-                         
-                    </ul><!-- end .ride-meta -->
-                    
-                    <br>
-                  <div class="field">
-                                <button type="submit" class="submit btn green-color" style="width: 45%;">Accept</button>
-                 </div>
-                </article><!-- end .ride-box -->
-               
-                <div class="clearfix"></div>
-                
-              
-            </div><!-- end .events-list -->
-            
-        </div><!-- end .page-content --> 
+                </tbody>
+            </table>
+        </div>
     </div><!-- end .row -->
 </div><!-- end .container -->
 
 @stop
 
+@section('modals')
+@include('driver/details_modal')
+@include('driver/cancel_modal')
+@stop
+
+
 @section('scripts')
-<script>
-    var pick = "default";
-    var dest = "default";
-    function myMap() {
-        var marker = null;
-
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
-
-        var mapProp = {
-            center: new google.maps.LatLng(1.290270, 103.851959),
-            zoom: 11
-        };
-        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-        var infoWindow = new google.maps.InfoWindow;
-
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-
-                //infoWindow.setPosition(pos);
-                //infoWindow.setContent('Your Location');
-                //infoWindow.open(map);
-                map.setCenter(pos);
-                map.setZoom(15);
-                marker = new google.maps.Marker({
-                    position: pos,
-                    draggable: false,
-                    animation: google.maps.Animation.DROP
-                });
-
-                marker.setMap(map);
-
-            }, function () {
-                handleLocationError(true, infoWindow, map.getCenter());
-            });
-        } else {
-            // Browser doesn't support Geolocation
-            handleLocationError(false, infoWindow, map.getCenter());
-        }
-
-        if ($("#pickup").change(function () {
-            pick = $(this).val();
-            if (pick !== "default" && dest !== "default") {
-                calculateAndDisplayRoute(directionsService, directionsDisplay);
-            }
-
-        }))
-            if ($("#destination").change(function () {
-                dest = $(this).val();
-                if (pick !== "default" && dest !== "default") {
-                    calculateAndDisplayRoute(directionsService, directionsDisplay);
-                }
-
-            }))
-                directionsDisplay.setMap(map);
-    }
-
-    function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-        directionsService.route({
-            origin: document.getElementById('pickup').value,
-            destination: document.getElementById('destination').value,
-            travelMode: 'DRIVING'
-        }, function (response, status) {
-            if (status === 'OK') {
-                directionsDisplay.setDirections(response);
-            } else {
-                window.alert('Directions request failed due to ' + status);
+<script type="text/javascript">
+$('.view').on('click', function (e) {
+        var booking_id = $(this).data('id');
+        //console.log('route' + route_id);
+        e.preventDefault();
+        $.ajax({
+            url: "{{ URL::to('task/view') }}/" + booking_id,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                console.log(data);
+                $('#bookingID span').html(data['data']['booking_id']);
+                $('#name span').html(data['data']['name']);
+                $('#contactno span').html(data['data']['contactno']);
+                $('#priceD span').html(data['data']['price']);
+                 $('#settlePriceD span').html(data['data']['price']*0.9);
+                $('#seats span').html(data['data']['seats']);
+                $('#pickupD span').html(data['data']['pickup']);
+                $('#destD span').html(data['data']['destination']);
+                $('#noteD span').html(data['data']['notes']);
+                $('#route').val(booking_id);
+                $('#viewModal').modal('show');
+            },
+            error: function (data) {
+                console.log(data);
             }
         });
-    }
+    });
 
-</script> 
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>
+$(document).ready(function(){
+    $(".delete").click(function(){
+         var booking_id=$(this).val();
+         $('#booking').val(booking_id);
+        $("#cancelModal").modal();
+    });
+});
+
+   /*
+    $(document).on('click','.delete',function(e){
+        var id=$(this).val();
+        //alert($(this).val())
+        if(confirm('Are you sure to cancel the booking? Your ranking will be downgraded. Click "OK" to continue cancellation.'))
+        {
+            
+            $.ajax({
+                type    :   "get",
+                url       :   "{{url('driver/task/cancel')}}",
+                data    :   {'id' :id},
+                success:function(data)
+                {
+                   $('.id'+id).remove();
+                }
+            })
+        }else{
+            close();
+        }
+    })*/
+    
+</script>
 @stop
