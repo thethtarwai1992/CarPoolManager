@@ -1,4 +1,4 @@
-@extends('layouts.driver_main')
+@extends('layouts.user_main')
 @section('title', '- Rides') 
 @section('styles')
 <style>
