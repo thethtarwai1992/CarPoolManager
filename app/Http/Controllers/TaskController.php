@@ -35,7 +35,7 @@ class TaskController extends Controller {
         $tasks=DB::table('bookings')
             ->join('users', 'passenger_id', '=', 'users.userID')
             ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
-            ->select('booking_id','pickup','destination','first_name','last_name','contactNO','route_datetime','bookings.status as b_status','price')
+            ->select('booking_id','pickup','destination','first_name','last_name','contactNO','route_datetime','bookings.status as b_status','bookings.price')
             ->where('bookings.driver_id', Auth::user()->userID)
             ->get();
       
@@ -49,7 +49,7 @@ class TaskController extends Controller {
         $tasks=DB::table('bookings')
             ->join('users', 'passenger_id', '=', 'users.userID')
             ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
-            ->select('booking_id','pickup','destination','first_name','last_name','contactNO','route_datetime','bookings.status as b_status','price')
+            ->select('booking_id','pickup','destination','first_name','last_name','contactNO','route_datetime','bookings.status as b_status','bookings.price')
             ->where('bookings.driver_id', Auth::user()->userID)
             ->where('bookings.status','scheduled')
             ->get();
