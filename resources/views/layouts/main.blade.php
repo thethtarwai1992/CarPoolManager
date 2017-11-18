@@ -88,14 +88,14 @@
             .log-facebook{
                 width: 100%;
             }
-            
+
             @media only screen and (min-width: 320px) and (max-width: 980px){
                 .user-log { padding: 0.6em;}
                 .logo h1 {font-size: 25px;}
                 .page-sub-title h2{ font-size: 1em;}
                 .main-header-container {margin: 1em 0;}
                 .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content {min-height: 375px;}
-                
+
                 .ride-content{float: none;}
             }
             @media only screen and (min-width: 1186px) and (max-width: 1329px){
@@ -174,7 +174,7 @@
                 </section><!-- end .container -->
 
             </div><!-- end .top-menu -->
- 
+
 
             @if (Session::has('failure'))
             <div class="row">
@@ -196,18 +196,8 @@
                     </div>
                 </div>
             </div>
-            @endif
+            @endif 
 
-            @if (Session::has('driver'))
-            <div class="row">
-                <div class="col-sm-12"> 
-                    <div class="alert alert-warning alert-dismissable"> 
-                        <i class="fa fa-thumbs-up"></i> {{ Session::get('driver') }}
-                    </div>
-                </div>
-            </div>
-            @endif
-            
             <div class="main-baner">
 
                 <div class="fullscreen background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
@@ -237,20 +227,7 @@
                                                 <ul class="navigation">
                                                     <li>
                                                         <a href="{{URL::to('/home')}}">Home</a>
-                                                    </li> 
-                                                     @if(Auth::check() && Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())  
-                                                    <li>
-                                                        <a href="#">Bookings</a>
-                                                        <ul class="sub-menu">
-                                                            <li>
-                                                                <a href="{{URL::to('driver/booking_now')}}">Ride Now</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{URL::to('driver/new_request')}}">New Request</a>
-                                                            </li> 
-                                                        </ul>
-                                                    </li>                                                    
-                                                    @else
+                                                    </li>  
                                                     <li>
                                                         <a href="#">Rides</a>
                                                         <ul class="sub-menu">
@@ -261,8 +238,7 @@
                                                                 <a href="{{URL::to('rides/scheduled')}}">Schedule</a>
                                                             </li> 
                                                         </ul>
-                                                    </li>
-                                                    @endif
+                                                    </li> 
                                                     <li>
                                                         <a href="add-ride.html">FAQ</a>
                                                     </li>
@@ -337,7 +313,7 @@
         <!-- Counter-Up  -->
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js")></script>
         {!! HTML::script("js/jquery.counterup.min.js") !!} 
-        
+
         <script type="text/javascript">
 
 

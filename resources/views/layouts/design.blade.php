@@ -130,9 +130,7 @@
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{URL::to('user')}}">My Account</a></li>
                                                     <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
-                                                    <li><a href="#">My Favorites</a></li>
-                                                    <li><a href="{{URL::to('driver/route')}}">My Routes</a></li>
-                                                    <li><a href="{{URL::to('driver/task')}}">My Tasks</a></li>
+                                                    <li><a href="#">My Favorites</a></li> 
                                                     @if(Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())
                                                     <li><a href="{{URL::to('driver/switch-to-driver')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
                                                     @elseif(!Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())                                                    
@@ -197,16 +195,6 @@
             </div>
             @endif
 
-            @if (Session::has('driver'))
-            <div class="row">
-                <div class="col-sm-12"> 
-                    <div class="alert alert-warning alert-dismissable"> 
-                        <i class="fa fa-thumbs-up"></i> {{ Session::get('driver') }}
-                    </div>
-                </div>
-            </div>
-            @endif
-
             <div class="main-baner">
 
                 <div class="background parallax clearfix" style="background-image:url({{ URL::asset('img/bg.jpg') }});" data-img-width="1600" data-img-height="1064">
@@ -239,15 +227,7 @@
                                                         <a href="{{URL::to('/')}}">Home</a>
                                                     </li> 
                                                     @endif
-<!--                                                    if login user is driver and switched to driver mode, show driver menu-->
-                                                    @if(Auth::check() && Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())  
-                                                    <li>
-                                                         <a href="{{URL::to('driver/booking_now')}}">Ride Now</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{URL::to('driver/new_request')}}">New Request</a>
-                                                    </li>                                              
-                                                    @elseif(Auth::check() && !Auth::user()->is_driver)
+                                                    @if(Auth::check())
                                                     <li>
                                                         <a href="{{URL::to('rides')}}">Now</a>
                                                     </li>
