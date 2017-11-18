@@ -130,7 +130,7 @@
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
                                             <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->first_name }} {{ Auth::user()->last_name or '' }} <span class="caret"></span></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> Yuting <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
                                                    <li><a href="{{URL::to('driver/profile')}}">My Account</a></li>                
                                                     <li><a href="{{URL::to('/')}}">Switch to Passenger?</a></li>
@@ -191,17 +191,6 @@
             </div>
             @endif
 
-            @if (Session::has('driver'))
-            <div class="row">
-                <div class="col-sm-12"> 
-                    <div class="alert alert-success alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <i class="fa fa-thumbs-up"></i> {{ Session::get('driver') }}
-                    </div>
-                </div>
-            </div>
-            @endif
-
 
             <div class="main-baner">
 
@@ -229,21 +218,28 @@
 
                                             <nav id="nav" class="main-navigation">
 
-                                                <ul class="navigation"> 
+                                                <ul class="navigation">
+                                                    <li>
+                                                        <a href="{{URL::to('/')}}">Home</a>
+                                                    </li> 
                                                     <li>
                                                         <a href="{{URL::to('driver/task')}}">Tasks</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{URL::to('driver/scheduled')}}">Scheduled </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{URL::to('driver/new_request')}}">Post</a>
-                                                    </li>  
+                                                        <ul class="sub-menu">
+                                                            <li>
+                                                                <a href="{{URL::to('driver/scheduled')}}">Scheduled Booking</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{URL::to('driver/new_request')}}">New Request</a>
+                                                            </li> 
+                                                        </ul>
                                                     </li>
                                                     <li>
                                                         <a href="{{URL::to('driver/route')}}">Routes</a>
-                                                    </li> 
-
+                                                    </li>
+                                                    <li>
+                                                        <a href="add-ride.html">FAQ</a>
+                                                    </li>
+                                                    
                                                     <li>
                                                         <a href="contact-page.html">Contact</a>
                                                     </li>
