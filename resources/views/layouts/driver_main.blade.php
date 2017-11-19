@@ -19,7 +19,7 @@
 
         <!-- Bootstrap -->
         {!!  HTML::style("css/bootstrap.min.css") !!}
-         {!!  HTML::style("css/bootstrap-datetimepicker.min.css") !!}
+        {!!  HTML::style("css/bootstrap-datetimepicker.min.css") !!}
         <!-- Forms -->
         {!!  HTML::style("css/jquery.idealforms.css") !!}
         <!-- Select  -->
@@ -89,14 +89,14 @@
             .log-facebook{
                 width: 100%;
             }
-            
+
             @media only screen and (min-width: 320px) and (max-width: 980px){
                 .user-log { padding: 0.6em;}
                 .logo h1 {font-size: 25px;}
                 .page-sub-title h2{ font-size: 1em;}
                 .main-header-container {margin: 1em 0;}
                 .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content {min-height: 375px;}
-                
+
                 .ride-content{float: none;}
             }
             @media only screen and (min-width: 1186px) and (max-width: 1329px){
@@ -132,7 +132,7 @@
                                             <li class="dropdown">
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}  <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
-                                                   <li><a href="{{URL::to('driver/profile')}}">My Account</a></li>                
+                                                    <li><a href="{{URL::to('driver/profile')}}">My Account</a></li>                
                                                     <li><a href="{{URL::to('/')}}">Switch to Passenger?</a></li>
                                                     <li><a href="{{URL::to('logout')}}">Log Out</a></li>
                                                 </ul>
@@ -167,7 +167,7 @@
                 </section><!-- end .container -->
 
             </div><!-- end .top-menu -->
- 
+
 
             @if (Session::has('failure'))
             <div class="row">
@@ -191,6 +191,15 @@
             </div>
             @endif
 
+            @if (Session::has('driver'))
+            <div class="row">
+                <div class="col-sm-12"> 
+                    <div class="alert alert-warning alert-dismissable"> 
+                        <i class="fa fa-thumbs-up"></i> {{ Session::get('driver') }}
+                    </div>
+                </div>
+            </div>
+            @endif
 
             <div class="main-baner">
 
@@ -220,29 +229,19 @@
 
                                                 <ul class="navigation">
                                                     <li>
-                                                        <a href="{{URL::to('/')}}">Home</a>
+                                                        <a href="{{URL::to('driver/task')}}">Tasks</a>
                                                     </li> 
                                                     <li>
-                                                        <a href="{{URL::to('driver/task')}}">Tasks</a>
-                                                        <ul class="sub-menu">
-                                                            <li>
-                                                                <a href="{{URL::to('driver/scheduled')}}">Scheduled Booking</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{URL::to('driver/new_request')}}">New Request</a>
-                                                            </li> 
-                                                        </ul>
+                                                        <a href="{{URL::to('driver/scheduled')}}">Scheduled Ride</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{URL::to('driver/new_request')}}">New Ride</a>
+                                                    </li>  
                                                     </li>
                                                     <li>
                                                         <a href="{{URL::to('driver/route')}}">Routes</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="add-ride.html">FAQ</a>
-                                                    </li>
-                                                    
-                                                    <li>
-                                                        <a href="contact-page.html">Contact</a>
-                                                    </li>
+                                                    </li>  
+                                                  
                                                 </ul>
 
                                             </nav><!-- end .main-navigation -->
@@ -310,7 +309,7 @@
         {!! HTML::script("js/bootstrap-rating-input.min.js") !!}
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
-        
+
         <script type="text/javascript">
 
 

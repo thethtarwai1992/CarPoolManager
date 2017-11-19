@@ -16,7 +16,7 @@
                     <legend>User Profile</legend>
 
                     <div class="col-sm-6 col-md-4">
-                        <img src="{{ asset('img/avatar-1.jpg') }}" alt="" class="img-rounded img-responsive" />
+                        <img src="{{ asset('img') }}/{{ Auth::user()->photo }}" alt="" class="img-rounded img-responsive" />
                     </div>
                     <div class="col-sm-6 col-md-8">
                         <h4>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} </h4> 
