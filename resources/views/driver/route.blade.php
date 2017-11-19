@@ -14,24 +14,80 @@
     .route_title{
         text-align: center;
     }
-    table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        width: 100%;
-        border: 1px solid #ddd;
+   /* 
+           Generic Styling, for Desktops/Laptops 
+    */
+    table { 
+        width: 100%; 
+        border-collapse: collapse; 
     }
-    th{
-        font-size: 100%;
-        font-weight: bold;
-        text-align: center;
-        padding:5px;
-        margin: 5px;
+    /* Zebra striping */
+    tr:nth-of-type(odd) { 
+        background: #eee; 
     }
-    th, td {
-        padding: 8px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
+    th { 
+        background: #333; 
+        color: white; 
+        font-weight: bold; 
+        text-align: center; 
     }
+    td, th { 
+        padding: 6px; 
+        border: 1px solid #ccc; 
+        text-align: center; 
+    }
+     /* 
+    Max width before this PARTICULAR table gets nasty
+    This query will take effect for any screen smaller than 760px and also iPads specifically.
+    */
+    @media 
+    only screen and (max-width: 760px),
+    (min-device-width: 768px) and (max-device-width: 1024px)  {
+
+        /* Force table to not be like tables anymore */
+        table, thead, tbody, th, td, tr { 
+            display: block; 
+        }
+
+        /* Hide table headers (but not display: none;, for accessibility) */
+        thead tr { 
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        tr { border: 1px solid #ccc; }
+
+        td { 
+            /* Behave  like a "row" */
+            border: none;
+            border-bottom: 1px solid #eee; 
+            position: relative;
+            padding-left: 50%; 
+        }
+
+        td:before { 
+            /* Now like a table header */
+            position: absolute;
+            /* Top/left values mimic padding */
+            top: 6px;
+            left: 6px;
+            width: 45%; 
+            padding-right: 10px; 
+            white-space: nowrap;
+        }
+        /*
+Label the data
+        */
+        td:nth-of-type(1):before { content: "Route #"; }
+        td:nth-of-type(2):before { content: "From"; }
+        td:nth-of-type(3):before { content: "Destination"; }
+        td:nth-of-type(4):before { content: "Ride Date & Time"; }
+        td:nth-of-type(5):before { content: "Post Date & Time"; }
+        td:nth-of-type(6):before {content:"Seats";}
+        td:nth-of-type(7):before { content: "Status"; }
+        td:nth-of-type(8):before { content: "Actions"; }
+
 </style>
 @stop 
 
@@ -78,8 +134,8 @@
                         <div class="col-md-3 col-sm-6 col-xs-6">
 
                             <div class="field">
-                                 <select id="seats" name="seats" placeholder="Max. Available Seats">
-                                    <option value="0">Number of seats</option>
+                                <select id="seats" name="seats" required>
+                                    <option value="" selected disabled hidden="Fales">Seats</option>
                                     @for($i = 1; $i <5 ; $i++)
                                     <option>{{ $i }}</option> 
                                     @endfor
@@ -110,17 +166,17 @@
             <div class="rides-list"> 
                 <h2 class="route_title">My Routes List</h2>     
                 
-                <table class="table table-striped">
+                <table>
                 <thead>
                     <tr>
-                        <th width="5%" style="text-align:center">#</th>
-                        <th width="20%">From</th>
-                        <th  width="20%">Destination  </th>
-                        <th  width="15%">Ride Date&Time</th>
-                        <th  width="15%">Post Date&Time</th>
-                        <th  width="10%">Seats</th>
-                        <th  width="10%">Status</th>
-                        <th  width="25%" style="text-align:center" colspan="2">Actions</th>
+                        <th>Route #</th>
+                        <th>From</th>
+                        <th>Destination  </th>
+                        <th>Ride Date & Time</th>
+                        <th>Post Date & Time</th>
+                        <th>Seats</th>
+                        <th>Status</th>
+                        <th colspan="2">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -128,7 +184,7 @@
 
                 @foreach ($routes as $route)
                     <tr>
-                        <th scope="row" style="text-align:center">{{ $route->route_id}}</th>
+                        <td>{{ $route->route_id}}</td>
                         <td>{{ $route->pickup }}</td>
                         <td>{{ $route->destination }}</td>
                         <td><i class="fa fa-calendar"></i> {{ $route->route_datetime }}</td>
@@ -148,7 +204,7 @@
                     @endforeach
                     @else
                     <tr>
-                        <th scope="row" colspan="7">No Record Found.</th>
+                        <th scope="row" colspan="8">No Record Found.</th>
 
                     </tr>
                     @endif   

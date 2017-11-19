@@ -2,230 +2,243 @@
 @section('title', '- Rides') 
 @section('styles')
 <style>
-    .ride-content{
-        float: right;
+    /* 
+           Generic Styling, for Desktops/Laptops 
+    */
+    table { 
+        width: 100%; 
+        border-collapse: collapse; 
     }
-    .rides-list{
-        padding-left: 30px;
+    /* Zebra striping */
+    tr:nth-of-type(odd) { 
+        background: #eee; 
     }
-    .sendRequest{
-        margin-top: 24px;
-    } 
-    .search-content{
-        margin: 0;
-    } 
-     th{
-        font-size: 100%;
+    th { 
+        background: #333; 
+        color: white; 
+        font-weight: bold; 
+        text-align: center; 
+    }
+    td, th { 
+        padding: 6px; 
+        border: 1px solid #ccc; 
+        text-align: center; 
+    }
+    #card_title{
         font-weight: bold;
-    }
-    th, td {
-        padding: 8px;
-        text-align: left;
+        margin: 5px 30px 5px 0;
         border-bottom: 1px solid #ddd;
     }
-</style>
-@stop 
+    .card_desc{
+        padding:5px;
+        margin: 5px 5px 5px 0;
+        width: 100%;
+    }
+    #card_subtitle{
+        max-width:30px;
+        padding-right: 30px;
+        margin: 30px 30px 30px 0;
+        font-weight: bold;
+    }
+    /* 
+    Max width before this PARTICULAR table gets nasty
+    This query will take effect for any screen smaller than 760px and also iPads specifically.
+    */
+    @media 
+    only screen and (max-width: 760px),
+    (min-device-width: 768px) and (max-device-width: 1024px)  {
 
-@section('content')
-
-<div class="container"> 
-    <div class="row">  
-        <div class="col-md-12 col-sm-12 col-xs-12">
-
-            <div class="page-sub-title textcenter">
-                <h2>New Ride Request</h2>
-                <div class="line"></div>
-            </div><!-- end .page-sub-title -->
-
-        </div><!-- end .col-md-12 col-sm-12 col-xs-12 -->
-         <div class="col-md-12 col-sm-12 col-xs-12">
-
-            <div class="search-content">
-
-                <form action="" novalidate autocomplete="off" class="idealforms searchtours">
-
-                    <div class="row">
-                        <table>
-                            <tr>
-                                <th class="col-md-3 col-sm-6" id="title">From</th>
-                                <th class="col-md-3 col-sm-6">Destination</th>
-                                <th class="col-md-3 col-sm-6">Customer</th>    
-                                <th class="col-md-3 col-sm-6">No. of Pax</th>
-                                <th class="col-md-3 col-sm-6">Date & Time</th>
-                                <th colspan="2" class="col-md-3 col-sm-6" style="text-align: center;">Action</th>
-                            </tr>
-
-                            <tr>
-                                <td class="col-md-3 col-sm-6">Woodlands</td>
-                                <td class="col-md-3 col-sm-6">Orchard </td>
-                                <td class="col-md-3 col-sm-6">Janice</td>
-                                <td class="col-md-3 col-sm-6">1</td>
-                                 <td class="col-md-3 col-sm-6">October 09, 2017 at 08:30 AM</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a></td>
-                                <td class="col-md-3 col-sm-6"><a href="#">Accept</a></td>   
-                            </tr>
-                            <tr>
-                                <td class="col-md-3 col-sm-6">Boon Lay</td>
-                                <td class="col-md-3 col-sm-6">Orchard</td>
-                                <td class="col-md-3 col-sm-6">Jean</td>
-                                <td class="col-md-3 col-sm-6">2</td>
-                                <td class="col-md-3 col-sm-6">October 1, 2017 at 17:30 PM</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a></td>
-                                <td class="col-md-3 col-sm-6"><a href="#">Accept</a></td>   
-                            </tr>
-                            <tr>
-                                <td class="col-md-3 col-sm-6">Orchard</td>
-                                <td class="col-md-3 col-sm-6">Lakeside </td>
-                                <td class="col-md-3 col-sm-6">James</td>
-                                <td class="col-md-3 col-sm-6">1</td>
-                                <td class="col-md-3 col-sm-6">October 12, 2017 at 07:10 AM</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a></td>
-                                <td class="col-md-3 col-sm-6"><a href="#">Accept</a></td>  
-                            </tr>
-                            <tr>
-                                <td class="col-md-3 col-sm-6">Boon Lay</td>
-                                <td class="col-md-3 col-sm-6">Woodlands </td>
-                                <td class="col-md-3 col-sm-6">Apyt</td>
-                                <td class="col-md-3 col-sm-6">1</td>
-                                <td class="col-md-3 col-sm-6">October 13, 2017 at 17:40 PM</td>
-                                <td class="col-md-3 col-sm-6"><a href="#">View</a></td>
-                                <td class="col-md-3 col-sm-6"><a href="#">Accept</a></td> 
-                            </tr>
-                        </table>
-
-                    </div> 
-                </form>
-            </div><!-- end .search-content -->
-        </div> 
-
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="rides-list"> 
-                <article class="ride-box clearfix">
-                    <h3>From Woodlands to Orchard</h3>
-                   
-
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                               Estimated Fare:  <i class="fa fa-money"></i> 6
-                  
-                        </li><!-- end .ride-date -->
-                        <li class="ride-date">           
-                                <i class="fa fa-calendar"></i>
-                                October 09, 2017 at 08:30 AM
-                        </li>
-                        <li class="ride-people">
-                                <i class="fa fa-user"></i>
-                                1
-                        </li><!-- end .ride-people -->
-
-                        <li>
-                                <i class="fa fa-user"></i>
-                                Janice
-                        </li>
-                        <li>
-                           
-                                <i class="fa fa-file"></i>
-                                Note: Wait at Woodlands Shopping Centre Taxi Stand.Thank you! 
-                        `</li>
-                         
-                    </ul><!-- end .ride-meta -->
-                    
-                    <br>
-                  <div class="field">
-                                <button type="submit" class="submit btn green-color" style="width: 45%;">Accept</button>
-                 </div>
-                </article><!-- end .ride-box -->
-               
-                <div class="clearfix"></div>
-                
-              
-            </div><!-- end .events-list -->
-            
-        </div><!-- end .page-content --> 
-    </div><!-- end .row -->
-</div><!-- end .container -->
-
-@stop
-
-@section('scripts')
-<script>
-    var pick = "default";
-    var dest = "default";
-    function myMap() {
-        var marker = null;
-
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
-
-        var mapProp = {
-            center: new google.maps.LatLng(1.290270, 103.851959),
-            zoom: 11
-        };
-        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-        var infoWindow = new google.maps.InfoWindow;
-
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-
-                //infoWindow.setPosition(pos);
-                //infoWindow.setContent('Your Location');
-                //infoWindow.open(map);
-                map.setCenter(pos);
-                map.setZoom(15);
-                marker = new google.maps.Marker({
-                    position: pos,
-                    draggable: false,
-                    animation: google.maps.Animation.DROP
-                });
-
-                marker.setMap(map);
-
-            }, function () {
-                handleLocationError(true, infoWindow, map.getCenter());
-            });
-        } else {
-            // Browser doesn't support Geolocation
-            handleLocationError(false, infoWindow, map.getCenter());
+        /* Force table to not be like tables anymore */
+        table, thead, tbody, th, td, tr { 
+            display: block; 
         }
 
-        if ($("#pickup").change(function () {
-            pick = $(this).val();
-            if (pick !== "default" && dest !== "default") {
-                calculateAndDisplayRoute(directionsService, directionsDisplay);
-            }
+        /* Hide table headers (but not display: none;, for accessibility) */
+        thead tr { 
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
 
-        }))
-            if ($("#destination").change(function () {
-                dest = $(this).val();
-                if (pick !== "default" && dest !== "default") {
-                    calculateAndDisplayRoute(directionsService, directionsDisplay);
+        tr { border: 1px solid #ccc; }
+
+        td { 
+            /* Behave  like a "row" */
+            border: none;
+            border-bottom: 1px solid #eee; 
+            position: relative;
+            padding-left: 50%; 
+        }
+
+        td:before { 
+            /* Now like a table header */
+            position: absolute;
+            /* Top/left values mimic padding */
+            top: 6px;
+            left: 6px;
+            width: 45%; 
+            padding-right: 10px; 
+            white-space: nowrap;
+        }
+        /*
+Label the data
+        */
+        td:nth-of-type(1):before { content: "Booking #"; }
+        td:nth-of-type(2):before { content: "From"; }
+        td:nth-of-type(3):before { content: "Destination"; }
+        td:nth-of-type(4):before { content: "Customer"; }
+        td:nth-of-type(5):before { content: "Ride Date&Time"; }
+        td:nth-of-type(6):before { content: "Total Fare"; }
+        td:nth-of-type(7):before { content: "Settlement Price"; }
+        td:nth-of-type(8):before { content: "Actions"; }
+
+
+    </style>
+    @stop 
+
+    @section('content')
+
+    <div class="container"> 
+        <div class="row">  
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="page-sub-title textcenter">
+                    <h2>New Ride Request</h2>     
+                </div><!-- end .page-sub-title -->
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking #</th>
+                            <th>From</th>
+                            <th>Destination  </th>
+                            <th>Customer</th>
+                            <th>Ride Date&Time</th>
+                            <th>Total Fare</th>
+                            <th>Settlement Price</th>
+                            <th colspan="2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(count($tasks) > 0 )
+    
+                        @foreach ($tasks as $task)
+                        <tr class="id{{ $task->booking_id}}">
+                            <td>{{ $task->booking_id}}</td>
+                            <td>{{ $task->pickup }}</td>
+                            <td>{{ $task->destination }}</td>
+                            <td>{{ $task->first_name }} {{ $task->last_name }}</td>
+                            <td>{{ $task->route_datetime }}</td>
+                            <td><i class="fa fa-money"></i> {{ $task->price }}</td>
+                            <td><i class="fa fa-money"></i> {{ $task->price*0.9 }}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary view" data-toggle="modal" data-id ={{ $task->booking_id}}>View</button>
+                            </td>
+                            <td> 
+                                <button type="button" class="btn btn-danger accept" data-toggle="modal" data-id ={{ $task->booking_id}}>Accept</button>
+                            </td>
+
+                        </tr>
+                        @endforeach
+                        @else
+                        <tr>
+                            <td scope="row" colspan="9">No Record Found.</td>
+
+                        </tr>
+                        @endif   
+                    </tbody>
+                </table>
+            </div>
+        </div><!-- end .row -->
+    </div><!-- end .container -->
+
+    @stop
+
+    @section('modals')
+    @include('driver/details_modal')
+    @include('driver/accept_modal')
+    @stop
+
+
+    @section('scripts')
+    <script type="text/javascript">
+        $('.view').on('click', function (e) {
+            var booking_id = $(this).data('id');
+            //console.log('route' + route_id);
+            e.preventDefault();
+            $.ajax({
+                url: "{{ URL::to('task/view') }}/" + booking_id,
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    console.log(data);
+                    $('#bookingID span').html(data['data']['booking_id']);
+                    $('#name span').html(data['data']['name']);
+                    $('#contactno span').html(data['data']['contactno']);
+                    $('#priceD span').html(data['data']['price']);
+                    $('#settlePriceD span').html(data['data']['price'] * 0.9);
+                    $('#seats span').html(data['data']['seats']);
+                    $('#pickupD span').html(data['data']['pickup']);
+                    $('#destD span').html(data['data']['destination']);
+                    $('#noteD span').html(data['data']['notes']);
+                    $('#route').val(booking_id);
+                    $('#viewModal').modal('show');
+                },
+                error: function (data) {
+                    console.log(data);
                 }
-
-            }))
-                directionsDisplay.setMap(map);
-    }
-
-    function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-        directionsService.route({
-            origin: document.getElementById('pickup').value,
-            destination: document.getElementById('destination').value,
-            travelMode: 'DRIVING'
-        }, function (response, status) {
-            if (status === 'OK') {
-                directionsDisplay.setDirections(response);
-            } else {
-                window.alert('Directions request failed due to ' + status);
-            }
+            });
         });
-    }
 
-</script> 
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>
-@stop
+ $('.accept').on('click', function (e) {
+            var booking_id = $(this).data('id');
+            //console.log('route' + route_id);
+            e.preventDefault();
+              if (confirm('Are you sure to accept the booking?'))
+            {
+            $.ajax({
+                type: "GET",
+                url: "{{ URL::to('task/accept') }}/" + booking_id,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    $("#acceptModal").modal('show');
+                    $('.id' + booking_id).remove();
+                    //$('#route').val(booking_id);
+                    //$('#viewModal').modal('show');
+                },
+                error: function (data) {
+                    console.log(data);
+                    alert("fail");
+                }
+            });
+        }else{
+            close();
+        }
+        });
+
+/*
+        $(document).on('click', '.accept', function (e) {
+            var id = $(this).val();
+            //alert($(this).val()) 
+            e.preventDefault();
+            if (confirm('Are you sure to accept the booking?'))
+            {
+
+                $.ajax({
+                    type: "get",
+                    url: "{{url('driver/task/accept')}}",
+                    data: {'id': id},
+                    success: function (data)
+                    {
+                        $('.id' + id).remove();
+                    }
+                })
+            } else {
+                close();
+            }
+        })
+        */
+
+    </script>
+    @stop

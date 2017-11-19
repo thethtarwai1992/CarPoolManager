@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Http\Request;
+use App\Http\Requests\UploadRequest;
 use App\Route;
 use App\Driver;
 use App\Booking;
@@ -30,11 +31,9 @@ class TaskController extends Controller {
     
     // Show all the driver's tasks - scheduled, ongoing, canceled, closed
     public function show() {
-        //$driver = Driver::driver(Auth::user()->userID)->get();
-
         $tasks=DB::table('bookings')
             ->join('users', 'passenger_id', '=', 'users.userID')
-            ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
+            ->join('routes', 'bookings.route_id', '=', 'routes.route_id')     
             ->select('booking_id','pickup','destination','first_name','last_name','contactNO','route_datetime','bookings.status as b_status','price')
             ->where('bookings.driver_id', Auth::user()->userID)
             ->get();
@@ -44,45 +43,54 @@ class TaskController extends Controller {
 
     // Show the scheduled tasks
      public function showScheduled() {
-        //$driver = Driver::driver(Auth::user()->userID)->get();
-
         $tasks=DB::table('bookings')
             ->join('users', 'passenger_id', '=', 'users.userID')
             ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
             ->select('booking_id','pickup','destination','first_name','last_name','contactNO','route_datetime','bookings.status as b_status','price')
             ->where('bookings.driver_id', Auth::user()->userID)
             ->where('bookings.status','scheduled')
+            ->orderBy('route_datetime','asc')
             ->get();
+         
         
         return view('driver.scheduled_booking', compact ('tasks'));
     }
     
+    // Show all the new ride request posted by passenger
     public function newRequest(){
+        $tasks=DB::table('bookings')
+            ->join('users', 'passenger_id', '=', 'users.userID')
+            ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
+            ->select('booking_id','pickup','destination','first_name','last_name','contactNO','route_datetime','bookings.status as b_status','price')
+            ->where('routes.posted_by', '!=',Auth::user()->userID)
+            ->where('routes.posted_type', 'Passenger')
+            ->where('routes.route_datetime','>=', now())
+            ->where('bookings.status','Open')
+            ->orderBy('route_datetime','asc')
+            ->get();
         
-        
-         return view('driver.new_request');
+    
+         return view('driver.new_request',compact ('tasks'));
     }
     
-    
-    public function cancel(Request $request) {
-
+    // Driver cancel booking
+    public function cancel(UploadRequest $request) {
       date_default_timezone_set('Asia/Singapore');
-       
-     $now= date("Y-m-d H:i:s");
+      $now= date("Y-m-d H:i:s");
        
       if ($request->isMethod('post')){
            $booking_id = $request->input('booking');
            $reason = $request->input('reasons');
-           $doc = $request->input('supportDoc');
+           $docName = $request->supportDoc->store('supportDoc'); 
            
-           // Update status of booking & route
+           // Update status of booking & route   
            $booking = Booking::find($booking_id);
             $route = Route::find($booking->route_id);
 
             if ($route->route_datetime > $now) {
                 $route->status = 'Open'; // reopen for other passenger to book
             } else {
-                $route->status = 'Closed';
+                $route->status = 'Canceled';
             }
 
             $booking->status = 'Canceled';
@@ -92,25 +100,19 @@ class TaskController extends Controller {
              // Store cancel reason and support doc
             $cancel = new Cancellations;
             $cancel->reason = $reason;
-            $cancel->support_doc = $doc;
-             $cancel->booking_id = $booking_id;
+            $cancel->support_doc = $docName;
+            $cancel->booking_id = $booking_id;
+            $cancel->cancel_by = Auth::user()->userID;
+            $cancel->cancel_type = "Driver";
+               
            $cancel->save();
            
            return back();
+
         }
         
         return back()->with('failure', 'Sorry! Cancellation Fails!');
-  /*   
-     if($request->ajax()){
-       $id=$request['id'];
-       
-        
-         return response()->json(['msg' => 'Booking canceled successfully']);
-    }
 
-    return response()->json(['msg' => 'Fail']);
-   * 
-   */
     } 
     
      public function view($booking_id) {
@@ -137,5 +139,27 @@ class TaskController extends Controller {
         }
         return response()->json(['response' => 'Fail', 'data' => $tasks]);
   
+    }
+    
+    // Accept new ride request
+    public function accept($booking_id){
+            $booking = Booking::find($booking_id);
+            if(count($booking)>0){
+                $booking->status="Scheduled";
+                $booking->driver_id=Auth::user()->userID;
+     
+                $driver=Driver::where('userID', Auth::user()->userID)->first();
+                $route=Route::find($booking->route_id);
+                if(count($route)>0){
+                    $route->drivers_driving_license_no= $driver->driving_license_no;
+                    $route->status="Scheduled";
+                     $booking->save();
+                    $route->save();      
+                    return response()->json(['msg'=>"Accept booking successfully!"]);
+                }
+                
+            }
+
+        return response()->json(['msg' => 'Fail']);
     }
 }

@@ -1349,6 +1349,10 @@ form.idealforms textarea
     background: #f4f1e3;
     color: #63a599;
 }
+.idealselect .dropdown li.placeholder
+{
+    display: none;
+}
 .idealselect .title:after
 {
     border-color: #63a599 transparent transparent

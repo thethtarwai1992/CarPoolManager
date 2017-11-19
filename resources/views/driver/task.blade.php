@@ -2,24 +2,81 @@
 @section('title', '- Rides') 
 @section('styles')
 <style>
-    table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        width: 100%;
-        border: 1px solid #ddd;
+ /* 
+           Generic Styling, for Desktops/Laptops 
+    */
+    table { 
+        width: 100%; 
+        border-collapse: collapse; 
     }
-    th{
-        font-size: 100%;
-        font-weight: bold;
-        text-align: center;
-        padding:5px;
-        margin: 5px;
+    /* Zebra striping */
+    tr:nth-of-type(odd) { 
+        background: #eee; 
     }
-    th, td {
-        padding: 8px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
+    th { 
+        background: #333; 
+        color: white; 
+        font-weight: bold; 
+        text-align: center; 
     }
+    td, th { 
+        padding: 6px; 
+        border: 1px solid #ccc; 
+        text-align: center; 
+    }
+     /* 
+    Max width before this PARTICULAR table gets nasty
+    This query will take effect for any screen smaller than 760px and also iPads specifically.
+    */
+    @media 
+    only screen and (max-width: 760px),
+    (min-device-width: 768px) and (max-device-width: 1024px)  {
+
+        /* Force table to not be like tables anymore */
+        table, thead, tbody, th, td, tr { 
+            display: block; 
+        }
+
+        /* Hide table headers (but not display: none;, for accessibility) */
+        thead tr { 
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        tr { border: 1px solid #ccc; }
+
+        td { 
+            /* Behave  like a "row" */
+            border: none;
+            border-bottom: 1px solid #eee; 
+            position: relative;
+            padding-left: 50%; 
+        }
+
+        td:before { 
+            /* Now like a table header */
+            position: absolute;
+            /* Top/left values mimic padding */
+            top: 6px;
+            left: 6px;
+            width: 45%; 
+            padding-right: 10px; 
+            white-space: nowrap;
+        }
+        /*
+Label the data
+        */
+        td:nth-of-type(1):before { content: "Booking #"; }
+        td:nth-of-type(2):before { content: "From"; }
+        td:nth-of-type(3):before { content: "Destination"; }
+        td:nth-of-type(4):before { content: "Customer"; }
+        td:nth-of-type(5):before { content: "Ride Date & Time"; }
+        td:nth-of-type(6):before {content:"Status";}
+        td:nth-of-type(7):before { content: "Total Fare"; }
+        td:nth-of-type(8):before { content: "Settlement Price"; }
+        td:nth-of-type(9):before { content: "Actions"; }
+
     #card_title{
         font-weight: bold;
         margin: 5px 30px 5px 0;
@@ -36,7 +93,6 @@
         margin: 30px 30px 30px 0;
         font-weight: bold;
     }
-
 </style>
 @stop 
 
@@ -53,15 +109,15 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th width="5%" style="text-align:center">Booking #</th>
-                        <th width="20%">From</th>
-                        <th  width="20%">Destination  </th>
-                        <th  width="10%">Customer</th>
-                        <th  width="15%">Ride Date&Time</th>
-                        <th  width="15%">Status</th>
-                        <th  width="10%" colspan="2">Total Fare</th>
-                        <th  width="10%" colspan="2">Settlement Price</th>
-                        <th  width="15%" style="text-align:center" colspan="2">Actions</th>
+                        <th>Booking #</th>
+                        <th>From</th>
+                        <th>Destination  </th>
+                        <th>Customer</th>
+                        <th>Ride Date & Time</th>
+                        <th>Status</th>
+                        <th>Total Fare</th>
+                        <th>Settlement Price</th>
+                        <th colspan="2">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,18 +125,18 @@
 
                     @foreach ($tasks as $task)
                     <tr class="id{{ $task->booking_id}}">
-                        <th scope="row" style="text-align:center">{{ $task->booking_id}}</th>
+                        <td>{{ $task->booking_id}}</td>
                         <td>{{ $task->pickup }}</td>
                         <td>{{ $task->destination }}</td>
                         <td>{{ $task->first_name }} {{ $task->last_name }}</td>
                         <td>{{ $task->route_datetime }}</td>
                         <td>{{ $task->b_status }}</td>
-                        <td><i class="fa fa-money"></td><td>{{ $task->price }}</td>
-                        <td><i class="fa fa-money"></td><td>{{ $task->price*0.9 }}</td>
-                        <td style="text-align:center">
+                        <td><i class="fa fa-money"></i> {{ $task->price }}</td>
+                        <td><i class="fa fa-money"></i> {{ $task->price*0.9 }}</td>
+                        <td>
                             <button type="button" class="btn btn-primary view" data-toggle="modal" data-id ={{ $task->booking_id}}>View</a>
                            </td>
-                        <td style="text-align:center"> 
+                        <td> 
                             @if( $task->b_status== "Scheduled")
                             <button type="button" class="btn btn-danger delete" data-toggle="modal" value={{ $task->booking_id}}>Cancel</button>
                              @else
@@ -92,7 +148,7 @@
                 @endforeach
                 @else
                 <tr>
-                    <th scope="row" colspan="8">No Record Found.</th>
+                    <td scope="row" colspan="10">No Record Found.</td>
 
                 </tr>
                 @endif   
@@ -106,6 +162,7 @@
 
 @section('modals')
 @include('driver/details_modal')
+@include('driver/cancel_modal')
 @stop
 
 
@@ -139,25 +196,13 @@ $('.view').on('click', function (e) {
         });
     });
     
-    $(document).on('click','.delete',function(e){
-        var id=$(this).val();
-        //alert($(this).val())
-        if(confirm('Are you sure to cancel the booking? Your ranking will be downgraded. Click "OK" to continue cancellation.'))
-        {
-            
-            $.ajax({
-                type    :   "get",
-                url       :   "{{url('driver/task/cancel')}}",
-                data    :   {'id' :id},
-                success:function(data)
-                {
-                   $('.id'+id).remove();
-                }
-            })
-        }else{
-            close();
-        }
-    })
+    $(document).ready(function () {
+            $(".delete").click(function () {
+                var booking_id = $(this).val();
+                $('#booking').val(booking_id);
+                $("#cancelModal").modal();
+            });
+        });
     
 </script>
 @stop

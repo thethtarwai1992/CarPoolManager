@@ -2,7 +2,8 @@
 <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="{{URL::to('driver/task/cancel')}}"  method="POST" >
+          
+            <form action="{{URL::to('driver/task/cancel')}}"  method="POST" enctype="multipart/form-data">
 
                 {{ csrf_field() }}
                 <input name='booking' id='booking' value='' type='hidden'>
@@ -45,8 +46,15 @@
                                                     </label>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="exampleInputFile">Submit Support Doc</label>
+                                                    <label for="exampleInputFile"><strong>Submit Support Doc </strong>(File Type: jpeg, bmp, png; Max. Size 2MB)</label>
                                                 <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" name="supportDoc">
+                                                @if (count($errors) > 0)
+                                                         @foreach ($errors->all() as $error)
+                                           <span class="help-block">
+                                               <li><strong style="color:red">{{ $error }}</strong></li>
+                                           </span>
+                                      @endforeach
+                                      @endif
                                                 </div>
                                             </fieldset>
 
