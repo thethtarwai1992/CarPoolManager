@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use DateTime;
 use App\Booking;
 use App\Route;
+//use App\User;
+//use App\Notifications\BookingNotification;
 
 class BookingController extends Controller {
 
@@ -24,6 +27,10 @@ class BookingController extends Controller {
         return view('driver.new_request');
     }
 
+    public function test() {
+        return view('layouts.app');
+    }
+
     //Passenger raise request
     public function store(Request $request) {
 
@@ -32,7 +39,6 @@ class BookingController extends Controller {
             $route->available_seats = $request->seats;
             $route->pickup = $request->pick;
             $route->destination = $request->dest;
-            $route->price = $request->price;
             $route->posted_by = Auth::user()->userID;
             $route->posted_type = "Passenger";
             $route->save();
@@ -41,11 +47,17 @@ class BookingController extends Controller {
             $booking->request_time = date("Y-m-d H:i:s");
             $booking->status = "Open";
             $booking->seats = $request->seats;
+            $booking->price = $request->price;
             $booking->passenger_id = Auth::user()->userID;
             $booking->driver_id = 0;
             $booking->route_id = $route->route_id;
             $booking->save();
-
+            //TESTING PUSH NOTIFICATION
+            //$user = User::find(4);             
+            //$user->notify(new BookingNotification($user));
+            
+            $request->session()->put('booked', true); 
+            $request->session()->put('booking_id', $booking->booking_id);
             return response()->json(['response' => 'Success']);
         }
 
@@ -55,7 +67,7 @@ class BookingController extends Controller {
     //Passenger book from driver's post
     public function book(Request $request) {
 
-        if ($request->isMethod('post') && $this->booking($request)) {
+        if ($request->isMethod('post') && $this->booking($request)) { 
             return back()->with('success', 'Booking successful! Sit back and relax, we will notify you!');
         }
         return back()->with('failure', 'Sorry! Booking Fails!');
@@ -67,6 +79,7 @@ class BookingController extends Controller {
             $booking = new Booking;
             $booking->request_time = date("Y-m-d H:i:s");
             $booking->status = "Booked";
+            $booking->price = $request->price;
             $booking->seats = $request->booking_seats;
             $booking->passenger_id = Auth::user()->userID;
             $booking->driver_id = $route->posted_by;
@@ -82,7 +95,40 @@ class BookingController extends Controller {
         }
 
         return false;
-    } 
+    }
+
+    //Check every min after book
+    public static function checkBookingTime() {
+
+        if (request()->session()->exists('booking_id')) {
+            $booking_id = request()->session()->get('booking_id');
+            $booking = Booking::find($booking_id);
+
+            $request_time = new DateTime($booking->request_time);
+            $now = new DateTime();
+            $interval = $request_time->diff($now);
+            if ($interval->format('%I') > 1) {
+                //After 3min stop finding driver//set 1min for testing
+                 self::delete($booking_id);
+                 request()->session()->forget('booking_id');
+                 request()->session()->forget('booked');  
+                 request()->session()->put('driverNotFound', true);  
+            }
+        }
+        
+    }
+
+    public static function bookingUpdate() {
+        if (request()->session()->exists('booking_id')) {
+            $booking_id = request()->session()->get('booking_id');
+            $booking = Booking::find($booking_id);
+            if ($booking->status == "Scheduled") {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // View details for my rides
     public function view($booking_id) {
         $data = Booking::with('route', 'driver', 'driver.driver.car')
@@ -114,14 +160,16 @@ class BookingController extends Controller {
             return response()->json(['response' => 'Success', 'data' => $routes]);
         }
         return response()->json(['response' => 'Fail', 'data' => null]);
-    } 
+    }
 
     public function edit($id) {
         
     }
-
-    public function cancel($id) {
-        
-    }
-
+    //Delete after not able to find the driver (Now booking)
+    public static function delete($id) {
+        $booking = Booking::find($id);
+        $route = Route::find($booking->route_id);
+        $booking->delete();
+        $route->delete();
+    }  
 }

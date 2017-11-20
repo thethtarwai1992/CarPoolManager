@@ -61,7 +61,7 @@ class DriverController extends Controller {
 
     public function switchToDriver(Request $request) {
         if (Auth::user()->is_driver) {
-            $request->session('driverView', true);
+            $request->session()->put('driverView', true);
 
             return redirect()->route('driver.index')
                             ->with('driver', 'You are now using app as Driver!');
