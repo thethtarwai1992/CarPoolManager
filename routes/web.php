@@ -27,6 +27,7 @@ Route::get('route/view/{id}', 'RouteController@view');
 
 Route::get('driver/task', 'TaskController@show'); 
 Route::post('driver/task/cancel', 'TaskController@cancel'); 
+Route::get('task/accept/{id}', 'TaskController@accept'); 
 Route::get('driver/scheduled', 'TaskController@showScheduled'); 
 Route::get('driver/new_request', 'TaskController@newRequest'); 
 Route::get('task/view/{id}', 'TaskController@view'); 

@@ -37,6 +37,8 @@ class BookingController extends Controller {
 
         if ($request->isMethod('post')) {
             $route = new Route;
+            $route->status="Open";
+            $route->route_datetime=date("Y-m-d H:i:s");
             $route->available_seats = $request->seats;
             $route->pickup = $request->pick;
             $route->destination = $request->dest;
@@ -78,9 +80,9 @@ class BookingController extends Controller {
         $route = Route::find($request->route);
         if ($route) {
             $booking = new Booking;
-            $booking->request_time = date("Y-m-d H:i:s");
-            $booking->status = "Booked";
-            $booking->price = $request->price;
+            $booking->request_time = date("Y-m-d H:i:s"); 
+            $booking->status = "Scheduled";
+            $booking->price = $request->price; 
             $booking->seats = $request->booking_seats;
             $booking->passenger_id = Auth::user()->userID;
             $booking->driver_id = $route->posted_by;

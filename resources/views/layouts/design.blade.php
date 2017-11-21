@@ -126,13 +126,13 @@
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
                                             <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->first_name }} {{ Auth::user()->last_name or ''}}  <span class="caret"></span></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->first_name }} {{ Auth::user()->last_name}}  <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{URL::to('user')}}">My Account</a></li>
                                                     <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
                                                     <li><a href="#">My Favorites</a></li> 
                                                     @if(Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())
-                                                    <li><a href="{{URL::to('driver/switch-to-driver')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
+                                                    <li><a href="{{URL::to('driver/task')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
                                                     @elseif(!Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())                                                    
                                                     <li><a href="{{URL::to('driver/register')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
                                                     @elseif(Auth::user()->is_driver && \App\Libraries\General::checkIfDriver())

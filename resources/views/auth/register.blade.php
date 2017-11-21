@@ -69,11 +69,11 @@
                             <div class="col-md-6">
                                
                                     <label>  
-                                        <input id="gender1" type="radio"  name="gender" value="Female" checked="" required>Female
+                                        <input id="gender1" type="radio"  name="gender" value="F" checked="" required>Female
                                     </label>
          
                                     <label>  
-                                <input id="gender2" type="radio"  name="gender" value="Male" >Male
+                                <input id="gender2" type="radio"  name="gender" value="M" >Male
                                     </label>
                                 
                             </div>

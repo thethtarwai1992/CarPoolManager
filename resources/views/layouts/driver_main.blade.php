@@ -28,7 +28,7 @@
         {!!  HTML::style("css/slicknav.css") !!}
         <!-- Main style -->
         {!!  HTML::style("css/style.css") !!}
-
+      
         <!-- Modernizr -->
         {!! HTML::script("js/modernizr.js") !!} 
 
@@ -130,7 +130,7 @@
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
                                             <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->first_name }} {{ Auth::user()->last_name or ''}} <span class="caret"></span></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}  <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{URL::to('driver/profile')}}">My Account</a></li>                
                                                     <li><a href="{{URL::to('/')}}">Switch to Passenger?</a></li>
@@ -232,18 +232,16 @@
                                                         <a href="{{URL::to('driver/task')}}">Tasks</a>
                                                     </li> 
                                                     <li>
-                                                        <a href="{{URL::to('driver/scheduled')}}">Scheduled</a>
+                                                        <a href="{{URL::to('driver/scheduled')}}">Scheduled Ride</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{URL::to('driver/new_request')}}">Post</a>
+                                                        <a href="{{URL::to('driver/new_request')}}">New Ride</a>
                                                     </li>  
                                                     </li>
                                                     <li>
                                                         <a href="{{URL::to('driver/route')}}">Routes</a>
                                                     </li>  
-                                                    <li>
-                                                        <a href="contact-page.html">Contact</a>
-                                                    </li>
+                                                  
                                                 </ul>
 
                                             </nav><!-- end .main-navigation -->

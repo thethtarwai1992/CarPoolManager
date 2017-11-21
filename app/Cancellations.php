@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model; 
+use App\Booking;
 
 class Cancellations extends Model {
 
@@ -14,7 +15,7 @@ class Cancellations extends Model {
      * @var array
      */
     protected $fillable = [
-        'reason', 'remarks','cancel_id','support_doc','booking_id'
+        'reason', 'remarks','cancel_id','support_doc','booking_id','cancel_by','cancel_type'
     ];
 
     /**
@@ -26,6 +27,8 @@ class Cancellations extends Model {
       
     ];
     
-    public  $timestamps = false;
-    public $incrementing = false;
+    public function booking() {
+        return $this->belongsTo(Booking::class, 'booking_id');
+    }
+
 }
