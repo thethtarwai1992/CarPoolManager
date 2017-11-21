@@ -2,12 +2,15 @@
 
 namespace App;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use App\Car;
 use App\User;
 
 class Driver extends Model {
 
+    use Notifiable;
+    
     protected $primaryKey = 'driving_license_no';
     
     /**

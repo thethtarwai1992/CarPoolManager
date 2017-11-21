@@ -4,8 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model; 
 use App\Route;
-use App\User;
-use App\Driver;
+use App\User; 
 
 class Booking extends Model {
 

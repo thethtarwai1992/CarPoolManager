@@ -15,12 +15,16 @@ class RideController extends Controller {
     }
 
     public function index() {
+        
+        if(Auth::check() && (request()->session()->exists('driverFound'))){ 
+            return redirect('bookings/ongoing'); 
+        }
         $booked = false;
         $driverposts = array();
         //Need to check if current rides is ongoing..cannot book another rides!!
         if (Auth::check() && request()->session()->exists('booked')) {
             if (BookingController::bookingUpdate()) {
-                return redirect()->route('on-the-way')->with("success", "Driver Found!");
+                return redirect('bookings/ongoing')->with("success", "Driver Found!");
             } else {
                 BookingController::checkBookingTime();
                 $booked = true;

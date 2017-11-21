@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
+use App\Driver;
 use App\Booking;
 
 class Route extends Model {
@@ -34,7 +35,10 @@ class Route extends Model {
     }
     public function driver() {
         return $this->belongsTo(User::class,'posted_by');
-    }    
+    }
+    public function driverInfo() {
+        return $this->belongsTo(Driver::class,'drivers_driving_license_no');
+    }         
     public function passenger() {
         return $this->belongsTo(User::class,'posted_by');
     }

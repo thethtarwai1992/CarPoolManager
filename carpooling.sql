@@ -27,10 +27,11 @@ DROP TABLE IF EXISTS `cars`;
 DROP TABLE IF EXISTS `drivers`;
 DROP TABLE IF EXISTS `preferences`;
 DROP TABLE IF EXISTS `routes`;
-DROP TABLE IF EXISTS `users`;
-
+DROP TABLE IF EXISTS `users`; 
+DROP TABLE IF EXISTS `cancellations`;
+ 
 -- --------------------------------------------------------
-
+ 
 --
 -- Table structure for table `bookings`
 --
@@ -42,7 +43,7 @@ CREATE TABLE `bookings` (
   `start` datetime DEFAULT NULL,
   `end` datetime DEFAULT NULL,
   `status` varchar(10) NOT NULL,
-  `price` decimal(2,0) DEFAULT NULL,
+  `price` decimal(4,2) DEFAULT NULL,
   `passenger_id` int(11) NOT NULL,
   `driver_id` int(11) NOT NULL,
   `route_id` int(11) NOT NULL,
@@ -152,8 +153,7 @@ CREATE TABLE `routes` (
   `route_datetime` datetime DEFAULT NULL,
   `comment` varchar(100) DEFAULT NULL,
   `pickup` varchar(100) NOT NULL,
-  `destination` varchar(100) NOT NULL,
-  `price` decimal(2,0) DEFAULT '0',
+  `destination` varchar(100) NOT NULL, 
   `drivers_driving_license_no` varchar(45) DEFAULT NULL,
   `posted_by` int(11) NOT NULL,
   `posted_type` varchar(25) NOT NULL,

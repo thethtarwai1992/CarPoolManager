@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use DateTime;
 use App\Booking;
 use App\Route;
+
 //use App\User;
 //use App\Notifications\BookingNotification;
 
@@ -55,8 +56,8 @@ class BookingController extends Controller {
             //TESTING PUSH NOTIFICATION
             //$user = User::find(4);             
             //$user->notify(new BookingNotification($user));
-            
-            $request->session()->put('booked', true); 
+
+            $request->session()->put('booked', true);
             $request->session()->put('booking_id', $booking->booking_id);
             return response()->json(['response' => 'Success']);
         }
@@ -67,7 +68,7 @@ class BookingController extends Controller {
     //Passenger book from driver's post
     public function book(Request $request) {
 
-        if ($request->isMethod('post') && $this->booking($request)) { 
+        if ($request->isMethod('post') && $this->booking($request)) {
             return back()->with('success', 'Booking successful! Sit back and relax, we will notify you!');
         }
         return back()->with('failure', 'Sorry! Booking Fails!');
@@ -109,13 +110,12 @@ class BookingController extends Controller {
             $interval = $request_time->diff($now);
             if ($interval->format('%I') > 1) {
                 //After 3min stop finding driver//set 1min for testing
-                 self::delete($booking_id);
-                 request()->session()->forget('booking_id');
-                 request()->session()->forget('booked');  
-                 request()->session()->put('driverNotFound', true);  
+                self::delete($booking_id);
+                request()->session()->forget('booking_id');
+                request()->session()->forget('booked');
+                request()->session()->put('driverNotFound', true);
             }
         }
-        
     }
 
     public static function bookingUpdate() {
@@ -123,10 +123,22 @@ class BookingController extends Controller {
             $booking_id = request()->session()->get('booking_id');
             $booking = Booking::find($booking_id);
             if ($booking->status == "Scheduled") {
+                request()->session()->forget('booked');
+                request()->session()->put('driverFound', true);  
                 return true;
             }
         }
         return false;
+    }
+
+    public function ongoing() {
+        $booking = array();
+        if (Auth::check() && request()->session()->exists('driverFound') ) {
+            $booking = Booking::with('driver','route.driverInfo.car','route')
+                    ->find(request()->session()->get('booking_id'));
+                    //->find(13);
+        }
+        return view('rides.ongoing_booking', compact('booking'));
     }
 
     // View details for my rides
@@ -165,11 +177,39 @@ class BookingController extends Controller {
     public function edit($id) {
         
     }
+
     //Delete after not able to find the driver (Now booking)
     public static function delete($id) {
         $booking = Booking::find($id);
         $route = Route::find($booking->route_id);
         $booking->delete();
         $route->delete();
-    }  
+    }
+    
+    public function cancel() {
+        if (Auth::check() && request()->session()->exists('driverFound')) {
+            $booking = Booking::find(request()->session()->get('booking_id'));
+            if($booking && $booking->status == "Scheduled"){
+                $booking->status = 'Cancelled';
+                $booking->cancel_by = Auth::user()->userID;
+                $booking->cancel_type = 'Passenger';                        
+                $booking->save();
+                
+                $route = Route::find($booking->route_id);
+                if($route->posted_type == 'Passenger' && $route->posted_by == Auth::user()->userID){
+                    $route->status = 'Cancelled';
+                    $route->save(); 
+                }else{
+                    $route->available_seats = $route->available_seats + $booking->seats ;
+                    $route->save();
+                } 
+                request()->session()->forget('booking_id');
+                request()->session()->forget('driverFound'); 
+                return redirect('rides')->with('success','You have successfully cancelled.');
+            }
+            
+        }
+        return redirect()->back()->with('failure','Error occurred.');
+    }
+
 }
