@@ -38,7 +38,7 @@ class RideController extends Controller {
         }
  
         $driverposts = Route::with('bookings')
-                //->whereDate('created_at', date('Y-m-d'))
+                ->whereDate('created_at', date('Y-m-d'))
                 ->where('status','Open')
                 ->where('posted_type', 'Driver')
                 ->where('available_seats', '!=', 0)
@@ -49,8 +49,19 @@ class RideController extends Controller {
     }
 
     public function scheduled() {
-
-        $driverposts = Route::where('status', 'Open')->get();
+ 
+        if(Auth::check() && request()->session()->exists('OngoingRide')){ 
+            return redirect('bookings/ongoing'); 
+        } 
+ 
+        $driverposts = Route::with('bookings') 
+                ->where('status','Open')
+                ->where('route_datetime',">", now())
+                ->where('posted_type', 'Driver')
+                ->where('available_seats', '!=', 0)
+                ->orderBy('created_at', 'desc')
+                ->get();
+ 
         return view('rides.scheduled', compact('driverposts'));
     }
 

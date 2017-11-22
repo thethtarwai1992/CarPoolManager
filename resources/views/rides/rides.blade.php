@@ -1,5 +1,10 @@
 @extends('layouts.design')
 @section('title', '- Rides') 
+@section('metatags')
+@if($booked)
+<meta http-equiv="refresh" content="15" >
+@endif
+@stop
 @section('styles')
 {!! HTML::style("css/view-details-custom.css") !!} 
 {!! HTML::style("css/loading.css") !!} 
@@ -43,7 +48,7 @@
 
 @section('content')
 <!--Need to check if user refresh or not after click send for request-->
-<div class="loading" id='loading'> </div>
+<div class="loading" id='loading' @if($booked) style="display: block!important;" @endif> </div>
 
 <div class="container"> 
     <div class="row">  
@@ -65,16 +70,13 @@
                         {{ csrf_field() }}
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="field"> 
-<!--                                <input id="pickup" placeholder="Pickup Address" onFocus="geolocate()" type="text">-->
-                                <input id="pickup" placeholder="Pickup Address" value="Woodlands ring road" type="text">
+                                <input id="pickup" placeholder="Pickup Address" onFocus="geolocate()" type="text">
                             </div> 
                         </div>
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="field"> 
-<!--                                <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text">-->
-                                <input id="destination" placeholder="Destination Address" value="Taiseng" onFocus="geolocate()" type="text">
-
+                                <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text">
                             </div>
                         </div>
 
@@ -146,9 +148,9 @@
                         <article class="ride-box clearfix">
 
                             <div class="ride-content">
-                                <h3> <b> {{ $post->pickup }} </b> -> <b> {{ $post->destination }}</b></h3> 
+                                <h3> <b> {{ $post->pickup }} </b> <i class="fa fa-arrow-right" aria-hidden="true"></i> <b> {{ $post->destination }}</b></h3> 
 
-                                <i class="fa fa-money"></i>  {{ $post->price }}
+                                <i class="fa fa-money"></i>  {{ App\Http\Controllers\RouteController::getPrice($post->pickup,$post->destination ) }}
                                 <!--<i class="fa fa-calendar"></i> {{ $post->start }} -->
 
                             </div>
@@ -181,15 +183,15 @@
 
 @section('scripts')
 <script>
-    var pick = "default";
-    var dest = "default";
-    var price = 10;
+    var pick ;
+    var dest;
+    var price = 0;
     var outputDiv = document.getElementById('output');
     var outputPrice = document.getElementById('output-price');
     var directionsService, directionsDisplay;
     var autocompletePickup, autocompleteDest;
     var typingTimer;                //timer identifier
-    var doneTypingInterval = 5000;  //time in ms (5 seconds)
+    var doneTypingInterval = 3000;  //time in ms (5 seconds)
 
     function geolocate() {
         if (navigator.geolocation) {
@@ -257,21 +259,23 @@
         }
         $("#pickup").keyup(function () {
             clearTimeout(typingTimer);
-            if ($('#pickup').val()) {
+            if ($('#pickup').val()) {  
+                pick = "default";
                 typingTimer = setTimeout(doneTyping, doneTypingInterval);
             }
         });
         $("#destination").keyup(function () {
             clearTimeout(typingTimer);
-            if ($('#destination').val()) {
+            if ($('#destination').val()) { 
+                dest = "default";
                 typingTimer = setTimeout(doneTyping, doneTypingInterval);
             }
         });
         directionsDisplay.setMap(map);
     }
     function doneTyping() {
-        if (pick && dest) {
-            console.log("ok");
+        if (pick && dest) { 
+            
             calculateAndDisplayRoute(directionsService, directionsDisplay);
             calculateDistance();
         }
@@ -301,20 +305,26 @@
             avoidTolls: false
         }, function (response, status) {
             if (status !== 'OK') {
-                alert('Error was: ' + status);
+                //alert('Error was: ' + status);
+                return false;
             } else {
                 outputDiv.innerHTML = '';
                 outputPrice.innerHTML = '';
                 var results = response.rows[0].elements;
-                console.log(results[0].distance.text);
-                console.log(results[0].duration.text);
+                console.log(results[0].distance);
+                console.log(results[0].duration); 
                 outputDiv.innerHTML += results[0].distance.text + ' in ' +
                         results[0].duration.text + '<br>';
-                outputPrice.innerHTML += 'SGD: ' + price;
-
+                price = calculatePrice(results[0].distance.value, results[0].duration.value);
+                outputPrice.innerHTML += 'SGD: ' + price.toFixed(1);
+                return true;
 
             }
         });
+    }
+    
+    function calculatePrice($distance, $duration){
+        return ($distance/1000 + $duration/60)/2 + 2;  
     }
 
     $("#request").click(function (e) { //alert($("#seats").val());
@@ -340,10 +350,11 @@
                     console.log(result);
                     //$('#loading').css("display", "block");
                     alert('Finding driver for you!');
+                    window.location.reload();
                 },
                 error: function (result) {
                     console.log(result['responseJSON']['message']);
-                    alert('error');
+                    alert('Error occurred! Please try again.');
                 }
             });
         } else {
@@ -353,6 +364,7 @@
 
     $('.view').on('click', function (e) {
         var route_id = $(this).data('id');
+        //alert(route_id);
         //console.log('route' + route_id);
         e.preventDefault();
         $.ajax({
@@ -369,8 +381,10 @@
                 $('#seats span').html(data['data']['seats']);
                 $('#pickupD span').html(data['data']['pickup']);
                 $('#destD span').html(data['data']['destination']);
+                $('#datetimeD span').html(data['data']['datetime']);
 
                 $('#route').val(route_id);
+                $('#priceInput').val(data['data']['price']);
                 $('#details').modal('show');
             },
             error: function (data) {
@@ -389,12 +403,11 @@
             alert("Please select your booking seats!");
             return false;
         } else {
-            alert ("OK " + booking_seats);
+            //alert ("OK " + booking_seats);
             return true;
         }
 
-    });
-
+    }); 
 </script> 
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&libraries=places&callback=myMap"></script>

@@ -88,12 +88,6 @@ class BookingController extends Controller {
             $booking->driver_id = $route->posted_by;
             $booking->route_id = $route->route_id;
             $booking->save();
-
-            $route->available_seats = $route->available_seats - $request->booking_seats;
-            if ($route->available_seats == 0) {
-                $route->status = 'Closed';
-            }
-            $route->save();
             return true;
         }
 
@@ -188,6 +182,7 @@ class BookingController extends Controller {
         $route->delete();
     }
     
+    //passenger cancel booking
     public function cancel() {
         if (Auth::check() && request()->session()->exists('driverFound')) {
             $booking = Booking::find(request()->session()->get('booking_id'));
@@ -212,6 +207,39 @@ class BookingController extends Controller {
             
         }
         return redirect()->back()->with('failure','Error occurred.');
+    }
+    //Passenger raise new schedule request
+    public function scheduleRequest(Request $request) {
+
+        if ($request->isMethod('post')) {
+            $route = new Route;
+            $route->status="Open";
+            $route->route_datetime=  date("Y-m-d H:i:s", strtotime($request->datetime));
+            $route->available_seats = $request->seats;
+            $route->pickup = $request->pick;
+            $route->destination = $request->dest;
+            $route->posted_by = Auth::user()->userID;
+            $route->posted_type = "Passenger";
+            $route->save();
+
+            $booking = new Booking;
+            $booking->request_time = date("Y-m-d H:i:s");
+            $booking->status = "Open";
+            $booking->seats = $request->seats;
+            $booking->price = $request->price;
+            $booking->passenger_id = Auth::user()->userID;
+            $booking->driver_id = 0;
+            $booking->route_id = $route->route_id;
+            $booking->save();  
+            return response()->json(['response' => 'Success']);
+        }
+
+        return response()->json(['response' => 'There is something wrong.']);
+    }
+    
+    
+    public function bookScheduled(){
+        
     }
 
 }

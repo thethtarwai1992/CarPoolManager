@@ -1,8 +1,9 @@
 @extends('layouts.design')
-@section('title', '- Rides') 
+@section('title', '- Scheduled')  
 @section('styles')
+{!! HTML::style("css/view-details-custom.css") !!}  
 {!! HTML::style("css/bootstrap.datetimepicker.css") !!} 
-<style>
+<style> 
     .ride-content h3{
         font-size: 14px;
     }
@@ -48,11 +49,11 @@
     }
     .output-text{
         float: left;
-    }
+    } 
 </style>
 @stop 
 
-@section('content')
+@section('content') 
 <div class="container"> 
     <div class="row"> 
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -87,12 +88,11 @@
                         <div class="col-md-3 col-sm-6 col-xs-6">
 
                             <div class="field">
-                                <select id="" name="numberOfseats">
-                                    <option value="default">Number of seats</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                <select id="seats" name="numberOfseats">
+                                    <option value="0">Number of seats</option>
+                                    @for($i = 1; $i <5 ; $i++)
+                                    <option>{{ $i }}</option> 
+                                    @endfor
                                 </select>
                             </div>
 
@@ -101,8 +101,9 @@
                         <div class="col-md-3 col-sm-6 col-xs-6">
 
                             <div class="field"> 
+                                
                                 <div class='input-group date' id='datetimepicker1'>
-                                    <input type='text' placeholder="Date and Time"  class="form-control"/>
+                                    <input type='text' placeholder="Date and Time" id="datetime" name="datetime" class="form-control"/>
                                     <span class="input-group-addon datetimepicker-cus">
                                         <span class="fa fa-calendar-o" style="color :#63a599;"></span>
                                     </span>
@@ -126,15 +127,15 @@
 
             @if(Auth::check())  
             <div class="field buttons sendRequest">
-                <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
+                <button type="submit" id="request" class="btn btn-lg blue-color">Send Request to Drivers</button>
             </div> 
             @else
-            <a href ="{{ URL::to('register') }}">
+            <a href ="{{ URL::to('login') }}">
                 <div class="field buttons sendRequest" >
                     <button type="submit" class="btn btn-lg blue-color">Send Request to Drivers</button>
                 </div>
             </a> 
-            @endif
+            @endif 
         </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12">
@@ -149,44 +150,37 @@
                 </div><!-- end .post-pagination -->                   
 
                 <div class="clearfix"></div>
-                
+
                 @if(count($driverposts) > 0 )
-
+                
                 @foreach ($driverposts as $post)
+                @if(Auth::check())
+                <a href="#" class="view" data-toggle="modal" data-id ={{ $post->route_id }}> 
+                    @else 
+                    <a href ="{{ URL::to('login') }}">
+                        @endif
+                        <article class="ride-box clearfix">
 
-                <article class="ride-box clearfix">
+                            <div class="ride-content">
+                                <h3> <b> {{ $post->pickup }} </b> <i class="fa fa-arrow-right" aria-hidden="true"></i> <b> {{ $post->destination }}</b></h3> 
+                                <br>
+                                <i class="fa fa-money"></i>  {{ App\Http\Controllers\RouteController::getPrice($post->pickup,$post->destination ) }}
+                                <br> <i class="fa fa-calendar"></i> {{ date("d-m-Y H:iA", strtotime($post->route_datetime)) }} 
 
-                    <div class="ride-content">
-                        <h3><a href="#">From <b> {{ $post->start_point }} </b> to <b> {{ $post->destination }}</b></a></h3> <i class="fa fa-money"></i>  {{ $post->price }}
-                    </div>
-
-                    <ul class="ride-meta">
-
-                        <li class="ride-date">
-                            <a href="#" class="tooltip-link" data-original-title="Date" data-toggle="tooltip">
-                                <i class="fa fa-calendar"></i>
-                                {{ $post->route_start_time }}
-                            </a>
-                        </li><!-- end .ride-date -->
-
-                        <li class="ride-people">
-                            <a href="#" class="tooltip-link" data-original-title="Number of seats" data-toggle="tooltip">
-                                <i class="fa fa-user"></i>
-                                {{ $post->seats }}
-                            </a>
-                        </li><!-- end .ride-people -->
-
-                    </ul><!-- end .ride-meta -->
-
-                </article><!-- end .ride-box -->
-                @endforeach 
-                @else
-                <article class="ride-box clearfix">
-                    <div class="ride-content">
-                        Sorry, currently no post from our drivers.
-                    </div>
-                </article> 
-                @endif 
+                            </div>
+                            <div class="pull-right">
+                                Available Seat(s) <i class="fa fa-user"></i> {{ $post->available_seats }}  
+                            </div> 
+                        </article><!-- end .ride-box -->
+                    </a>
+                    @endforeach 
+                    @else
+                    <article class="ride-box clearfix">
+                        <div class="ride-content">
+                            Sorry, currently no post from our drivers.
+                        </div>
+                    </article> 
+                    @endif
             </div><!-- end .events-list -->
 
         </div><!-- end .page-content --> 
@@ -195,17 +189,20 @@
 </div><!-- end .container -->
 
 @stop
-
-@section('scripts')
+@section('modals')
+@include('rides/view_modal')
+@stop
+@section('scripts') 
 <script>
-    var pick = "default";
-    var dest = "default";
+    var pick ;
+    var dest;
+    var price = 0;
     var outputDiv = document.getElementById('output');
     var outputPrice = document.getElementById('output-price');
     var directionsService, directionsDisplay;
     var autocompletePickup, autocompleteDest;
     var typingTimer;                //timer identifier
-    var doneTypingInterval = 5000;  //time in ms (5 seconds)
+    var doneTypingInterval = 3000;  //time in ms (5 seconds)
 
     function geolocate() {
         if (navigator.geolocation) {
@@ -273,21 +270,23 @@
         }
         $("#pickup").keyup(function () {
             clearTimeout(typingTimer);
-            if ($('#pickup').val()) {
+            if ($('#pickup').val()) {  
+                pick = "default";
                 typingTimer = setTimeout(doneTyping, doneTypingInterval);
             }
         });
         $("#destination").keyup(function () {
             clearTimeout(typingTimer);
-            if ($('#destination').val()) {
+            if ($('#destination').val()) { 
+                dest = "default";
                 typingTimer = setTimeout(doneTyping, doneTypingInterval);
             }
         });
         directionsDisplay.setMap(map);
     }
     function doneTyping() {
-        if (pick && dest) {
-            console.log("ok");
+        if (pick && dest) { 
+            
             calculateAndDisplayRoute(directionsService, directionsDisplay);
             calculateDistance();
         }
@@ -298,7 +297,7 @@
             destination: document.getElementById('destination').value,
             travelMode: 'DRIVING'
         }, function (response, status) {
-            if (status === 'OK') {
+            if (status == 'OK') {
                 directionsDisplay.setDirections(response);
             } else {
                 window.alert('Directions request failed due to ' + status);
@@ -317,22 +316,110 @@
             avoidTolls: false
         }, function (response, status) {
             if (status !== 'OK') {
-                alert('Error was: ' + status);
+                //alert('Error was: ' + status);
+                return false;
             } else {
                 outputDiv.innerHTML = '';
                 outputPrice.innerHTML = '';
                 var results = response.rows[0].elements;
-                console.log(results[0].distance.text);
-                console.log(results[0].duration.text);
+                console.log(results[0].distance);
+                console.log(results[0].duration); 
                 outputDiv.innerHTML += results[0].distance.text + ' in ' +
                         results[0].duration.text + '<br>';
-                outputPrice.innerHTML += 'SGD: 10';
-
+                price = calculatePrice(results[0].distance.value, results[0].duration.value);
+                outputPrice.innerHTML += 'SGD: ' + price.toFixed(1);
+                return true;
 
             }
         });
     }
     
+    function calculatePrice($distance, $duration){
+        return ($distance/1000 + $duration/60)/2 + 2;  
+    }
+
+    $("#request").click(function (e) { //alert($("#seats").val());
+        var seats = $("#seats").val();
+        var pick = $("#pickup").val();
+        var dest = $("#destination").val();
+        var datetime = $("#datetime").val();alert(datetime);
+        var token = $("input[name='_token']").val();
+        //console.log("Seats :" + seats + ", Price :" + price + ", Start: " + pick + ", End: " + dest);
+        e.preventDefault();
+        if (seats != 0 && price && pick && dest && datetime) {
+            $.ajax({
+                type: "POST",
+                url: "{{ URL::to('rides/request') }}",
+                dataType: 'json',
+                data: {
+                    seats: seats,
+                    price: price,
+                    pick: pick,
+                    dest: dest,
+                    datetime: datetime,
+                    _token: token
+                },
+                success: function (result) {
+                    console.log(result); 
+                    alert('Finding driver for you!');
+                    window.location.reload();
+                },
+                error: function (result) {
+                    console.log(result['responseJSON']['message']);
+                    alert('Error occurred! Please try again.');
+                }
+            });
+        } else {
+            alert("Please fill up necessary data!");
+        }
+    });
+
+    $('.view').on('click', function (e) {
+        var route_id = $(this).data('id');
+        //alert(route_id);
+        //console.log('route' + route_id);
+        e.preventDefault();
+        $.ajax({
+            url: "{{ URL::to('route/view') }}/" + route_id,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                console.log(data);
+
+                $('#driverD span').html(data['data']['name']);
+                $('#contactno span').html(data['data']['contactno']);
+                $('#car span').html(data['data']['car']);
+                $('#priceD span').html(data['data']['price']);
+                $('#seats span').html(data['data']['seats']);
+                $('#pickupD span').html(data['data']['pickup']);
+                $('#destD span').html(data['data']['destination']);
+                $('#datetimeD span').html(data['data']['datetime']);
+
+                $('#route').val(route_id);
+                $('#priceInput').val(data['data']['price']);
+                $('#details').modal('show');
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
+    $('button.book').on('click', function (e) {
+        var ava_seat = $('#seats span').text();
+        var booking_seats = $("#booking_seats").val();
+        if (booking_seats > ava_seat) {
+            alert("Your booking seats is more than " + ava_seat + " available seat(s)!");
+            return false;
+        } else if (booking_seats == 0) {
+            alert("Please select your booking seats!");
+            return false;
+        } else {
+            //alert ("OK " + booking_seats);
+            return true;
+        }
+    });
+
     $(function () {
         $('#datetimepicker1').datetimepicker();
     });

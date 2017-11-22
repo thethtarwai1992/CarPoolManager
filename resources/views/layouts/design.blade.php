@@ -14,7 +14,7 @@
 
         <!-- Mobile Specific Metas -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+        @yield('metatags')
         <!-- Styles -->
         <link rel="shortcut icon" href="{{ asset('img/shortcut.gif') }}">
 
@@ -126,7 +126,7 @@
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
                                             <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->first_name }} {{ Auth::user()->last_name}}  <span class="caret"></span></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->first_name }} {{ Auth::user()->last_name or ''}}  <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{URL::to('user')}}">My Account</a></li>
                                                     <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
