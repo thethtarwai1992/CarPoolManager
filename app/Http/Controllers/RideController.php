@@ -76,8 +76,11 @@ class RideController extends Controller {
     public function show() {
         if (Auth::check()) {
             $rides = Booking::with('route')
-                    ->where('passenger_id', Auth::user()->userID)
-                    ->get();
+                            ->where('passenger_id', Auth::user()->userID)
+                            ->where(function ($query) {
+                                $query->where('status', '=', 'Cancelled')
+                                ->orWhere('status', '=', 'Closed');
+                            })->get();
 
             //return response()->json(['data' => $rides]);
             return view('rides.myrides', compact('rides'));

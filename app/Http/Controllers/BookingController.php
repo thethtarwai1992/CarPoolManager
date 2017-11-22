@@ -235,11 +235,6 @@ class BookingController extends Controller {
         }
 
         return response()->json(['response' => 'There is something wrong.']);
-    }
-    
-    
-    public function bookScheduled(){
-        
-    }
+    } 
 
 }

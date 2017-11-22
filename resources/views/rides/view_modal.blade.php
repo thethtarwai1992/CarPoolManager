@@ -9,7 +9,7 @@
 
             <div class="modal-body"> 
 
-                <form action="{{ URL::to("book/scheduled") }}" method="POST" autocomplete="off" class="idealforms">
+                <form action="{{ URL::to("book") }}" method="POST" autocomplete="off" class="idealforms">
 
                     {{ csrf_field() }}
                     <input name='route' id='route' value='' type='hidden'>
