@@ -325,7 +325,9 @@
     }
     
     function calculatePrice($distance, $duration){
-        return ($distance/1000 + $duration/60)/2 + 2;  
+        var km =$distance / 1000;
+        var min =$duration / 60;
+        return (km + min)/3.5 + 2;
     }
 
     $("#request").click(function (e) { //alert($("#seats").val());

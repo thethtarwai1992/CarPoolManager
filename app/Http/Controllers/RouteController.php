@@ -85,8 +85,9 @@ class RouteController extends Controller {
         }
 
         if ($route) {
-
-            $price = ($route['distance'] / 1000 + $route['duration'] / 60) / 2 + 2;
+            $km = $route['distance'] / 1000;
+            $min =$route['duration'] / 60;
+            $price = (($km + $min)/3.5) + 2;
             $route['price'] = round($price, 1);
 
             //return response()->json(['response' => 'Success', 'data' => $route]);

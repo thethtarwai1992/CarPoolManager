@@ -70,6 +70,7 @@ Route::get('/admin', 'AdminController@scheduled');
 Route::get('/admin/details', 'AdminController@show');
 /* |-------------------------------------------------------------------------- */
 
+//Route::get('send', 'MailController@send'); 
 /*
   |--------------------------------------------------------------------------
   | Resource Contollers

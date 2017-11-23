@@ -56,7 +56,7 @@ class RideController extends Controller {
  
         $driverposts = Route::with('bookings') 
                 ->where('status','Open')
-                ->where('route_datetime',">", now())
+                ->whereDate('route_datetime',">", date('Y-m-d'))
                 ->where('posted_type', 'Driver')
                 ->where('available_seats', '!=', 0)
                 ->orderBy('created_at', 'desc')
@@ -79,6 +79,7 @@ class RideController extends Controller {
                             ->where('passenger_id', Auth::user()->userID)
                             ->where(function ($query) {
                                 $query->where('status', '=', 'Cancelled')
+                                ->orWhere('status', '=', 'Open')
                                 ->orWhere('status', '=', 'Closed');
                             })->get();
 

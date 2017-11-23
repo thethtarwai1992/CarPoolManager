@@ -29,10 +29,6 @@ class BookingController extends Controller {
         return view('driver.new_request');
     }
 
-    public function test() {
-        return view('layouts.app');
-    }
-
     //Passenger raise request
     public function store(Request $request) {
 
@@ -66,35 +62,58 @@ class BookingController extends Controller {
         }
 
         return response()->json(['response' => 'There is something wrong.']);
-    }
+    }   
 
-    //Passenger book from driver's post
+    //Passenger book from driver's post (now and scheduled)
     public function book(Request $request) {
 
-        if ($request->isMethod('post') && $this->booking($request)) {
-            return back()->with('success', 'Booking successful! Sit back and relax, we will notify you!');
+        if ($request->isMethod('post')) {
+            $a = $this->booking($request);
+            if ($a == 0) {
+                return back()->with('failure', 'Sorry! Booking Fails');} elseif ($a == 1) {
+                return back()->with('failure', 'You have already booked this');
+            } else {
+                //Email
+                MailController::sendToDriver($a);                
+                return back()->with('success', 'Booking successful! You may check your booking status at my rides for your scheduled ride!');
+                       
+            }
         }
         return back()->with('failure', 'Sorry! Booking Fails!');
     }
 
-    public function booking($request) {
-        $route = Route::find($request->route);
-        if ($route) {
-            $booking = new Booking;
-            $booking->request_time = date("Y-m-d H:i:s");
-            $booking->status = "Open";
-            $booking->price = $request->price;
-            $booking->seats = $request->booking_seats;
-            $booking->passenger_id = Auth::user()->userID;
-            $booking->driver_id = $route->posted_by;
-            $booking->route_id = $route->route_id;
-            $booking->save();
-            $request->session()->put('bookedFromPost', true);
-            $request->session()->put('booking_id', $booking->booking_id);
+    public static function checkBooking($route_id){
+        $booking = Booking::where('route_id',$route_id)->first();
+        if($booking){
             return true;
         }
-
         return false;
+    }
+
+    public function booking($request) {
+        $route = Route::with('driver')->find($request->route);
+        if ($route) {
+
+            if (self::checkBooking($route->route_id)) {
+                return 1;
+            } else {
+                $booking = new Booking;
+                $booking->request_time = date("Y-m-d H:i:s");
+                $booking->status = "Open";
+                $booking->price = $request->price;
+                $booking->seats = $request->booking_seats;
+                $booking->passenger_id = Auth::user()->userID;
+                $booking->driver_id = $route->posted_by;
+                $booking->route_id = $route->route_id;
+                $booking->save();
+                $request->session()->put('bookedFromPost', true);
+                $request->session()->put('booking_id', $booking->booking_id);
+                $route['price'] = $request->price;
+                return $route;
+            }
+        }
+
+        return 0;
     }
 
     //Check every min after book
@@ -243,7 +262,7 @@ class BookingController extends Controller {
             $booking->seats = $request->seats;
             $booking->price = $request->price;
             $booking->passenger_id = Auth::user()->userID;
-            $booking->driver_id = 0;
+            //$booking->driver_id = 0;
             $booking->route_id = $route->route_id;
             $booking->save();
             return response()->json(['response' => 'Success']);

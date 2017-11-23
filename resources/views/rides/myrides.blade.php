@@ -75,6 +75,11 @@
 @section('scripts')
 <script>
     $('.viewdetails').on('click', function (e) {
+        
+        if({{ $booking->status == 'Open' }}){
+            alert("Finding Driver for you!")
+            return false;
+        }
         var booking_id = $(this).data('id');
         //console.log('route' + route_id);
         e.preventDefault();
