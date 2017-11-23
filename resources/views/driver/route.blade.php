@@ -269,8 +269,9 @@ Label the data
     })
 </script>  
 <script>
-    var pick = "default";
-    var dest = "default";
+    var pick ;
+    var dest ;
+    var price = 0;
     var outputDiv = document.getElementById('output');
     var outputPrice = document.getElementById('output-price');
     var directionsService, directionsDisplay;
@@ -336,12 +337,14 @@ Label the data
         $("#pickup").keyup(function () {
             clearTimeout(typingTimer);
             if ($('#pickup').val()) {
+                pick = 'default';
                 typingTimer = setTimeout(doneTyping, doneTypingInterval);
             }
         });
         $("#destination").keyup(function () {
             clearTimeout(typingTimer);
             if ($('#destination').val()) {
+                dest = 'default';
                 typingTimer = setTimeout(doneTyping, doneTypingInterval);
             }
         });
@@ -387,13 +390,16 @@ Label the data
                 console.log(results[0].duration.text);
                 outputDiv.innerHTML += results[0].distance.text + ' in ' +
                         results[0].duration.text + '<br>';
-                outputPrice.innerHTML += 'SGD: 10';
+                price = calculatePrice(results[0].duration.value, results[0].duration.value);
+                outputPrice.innerHTML += price.toFixed(1);
             }
         });
+    }    
+    function calculatePrice($distance, $duration){
+        return ($distance/1000 + $duration/60)/2 + 2;  
     }
 </script> 
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&libraries=places&callback=myMap"></script>
-
 
 @stop

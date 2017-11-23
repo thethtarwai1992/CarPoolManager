@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Driver;
+use App\Booking;
 use App\Car;
 
 class DriverController extends Controller {
@@ -76,6 +77,13 @@ class DriverController extends Controller {
         }
         return redirect()->route('home')
                         ->with('success', 'Back to Passenger!');
+    }
+    
+    public static function getRating($driver_id){
+        $results = Booking::where('driver_id', $driver_id)->where('rating', '!=', 0);
+        $rating = $results->count();
+        $total = $results->sum('rating');
+        return round($total/$rating);
     }
 
 }

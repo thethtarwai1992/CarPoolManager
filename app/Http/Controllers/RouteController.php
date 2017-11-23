@@ -87,7 +87,7 @@ class RouteController extends Controller {
         if ($route) {
 
             $price = ($route['distance'] / 1000 + $route['duration'] / 60) / 2 + 2;
-            $route['price'] = round($price, 2);
+            $route['price'] = round($price, 1);
 
             //return response()->json(['response' => 'Success', 'data' => $route]);
         }
@@ -119,6 +119,9 @@ class RouteController extends Controller {
             $routes['price'] = self::getPrice($data->pickup, $data->destination);
             $routes['pickup'] = $data->pickup;
             $routes['destination'] = $data->destination;
+            $routes['datetime'] = date("d-m-Y H:iA", strtotime($data->route_datetime));
+            $routes['star'] = DriverController::getRating($data->driver->userID);
+            $routes['empty'] = 5 - $routes['star'];
         }
         if ($routes) {
             return response()->json(['response' => 'Success', 'data' => $routes]);

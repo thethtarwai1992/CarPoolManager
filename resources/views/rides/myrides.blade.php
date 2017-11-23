@@ -9,6 +9,7 @@
             margin-right: 15%;
         }
     }
+    #colorstar1 { color: #2cc062;}
 </style>
 @stop 
 
@@ -38,12 +39,13 @@
                     <article class="ride-box clearfix">
 
                         <div class="ride-content">
-                            <h3> <b> {{ $booking->route->pickup }} </b> -> <b> {{ $booking->route->destination }}</b></h3> 
+                            <h3> <b> {{ $booking->route->pickup }} </b> <i class="fa fa-arrow-right" aria-hidden="true"></i> <b> {{ $booking->route->destination }}</b></h3> 
                         </div>
                         <br>
-                        <i class="fa fa-calendar"></i> {{ date('d-m-Y H:i A', strtotime($booking->start)) }} @if($booking->end) {{ date('d-m-Y H:i A', strtotime($booking->end)) }} @endif
+                        <i class="fa fa-calendar-check-o"></i> Status: {{ $booking->status }}
+                        <i class="fa fa-calendar"></i> {{ date('d-m-Y H:i A', strtotime($booking->request_time)) }} 
                         <div class="pull-right">
-                            <i class="fa fa-money"></i>  ${{ $booking->route->price }}
+                            <i class="fa fa-money"></i>  ${{ $booking->price }}
                             Booked Seat(s) <i class="fa fa-user"></i> {{ $booking->seats }}  
                         </div> 
                     </article><!-- end .ride-box -->
@@ -90,9 +92,17 @@
                 $('#seats span').html(data['data']['seats']);
                 $('#pickupD span').html(data['data']['pickup']);
                 $('#destD span').html(data['data']['destination']);
-                $('#startendD span').html(data['data']['startend']);
-                $('#photo img').html("../img/" + data['data']['photo']);
-
+                $('#datetimeD span').html(data['data']['startend']); 
+                var stars="";                                                    
+                for(var i = 1; i <= data['data']['star'] ; i++)  {
+                    stars += '<i class="glyphicon .glyphicon-star glyphicon-star"></i>';
+                   // console.log("stars " + i + " " + stars);
+                }                 
+                
+                for(var i = 1; i <=  data['data']['empty']  ; i++)  {
+                    stars += '<i class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></i>';
+                } 
+                $('#colorstar1 span').html(stars); 
                 $('#viewdetails').modal('show');
             },
             error: function (data) {

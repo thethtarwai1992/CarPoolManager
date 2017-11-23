@@ -22,23 +22,23 @@ class RideController extends Controller {
         $booked = false;
         $driverposts = array();
         //Need to check if current rides is ongoing..cannot book another rides!!
-        if (Auth::check() && request()->session()->exists('booked')) {
+        if (Auth::check() && (request()->session()->exists('booked') || request()->session()->exists('bookedFromPost'))) {
             if (BookingController::bookingUpdate()) {
-                return redirect('bookings/ongoing')->with("success", "Driver Found!");
+                return redirect('bookings/ongoing');
             } else {
                 BookingController::checkBookingTime();
                 $booked = true;
             }
 
             if (request()->session()->exists('driverNotFound')) {
-                request()->session()->flash('success', 'No drivers available. Please try again later.');
+                request()->session()->flash('failure', 'No drivers available. Please try again later.');
                 request()->session()->forget('driverNotFound');
                 $booked = false;
             }
         }
  
         $driverposts = Route::with('bookings')
-                //->whereDate('created_at', date('Y-m-d'))
+                ->whereDate('created_at', date('Y-m-d'))
                 ->where('status','Open')
                 ->where('posted_type', 'Driver')
                 ->where('available_seats', '!=', 0)
@@ -49,8 +49,19 @@ class RideController extends Controller {
     }
 
     public function scheduled() {
-
-        $driverposts = Route::where('status', 'Open')->get();
+ 
+        if(Auth::check() && request()->session()->exists('OngoingRide')){ 
+            return redirect('bookings/ongoing'); 
+        } 
+ 
+        $driverposts = Route::with('bookings') 
+                ->where('status','Open')
+                ->where('route_datetime',">", now())
+                ->where('posted_type', 'Driver')
+                ->where('available_seats', '!=', 0)
+                ->orderBy('created_at', 'desc')
+                ->get();
+ 
         return view('rides.scheduled', compact('driverposts'));
     }
 
@@ -65,8 +76,11 @@ class RideController extends Controller {
     public function show() {
         if (Auth::check()) {
             $rides = Booking::with('route')
-                    ->where('passenger_id', Auth::user()->userID)
-                    ->get();
+                            ->where('passenger_id', Auth::user()->userID)
+                            ->where(function ($query) {
+                                $query->where('status', '=', 'Cancelled')
+                                ->orWhere('status', '=', 'Closed');
+                            })->get();
 
             //return response()->json(['data' => $rides]);
             return view('rides.myrides', compact('rides'));

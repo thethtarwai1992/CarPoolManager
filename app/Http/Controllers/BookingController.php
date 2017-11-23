@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use DateTime;
 use App\Booking;
 use App\Route;
+use App\Cancellations;
 
 //use App\User;
 //use App\Notifications\BookingNotification;
@@ -37,8 +38,8 @@ class BookingController extends Controller {
 
         if ($request->isMethod('post')) {
             $route = new Route;
-            $route->status="Open";
-            $route->route_datetime=date("Y-m-d H:i:s");
+            $route->status = "Open";
+            $route->route_datetime = date("Y-m-d H:i:s");
             $route->available_seats = $request->seats;
             $route->pickup = $request->pick;
             $route->destination = $request->dest;
@@ -50,9 +51,9 @@ class BookingController extends Controller {
             $booking->request_time = date("Y-m-d H:i:s");
             $booking->status = "Open";
             $booking->seats = $request->seats;
-            $booking->price = $request->price;
+            $booking->price = round($request->price, 1);
             $booking->passenger_id = Auth::user()->userID;
-            $booking->driver_id = 0;
+            //$booking->driver_id = 0;
             $booking->route_id = $route->route_id;
             $booking->save();
             //TESTING PUSH NOTIFICATION
@@ -80,20 +81,16 @@ class BookingController extends Controller {
         $route = Route::find($request->route);
         if ($route) {
             $booking = new Booking;
-            $booking->request_time = date("Y-m-d H:i:s"); 
-            $booking->status = "Scheduled";
-            $booking->price = $request->price; 
+            $booking->request_time = date("Y-m-d H:i:s");
+            $booking->status = "Open";
+            $booking->price = $request->price;
             $booking->seats = $request->booking_seats;
             $booking->passenger_id = Auth::user()->userID;
             $booking->driver_id = $route->posted_by;
             $booking->route_id = $route->route_id;
             $booking->save();
-
-            $route->available_seats = $route->available_seats - $request->booking_seats;
-            if ($route->available_seats == 0) {
-                $route->status = 'Closed';
-            }
-            $route->save();
+            $request->session()->put('bookedFromPost', true);
+            $request->session()->put('booking_id', $booking->booking_id);
             return true;
         }
 
@@ -115,6 +112,7 @@ class BookingController extends Controller {
                 self::delete($booking_id);
                 request()->session()->forget('booking_id');
                 request()->session()->forget('booked');
+                request()->session()->forget('bookedFromPost');
                 request()->session()->put('driverNotFound', true);
             }
         }
@@ -126,7 +124,8 @@ class BookingController extends Controller {
             $booking = Booking::find($booking_id);
             if ($booking->status == "Scheduled") {
                 request()->session()->forget('booked');
-                request()->session()->put('driverFound', true);  
+                request()->session()->forget('bookedFromPost');
+                request()->session()->put('driverFound', true);
                 return true;
             }
         }
@@ -135,40 +134,44 @@ class BookingController extends Controller {
 
     public function ongoing() {
         $booking = array();
-        if (Auth::check() && request()->session()->exists('driverFound') ) {
-            $booking = Booking::with('driver','route.driverInfo.car','route')
+        if (Auth::check() && request()->session()->exists('driverFound')) {
+            $booking = Booking::with('driver', 'route.driverInfo.car', 'route')
                     ->find(request()->session()->get('booking_id'));
-                    //->find(13);
+            //->find(17);
+            $star = DriverController::getRating($booking->driver_id);
+            $empty = 5 - $star;
         }
-        return view('rides.ongoing_booking', compact('booking'));
+        return view('rides.ongoing_booking', compact('booking', 'star', 'empty'));
     }
 
     // View details for my rides
     public function view($booking_id) {
         $data = Booking::with('route', 'driver', 'driver.driver.car')
-                        //->where('status', '!=', 'Open')
+                        ->where('status', '!=', 'Open')
                         ->where('passenger_id', Auth::user()->userID)
                         ->where('booking_id', $booking_id)->first();
         $routes = array();
         if ($data) {
             //$routes['data'] = $data;
             $startend = '';
-            if ($data->start) {
+            if ($data->start && $data->end) {
                 $startend = date('d-m-Y H:i A', strtotime($data->start));
-            }
-            if ($data->end) {
                 $startend .= " - " . date('d-m-Y H:i A', strtotime($data->end));
+            } else {
+                $startend = date('d-m-Y H:i A', strtotime($data->request_time));
             }
 
             $routes['name'] = $data->driver->first_name . " " . $data->driver->last_name;
             $routes['contactno'] = $data->driver->contactNO;
             $routes['car'] = $data->driver->driver->car->model . " " . $data->driver->driver->car->plate_no;
-            $routes['price'] = $data->route->price;
+            $routes['price'] = RouteController::getPrice($data->route->pickup, $data->route->destination);
             $routes['seats'] = $data->seats;
             $routes['pickup'] = $data->route->pickup;
             $routes['destination'] = $data->route->destination;
             $routes['photo'] = $data->driver->photo;
             $routes['startend'] = $startend;
+            $routes['star'] = DriverController::getRating($data->driver->userID);
+            $routes['empty'] = 5 - $routes['star'];
         }
         if ($routes) {
             return response()->json(['response' => 'Success', 'data' => $routes]);
@@ -187,31 +190,79 @@ class BookingController extends Controller {
         $booking->delete();
         $route->delete();
     }
-    
+
+    //passenger cancel booking
     public function cancel() {
         if (Auth::check() && request()->session()->exists('driverFound')) {
             $booking = Booking::find(request()->session()->get('booking_id'));
-            if($booking && $booking->status == "Scheduled"){
+            if ($booking && $booking->status == "Scheduled") {
                 $booking->status = 'Cancelled';
-                $booking->cancel_by = Auth::user()->userID;
-                $booking->cancel_type = 'Passenger';                        
                 $booking->save();
-                
+
+                $cancel = new Cancellations;
+                $cancel->cancel_by = Auth::user()->userID;
+                $cancel->cancel_type = 'Passenger';
+                $cancel->booking_id = $booking->booking_id;
+                $cancel->reason = "Booking cancelled by passenger";
+                $cancel->save();
+
                 $route = Route::find($booking->route_id);
-                if($route->posted_type == 'Passenger' && $route->posted_by == Auth::user()->userID){
+                if ($route->posted_type == 'Passenger' && $route->posted_by == Auth::user()->userID) {
                     $route->status = 'Cancelled';
-                    $route->save(); 
-                }else{
-                    $route->available_seats = $route->available_seats + $booking->seats ;
                     $route->save();
-                } 
+                } else {
+                    $route->available_seats = $route->available_seats + $booking->seats;
+                    $route->status = 'Open';
+                    $route->save();
+                }
                 request()->session()->forget('booking_id');
-                request()->session()->forget('driverFound'); 
-                return redirect('rides')->with('success','You have successfully cancelled.');
+                request()->session()->forget('driverFound');
+                return redirect('rides')->with('success', 'You have successfully cancelled.');
             }
-            
         }
-        return redirect()->back()->with('failure','Error occurred.');
+        return redirect()->back()->with('failure', 'Error occurred.');
+    }
+
+    //Passenger raise new schedule request
+    public function scheduleRequest(Request $request) {
+
+        if ($request->isMethod('post')) {
+            $route = new Route;
+            $route->status = "Open";
+            $route->route_datetime = date("Y-m-d H:i:s", strtotime($request->datetime));
+            $route->available_seats = $request->seats;
+            $route->pickup = $request->pick;
+            $route->destination = $request->dest;
+            $route->posted_by = Auth::user()->userID;
+            $route->posted_type = "Passenger";
+            $route->save();
+
+            $booking = new Booking;
+            $booking->request_time = date("Y-m-d H:i:s");
+            $booking->status = "Open";
+            $booking->seats = $request->seats;
+            $booking->price = $request->price;
+            $booking->passenger_id = Auth::user()->userID;
+            $booking->driver_id = 0;
+            $booking->route_id = $route->route_id;
+            $booking->save();
+            return response()->json(['response' => 'Success']);
+        }
+
+        return response()->json(['response' => 'There is something wrong.']);
+    }
+
+    public function submitRating(Request $request) {
+
+        if ($request->isMethod('post')) {
+            $booking = Booking::find($request->booking_id);
+            $booking->rating = $request->rating;
+            $booking->save();
+
+            request()->session()->forget('driverFound');
+
+            return redirect('rides');
+        }
     }
 
 }
