@@ -47,8 +47,7 @@ CREATE TABLE `bookings` (
   `passenger_id` int(11) NOT NULL,
   `driver_id` int(11) DEFAULT NULL,
   `route_id` int(11) NOT NULL,
-  `cancel_by` int(8) DEFAULT NULL,
-  `cancel_type` varchar(10) DEFAULT NULL,
+  `rating` int(11) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -77,8 +76,8 @@ CREATE TABLE `cancellations` (
   `remarks` varchar(500) DEFAULT NULL,
   `support_doc` varchar(255) DEFAULT NULL,
   `booking_id` int(10) NOT NULL,
---   `cancel_by` int(8) NOT NULL,
---   `cancel_type` varchar(10) NOT NULL,
+  `cancel_by` int(8) NOT NULL,
+  `cancel_type` varchar(10) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

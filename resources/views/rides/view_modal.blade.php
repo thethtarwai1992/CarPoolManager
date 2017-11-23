@@ -26,6 +26,12 @@
                                     <div class="info">
                                         <div class="title" id="driverD">
                                             <span>Driver</span>
+                                            
+                                            <div class="row">
+                                               <div id="colorstar1">
+                                                   <span></span>
+                                               </div>  
+                                           </div> 
                                         </div>                                         
                                         <div class="desc" id='contactno'><i class="fa fa-phone"></i> <span>Contact No</span></div>
                                         <div class="desc" id='car'><i class="fa fa-car"></i> <span>Car Model </span></div>

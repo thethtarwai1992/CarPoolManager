@@ -43,6 +43,7 @@
         float: left;
     }
     #loading { display: none; }
+    #colorstar1 { color: #2cc062;}
 </style>
 @stop 
 
@@ -385,6 +386,17 @@
 
                 $('#route').val(route_id);
                 $('#priceInput').val(data['data']['price']);
+                                                                    
+                var stars="";                                                    
+                for(var i = 1; i <= data['data']['star'] ; i++)  {
+                    stars += '<i class="glyphicon .glyphicon-star glyphicon-star"></i>';
+                   // console.log("stars " + i + " " + stars);
+                }                 
+                
+                for(var i = 1; i <=  data['data']['empty']  ; i++)  {
+                    stars += '<i class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></i>';
+                } 
+                $('#colorstar1 span').html(stars); 
                 $('#details').modal('show');
             },
             error: function (data) {

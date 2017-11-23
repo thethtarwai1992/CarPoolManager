@@ -120,6 +120,8 @@ class RouteController extends Controller {
             $routes['pickup'] = $data->pickup;
             $routes['destination'] = $data->destination;
             $routes['datetime'] = date("d-m-Y H:iA", strtotime($data->route_datetime));
+            $routes['star'] = DriverController::getRating($data->driver->userID);
+            $routes['empty'] = 5 - $routes['star'];
         }
         if ($routes) {
             return response()->json(['response' => 'Success', 'data' => $routes]);

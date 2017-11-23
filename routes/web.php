@@ -44,9 +44,13 @@ Route::get('rides/scheduled', 'RideController@scheduled');
 
 Route::post('rides/request', 'BookingController@store');
 Route::post('book', 'BookingController@book');
+Route::get('booking/finding', 'BookingController@bookingUpdate');  
+Route::get('booking/cancel', 'BookingController@cancel');  
+Route::get('bookings/ongoing', 'BookingController@ongoing'); 
 Route::post('book/scheduled', 'BookingController@bookSchedule');
 Route::get('bookings/view/{id}', 'BookingController@view');
 Route::post('rides/schedule-request', 'BookingController@scheduleRequest');
+Route::post('submitRating', 'BookingController@submitRating');
 /* |-------------------------------------------------------------------------- */
 
 Route::get('user/change-pw', 'UserController@changePassword');

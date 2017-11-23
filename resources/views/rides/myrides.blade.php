@@ -9,6 +9,7 @@
             margin-right: 15%;
         }
     }
+    #colorstar1 { color: #2cc062;}
 </style>
 @stop 
 
@@ -91,8 +92,17 @@
                 $('#seats span').html(data['data']['seats']);
                 $('#pickupD span').html(data['data']['pickup']);
                 $('#destD span').html(data['data']['destination']);
-                $('#datetimeD span').html(data['data']['datetime']); 
-
+                $('#datetimeD span').html(data['data']['startend']); 
+                var stars="";                                                    
+                for(var i = 1; i <= data['data']['star'] ; i++)  {
+                    stars += '<i class="glyphicon .glyphicon-star glyphicon-star"></i>';
+                   // console.log("stars " + i + " " + stars);
+                }                 
+                
+                for(var i = 1; i <=  data['data']['empty']  ; i++)  {
+                    stars += '<i class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></i>';
+                } 
+                $('#colorstar1 span').html(stars); 
                 $('#viewdetails').modal('show');
             },
             error: function (data) {

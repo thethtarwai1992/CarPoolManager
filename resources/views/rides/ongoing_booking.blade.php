@@ -1,10 +1,12 @@
 @extends('layouts.design')
 @section('title', '- Ongoing') 
-@section('metatags')
 @if($booking)
-<meta http-equiv="refresh" content="30" >
+@section('metatags')
+@if($booking->status == 'Scheduled' || $booking->status == 'PickedUp')
+<meta http-equiv="refresh" content="10" >
 @endif
 @stop
+@endif
 @section('styles')
 {!! HTML::style("css/view-details-custom.css") !!}
 <style>
@@ -12,6 +14,11 @@
         position: inherit!important;
         display: block;
     }
+    #colorstar { color: #ee8b2d;}
+    #colorstar1 { color: #2cc062;}
+    .badForm {color: #FF0000;}
+    .goodForm {color: #00FF00;}
+    .evaluation { margin-left:15px;} 
 </style>
 @stop
 @section('content')  
@@ -36,50 +43,70 @@
 
         <div class="modal-content">
 
-            <div class="modal-body"> 
+            <div class="modal-body">  
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
 
-                <form action="" method="" autocomplete="off" class=""> 
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12">
-
-                                <div class="card hovercard">
-                                    <div class="cardheader"> </div>
-                                    <div class="avatar">
-                                        <img alt="" src="{{ asset('img/female.jpg') }}">
-                                    </div>
-                                    <div class="info">
-                                        <div class="title" id="driverD">
-                                            <span>{{ $booking->driver->first_name }} {{ $booking->driver->last_name or ''}}</span>
-                                        </div>                                         
-                                        <div class="desc" id='contactno'><i class="fa fa-phone"></i> <span> {{ $booking->driver->contactNO or ''}}</span></div>
-                                        <div class="desc" id='car'><i class="fa fa-car"></i> <span>{{ $booking->route->driverInfo->car->model }} {{ $booking->route->driverInfo->car->plate_no }} </span></div>
-                                    </div>
-                                    <div class="line" style='position: inherit!important;'></div>
-                                    <div class="bottom" style="float: left; text-align: left; margin-top: 15px;">
-                                        <h3> <b> <span id="pickupD"> <span>{{ $booking->route->pickup }}</span></span> </b><i class="fa fa-arrow-right" aria-hidden="true"></i> <b> <span id="destD"> <span>{{ $booking->route->destination }}</span></span> </b></h3> 
-                                        Booked Seat(s) <i class="fa fa-user"></i> <span id="seats"><span>{{ $booking->seats }}</span></span>
-                                        <div class="pull-right">
-                                            <i class="fa fa-money"></i>  <span id="priceD"> <span>{{ $booking->price }}</span></span>
-                                        </div> 
-
-                                    </div>
+                            <div class="card hovercard">
+                                <div class="cardheader"> </div>
+                                <div class="avatar">
+                                    <img alt="" src="{{ asset('img/female.jpg') }}">
                                 </div>
+                                <div class="info">
+                                    <div class="title" id="driverD">
+                                        <span>{{ $booking->driver->first_name }} {{ $booking->driver->last_name or ''}}</span>
+                                        <div class="row">
+                                            <div id="colorstar1">
+                                                @for($i = 1; $i <= $star ; $i++)  
+                                                <i class="glyphicon .glyphicon-star glyphicon-star"></i>
+                                                @endfor                                                
+                                                @for($i = 1; $i <= $empty ; $i++)  
+                                                <i class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></i>
+                                                @endfor
+                                            </div>  
+                                        </div> 
+                                    </div>                                         
+                                    <div class="desc" id='contactno'><i class="fa fa-phone"></i> <span> {{ $booking->driver->contactNO or ''}}</span></div>
+                                    <div class="desc" id='car'><i class="fa fa-car"></i> <span>{{ $booking->route->driverInfo->car->model }} {{ $booking->route->driverInfo->car->plate_no }} </span></div>
+                                </div>
+                                <div class="line" style='position: inherit!important;'></div>
+                                <div class="bottom" style="float: left; text-align: left; margin-top: 15px;">
+                                    <h3> <b> <span id="pickupD"> <span>{{ $booking->route->pickup }}</span></span> </b><i class="fa fa-arrow-right" aria-hidden="true"></i> <b> <span id="destD"> <span>{{ $booking->route->destination }}</span></span> </b></h3> 
+                                    Booked Seat(s) <i class="fa fa-user"></i> <span id="seats"><span>{{ $booking->seats }}</span></span>
+                                    <div class="pull-right">
+                                        <i class="fa fa-money"></i>  <span id="priceD"> <span>{{ $booking->price }}</span></span>
+                                    </div> 
 
+                                </div>
                             </div>
 
                         </div>
+
+                    </div>
+                </div>
+                @if($booking->status == 'Scheduled')
+                <div class="field buttons"> 
+                    <a href="{{ URL::to('booking/cancel') }}" class="confirm button btn btn-warning">Cancel your ride?</a> 
+                </div>   
+                @endif
+                @if($booking->status == 'Closed')
+                <h3>Please rate driver's service</h3>
+                <form action="{{ URL::to('submitRating') }}" method="POST" autocomplete="off" class=""> 
+                    {{ csrf_field() }}
+                    <div class="row lead evaluation">
+                        <div id="colorstar" class="starrr ratable" ></div> 
+                        <span id="count">0</span> star(s) - <span id="meaning"> </span> 
                     </div> 
-                    @if($booking->status == 'Scheduled')
+                    <br>                    
+                    <input type='text' name='booking_id' id="" value="{{ $booking->booking_id }}" hidden="">
+                    <input type='text' name='rating' id="ratingValue" value="" hidden="">
                     <div class="field buttons"> 
-                        <a href="{{ URL::to('booking/cancel') }}" class="confirm button btn btn-warning">Cancel your ride?</a> 
-                    </div>        
-                    @elseif($booking->status == 'Closed')
-                    <div class="field buttons"> 
-                        Rating
-                    </div>   
-                    @endif
-                </form><!-- end .login -->
+                        <button class="ratingsubmit button btn btn-success">Submit</button> 
+                    </div>  
+
+                </form>
+                @endif  
             </div><!-- end .modal-body -->
 
         </div><!-- end .        modal-content -->
@@ -95,7 +122,20 @@
 @stop
 
 @section('scripts') 
+{!! HTML::script("js/rating.js") !!}
 <script>
+
+    $("button.ratingsubmit").on('click', function () {
+        var star = $('#count').text();
+        $('#ratingValue').val(star);
+        if (star == 0) {
+            alert("Please rate first!");
+            return false;
+        }
+        alert("Thank you for your feedback!");
+    });
+
+
     $("a.confirm").on('click', function (e) {
         e.preventDefault();
         var location = $(this).attr('href');
