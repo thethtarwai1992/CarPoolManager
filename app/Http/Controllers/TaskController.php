@@ -48,7 +48,11 @@ class TaskController extends Controller {
             ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
             ->select('booking_id','pickup','destination','first_name','last_name','contactNO','route_datetime','bookings.status as b_status','bookings.price')
             ->where('bookings.driver_id', Auth::user()->userID)
-            ->where('bookings.status','scheduled')
+          //  ->where('bookings.status','Scheduled')
+            ->where(function ($query) {
+                    $query->where('bookings.status', 'Scheduled')
+                        ->orWhere('bookings.status', 'Picked');
+                })
             ->orderBy('route_datetime','asc')
             ->get();
          
@@ -87,10 +91,16 @@ class TaskController extends Controller {
            $booking = Booking::find($booking_id);
             $route = Route::find($booking->route_id);
 
-            if ($route->route_datetime > $now) {
-                $route->status = 'Open'; // reopen for other passenger to book
-            } else {
-                $route->status = 'Canceled';
+            //Posted by Driver
+            if($route->posted_type == 'Driver' && $route->posted_by == Auth::user()->userID){
+                     if ($route->route_datetime > $now) {
+                        $route->status = 'Open'; // reopen for other passenger to book
+                        $route->available_seats = $booking->seats + $route->available_seats;
+                    } else {
+                        $route->status = 'Canceled';
+                    }
+            }else{
+                    $route->status = 'Canceled';
             }
 
             $booking->status = 'Canceled';
@@ -152,7 +162,7 @@ class TaskController extends Controller {
                 $route=Route::find($booking->route_id);
                 if(count($route)>0){
                     $route->drivers_driving_license_no= $driver->driving_license_no;
-                    $route->status="Scheduled";
+                    $route->status="Closed";
                      $booking->save();
                     $route->save();      
                     return response()->json(['msg'=>"Accept booking successfully!"]);
@@ -162,4 +172,46 @@ class TaskController extends Controller {
 
         return response()->json(['msg' => 'Fail']);
     }
+    
+    public function update(Request $request){
+         if ($this->updateStatus($request)) {
+            return back()->with('success', 'Update successful!');
+        }
+        return back()->with('Failure', 'Sorry! Booking Fails!');
+    }
+    public function updateStatus($request){
+        date_default_timezone_set('Asia/Singapore');
+        $now= date("Y-m-d H:i:s");
+      
+        $booking = Booking::find($request->session()->get('booking_id'));
+        
+        if($booking){
+            $route = Route::find($booking->route_id);
+             if($booking->status == "Scheduled"){
+            $booking->status = 'Picked';
+            $booking->start=date("Y-m-d H:i:s");     
+           
+            if($route->available_seats == 0 || $route->route_datetime <= $now){
+                $route->status = "Closed";
+            }
+            $route->save();
+            // Send Msg to Passenger       
+        }else if($booking->status == "Picked"){
+            $booking->status = 'Closed';
+            $booking->end=date("Y-m-d H:i:s");
+            // Send invoice to Passenger
+        }
+         $booking->save();
+         $request->session()->forget('booking_id');
+         return true;
+        }
+       
+        return false;
+      
+    }
+    
+    public function storeSessionData($id){
+      request()->session()->put('booking_id',$id);
+      return response()->json(['response' => 'Success']);
+   }
 }

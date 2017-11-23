@@ -1103,7 +1103,7 @@ label i
 input[type=submit]
 {
     margin-bottom: 3%;
-    width: 100%;
+  //  width: 100%;
 }
 .log-twitter
 {

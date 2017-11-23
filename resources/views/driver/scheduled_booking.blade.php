@@ -136,8 +136,13 @@ Label the data
                     </td>
                     <td> 
                         <button type="button" class="btn btn-danger delete" data-toggle="modal" value={{ $task->booking_id}}>Cancel</button>
+                        @if( $task->b_status== "Scheduled")
+                        <button type="button" class="btn btn-primary update" data-toggle="modal" value={{ $task->booking_id}}>Picked </button>
+                        @elseif( $task->b_status== "Picked")
+                         <button type="button" class="btn btn-primary update" data-toggle="modal" value={{ $task->booking_id}}>Completed </button>
+                          @endif  
                     </td>
-
+                    
                     </tr>
                     @endforeach
                     @else
@@ -157,6 +162,7 @@ Label the data
     @section('modals')
     @include('driver/details_modal')
     @include('driver/cancel_modal')
+    @include('driver/update_modal')
     @stop
 
 
@@ -198,7 +204,23 @@ Label the data
             });
         });
         
-
+          $('.update').on('click', function (e) {
+                var booking_id = $(this).val();
+                e.preventDefault();
+            $.ajax({
+                url: "{{ URL::to('task/storeSessionData') }}/" + booking_id,
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    console.log(data);
+                    $('#updateModal').modal('show');
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+            });
+  
         /*
          $(document).on('click','.delete',function(e){
          var id=$(this).val();

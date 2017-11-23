@@ -31,7 +31,8 @@ Route::get('task/accept/{id}', 'TaskController@accept');
 Route::get('driver/scheduled', 'TaskController@showScheduled'); 
 Route::get('driver/new_request', 'TaskController@newRequest'); 
 Route::get('task/view/{id}', 'TaskController@view'); 
-
+Route::get('task/storeSessionData/{id}', 'TaskController@storeSessionData');
+Route::get('driver/task/update', 'TaskController@update'); 
 
 Route::get('rides/myrides', 'RideController@show'); 
 Route::get('rides/scheduled', 'RideController@scheduled'); 

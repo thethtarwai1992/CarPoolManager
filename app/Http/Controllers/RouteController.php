@@ -46,7 +46,7 @@ class RouteController extends Controller {
         $driver = Driver::where('userID', Auth::user()->userID)->first();
         $routes = array();
         if (count($driver) > 0) {
-            $routes = Route::where('drivers_driving_license_no', $driver->driving_license_no)->get();
+            $routes = Route::where('drivers_driving_license_no', $driver->driving_license_no) ->orderBy('route_datetime','asc')->get();
         }
         return view('driver.route', compact('routes'));
     }

@@ -134,8 +134,8 @@ Label the data
                         <td><i class="fa fa-money"></i> {{ $task->price }}</td>
                         <td><i class="fa fa-money"></i> {{ $task->price*0.9 }}</td>
                         <td>
-                            <button type="button" class="btn btn-primary view" data-toggle="modal" data-id ={{ $task->booking_id}}>View</a>
-                           </td>
+                            <button type="button" class="btn btn-primary view" data-toggle="modal" data-id ={{ $task->booking_id}}>View</button>
+                       </td>
                         <td> 
                             @if( $task->b_status== "Scheduled")
                             <button type="button" class="btn btn-danger delete" data-toggle="modal" value={{ $task->booking_id}}>Cancel</button>
