@@ -91,7 +91,7 @@
                 .page-sub-title h2{ font-size: 1em;}
                 .main-header-container {margin: 1em 0;}
                 .not-fullscreen, .not-fullscreen .main-parallax-content, .fullscreen.not-overflow, .fullscreen.not-overflow .main-parallax-content {min-height: 375px;}
-                
+
                 .ride-content{float: none;}
             }
             @media only screen and (min-width: 1186px) and (max-width: 1329px){
@@ -129,7 +129,7 @@
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{URL::to('user')}}">My Account</a></li>
                                                     <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
-<!--                                                    <li><a href="#">My Favorites</a></li>                                                    -->
+                                                    <!--                                                    <li><a href="#">My Favorites</a></li>                                                    -->
                                                     @if(Auth::user()->is_driver)
                                                     <li><a href="{{URL::to('driver')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
                                                     @else                                                    
@@ -287,7 +287,7 @@
         </footer><!-- end #footer -->
 
         @yield('modals')
- 
+
         <!-- Javascript -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- Bootstrap -->
@@ -304,7 +304,6 @@
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
         <script type="text/javascript">
-
 
         </script>
 

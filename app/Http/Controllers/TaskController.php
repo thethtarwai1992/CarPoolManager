@@ -161,4 +161,16 @@ class TaskController extends Controller {
 
         return response()->json(['msg' => 'Fail']);
     }
+    
+    public function check() {
+        $booking = Booking::with(['route' => function($query) {
+                        $query->where('posted_type', 'Passenger');
+                    }])->where('status', 'Open')
+                            ->whereDate('request_time', date('Y-m-d'))->get();
+        if ($booking) {
+            return response()->json(['response' => 'Success', 'data' => $booking]);
+        }
+        return response()->json(['response' => 'Fail', 'data' => $booking]);
+    }
+
 }

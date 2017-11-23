@@ -309,10 +309,31 @@
         {!! HTML::script("js/bootstrap-rating-input.min.js") !!}
         <!-- Slicknav  -->
         {!! HTML::script("js/jquery.slicknav.min.js") !!}
-
+        <!-- Notify  -->
+        {!! HTML::script("js/notify.js") !!}
+        {!! HTML::script("js/notify.min.js") !!}
         <script type="text/javascript">
-
-
+            
+        var time = 10000;  //time in ms (5 seconds)
+        $(document).ready(function () {
+            setInterval(check, time);
+        });
+        function check() {
+            $.ajax({
+                url: "{{ URL::to('check') }}",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    //console.log(data);
+                    $.notify("Passenger looking for ride", "info");
+                },
+                error: function (data) {
+                   // console.log(data);
+                    //alert('Error occurred! Please try again.');
+                }
+            }); 
+        }  
+        
         </script>
 
 
