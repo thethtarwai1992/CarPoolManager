@@ -5,7 +5,7 @@
     #floading-panel {
         position: absolute;
         top: 10px;
-        left: 33%;
+        left: 35%;
         z-index: 5;
         background-color: #fff;
         padding: 5px;

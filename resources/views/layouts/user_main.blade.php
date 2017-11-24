@@ -153,13 +153,13 @@
 
                         </div><!-- end .col-sm-4 -->
                         <div class="col-md-8 col-sm-8 col-xs-6"> 
-                            <ul class="social-icons"> 
+<!--                            <ul class="social-icons"> 
                                 <li>
                                     <a class="facebook" href="#">
                                         <i class="fa fa-facebook"></i>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul>-->
 
                         </div><!-- end .col-sm-8 -->
 
@@ -174,7 +174,7 @@
                 <div class="col-sm-12">
                     <div class="alert alert-danger alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <i class="fa fa-warning"></i> Failure: {{ Session::get('failure') }}, Please try again.
+                        <i class="fa fa-warning"></i> Failure: {{ Session::get('failure') }}
                     </div>
                 </div>
             </div>

@@ -31,8 +31,7 @@ class UserController extends Controller {
 
         //My Profile update
         request()->validate([
-            'first_name' => 'required',
-            'email' => 'required',
+            'first_name' => 'required', 
             'contactNO' => 'required',
         ]);
 

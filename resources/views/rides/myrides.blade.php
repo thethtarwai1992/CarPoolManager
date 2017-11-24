@@ -42,7 +42,7 @@
                             <h3> <b> {{ $booking->route->pickup }} </b> <i class="fa fa-arrow-right" aria-hidden="true"></i> <b> {{ $booking->route->destination }}</b></h3> 
                         </div>
                         <br>
-                        <i class="fa fa-calendar-check-o"></i> Status: {{ $booking->status }}
+                        <i class="fa fa-calendar-check-o"></i> Status: {{ $booking->status }}<br>
                         <i class="fa fa-calendar"></i> {{ date('d-m-Y H:i A', strtotime($booking->request_time)) }} 
                         <div class="pull-right">
                             <i class="fa fa-money"></i>  ${{ $booking->price }}
