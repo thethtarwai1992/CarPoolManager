@@ -24,6 +24,7 @@ Route::get('driver/route', 'RouteController@show');
 Route::get('route/view/{id}', 'RouteController@view');
 /* |-------------------------------------------------------------------------- */
 
+<<<<<<< HEAD
 Route::get('driver/task', 'TaskController@show'); 
 Route::post('driver/task/cancel', 'TaskController@cancel'); 
 Route::get('task/accept/{id}', 'TaskController@accept'); 
@@ -32,6 +33,16 @@ Route::get('driver/new_request', 'TaskController@newRequest');
 Route::get('task/view/{id}', 'TaskController@view'); 
 Route::get('task/storeSessionData/{id}', 'TaskController@storeSessionData');
 Route::get('driver/task/update', 'TaskController@update'); 
+=======
+Route::get('driver/task', 'TaskController@show');
+Route::post('driver/task/cancel', 'TaskController@cancel');
+Route::get('task/accept/{id}', 'TaskController@accept');
+Route::get('driver/scheduled', 'TaskController@showScheduled');
+Route::get('driver/new_request', 'TaskController@newRequest');
+Route::get('task/view/{id}', 'TaskController@view');
+Route::get('check', 'TaskController@check');
+/* |-------------------------------------------------------------------------- */
+>>>>>>> a510765b74ea34d03cb017803197e5264addfc59
 
 Route::get('rides/myrides', 'RideController@show');
 Route::get('rides/scheduled', 'RideController@scheduled');
@@ -66,6 +77,7 @@ Route::get('/admin', 'AdminController@scheduled');
 Route::get('/admin/details', 'AdminController@show');
 /* |-------------------------------------------------------------------------- */
 
+//Route::get('send', 'MailController@send'); 
 /*
   |--------------------------------------------------------------------------
   | Resource Contollers

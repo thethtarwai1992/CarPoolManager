@@ -170,6 +170,7 @@ class TaskController extends Controller {
         return response()->json(['msg' => 'Fail']);
     }
     
+<<<<<<< HEAD
     public function update(Request $request){
          if ($this->updateStatus($request)) {
             return back()->with('success', 'Update successful!');
@@ -211,4 +212,17 @@ class TaskController extends Controller {
       request()->session()->put('booking_id',$id);
       return response()->json(['response' => 'Success']);
    }
+=======
+    public function check() {
+        $booking = Booking::with(['route' => function($query) {
+                        $query->where('posted_type', 'Passenger');
+                    }])->where('status', 'Open')
+                            ->whereDate('request_time', date('Y-m-d'))->get();
+        if ($booking) {
+            return response()->json(['response' => 'Success', 'data' => $booking]);
+        }
+        return response()->json(['response' => 'Fail', 'data' => $booking]);
+    }
+
+>>>>>>> a510765b74ea34d03cb017803197e5264addfc59
 }

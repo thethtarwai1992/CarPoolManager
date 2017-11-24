@@ -1,5 +1,29 @@
 @extends('layouts.main')
 @section('title', '- Home')
+@section('styles') 
+<style>
+    #floading-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+        width : 40%;
+    }
+    #output-price, #output{
+        font-size: 10px;
+        float: right;
+    }
+    .output-text{
+        float: left;
+    }
+</style>
 @section('content')
 <div class="container">
     <div class="row">
@@ -74,44 +98,32 @@
 
                     <form action="" novalidate autocomplete="off" class="idealforms searchtours"> 
                         <div class="col-md-12 col-sm-3 col-xs-12">
-                            <div class="field">
-                                <select id="destination" name="destination">
-                                    <option value="default">From</option>
-                                    <option>Sofia</option>
-                                    <option>Plovdiv</option>
-                                    <option>Hamburg</option>
-                                    <option>Milano</option>
-                                    <option>Paris</option>
-                                    <option>Madrid</option>
-                                    <option>Berlin</option>
-                                </select>
-                            </div>
+
+                            <div class="field"> 
+                                <input id="pickup" placeholder="Pickup Address" onFocus="geolocate()" type="text">
+                            </div> 
                         </div>
 
                         <div class="col-md-12 col-sm-3 col-xs-12">
-
-                            <div class="field">
-                                <select id="destination" name="destination">
-                                    <option value="default">To</option>
-                                    <option>Sofia</option>
-                                    <option>Plovdiv</option>
-                                    <option>Hamburg</option>
-                                    <option>Milano</option>
-                                    <option>Paris</option>
-                                    <option>Madrid</option>
-                                    <option>Berlin</option>
-                                </select>
+                            <div class="field"> 
+                                <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text">
                             </div>
                         </div>
-
+<!--
                         <div class="col-md-12 col-sm-3 col-xs-12">
                             <div class="field buttons">
                                 <button type="submit" class="btn btn-lg green-color">Get a fare estimate</button>
                             </div>
-                        </div>
+                        </div>-->
                     </form>
                 </div>
                 <div class="col-md-8 col-sm-12 col-xs-12">
+                    <div id="floading-panel">
+                        <span class="output-text"><i class="fa fa-taxi"></i> Estimated Price </span>
+                        <span id="output-price"></span> <br>
+                        <span id="output"></span>
+                    </div>
+
                     <div id="googleMap" style="width:100%;height:400px;"></div>
                 </div>
 
@@ -123,10 +135,10 @@
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
 
-<!--                    <div class="page-sub-title textcenter">
-                        <h2>How it works</h2>
-                        <div class="line"></div>
-                    </div> end .page-sub-title -->
+                    <!--                    <div class="page-sub-title textcenter">
+                                            <h2>How it works</h2>
+                                            <div class="line"></div>
+                                        </div> end .page-sub-title -->
 
                 </div>
 
@@ -151,8 +163,48 @@
 
 @section('scripts')
 <script>
+    var pick;
+    var dest;
+    var price = 0;
+    var outputDiv = document.getElementById('output');
+    var outputPrice = document.getElementById('output-price');
+    var directionsService, directionsDisplay;
+    var autocompletePickup, autocompleteDest;
+    var typingTimer;                //timer identifier
+    var doneTypingInterval = 3000;  //time in ms (5 seconds)
+
+    function geolocate() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var geolocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                var circle = new google.maps.Circle({
+                    center: geolocation,
+                    radius: position.coords.accuracy
+                });
+                autocompletePickup.setBounds(circle.getBounds());
+                autocompleteDest.setBounds(circle.getBounds());
+            });
+        }
+    }
+
     function myMap() {
+        autocompletePickup = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('pickup')),
+                {types: ['geocode']});
+        autocompletePickup.setComponentRestrictions({'country': ['sg']});
+        autocompleteDest = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('destination')),
+                {types: ['geocode']});
+        autocompleteDest.setComponentRestrictions({'country': ['sg']});
+
         var marker = null;
+
+        directionsService = new google.maps.DirectionsService;
+        directionsDisplay = new google.maps.DirectionsRenderer;
+
         var mapProp = {
             center: new google.maps.LatLng(1.290270, 103.851959),
             zoom: 11
@@ -168,15 +220,12 @@
                     lng: position.coords.longitude
                 };
 
-                //infoWindow.setPosition(pos);
-                //infoWindow.setContent('Your Location');
-                //infoWindow.open(map);
                 map.setCenter(pos);
                 map.setZoom(15);
                 marker = new google.maps.Marker({
                     position: pos,
                     draggable: false,
-                    animation: google.maps.Animation.DROP,
+                    animation: google.maps.Animation.DROP
                 });
 
                 marker.setMap(map);
@@ -188,8 +237,81 @@
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
         }
-
+        $("#pickup").keyup(function () {
+            clearTimeout(typingTimer);
+            if ($('#pickup').val()) {
+                pick = "default";
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            }
+        });
+        $("#destination").keyup(function () {
+            clearTimeout(typingTimer);
+            if ($('#destination').val()) {
+                dest = "default";
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            }
+        });
+        directionsDisplay.setMap(map);
     }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>
+    function doneTyping() {
+        if (pick && dest) {
+
+            calculateAndDisplayRoute(directionsService, directionsDisplay);
+            calculateDistance();
+        }
+    }
+    function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        directionsService.route({
+            origin: document.getElementById('pickup').value,
+            destination: document.getElementById('destination').value,
+            travelMode: 'DRIVING'
+        }, function (response, status) {
+            if (status == 'OK') {
+                directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    }
+
+    function calculateDistance() {
+        var service = new google.maps.DistanceMatrixService;
+        service.getDistanceMatrix({
+            origins: [document.getElementById('pickup').value],
+            destinations: [document.getElementById('destination').value],
+            travelMode: 'DRIVING',
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+        }, function (response, status) {
+            if (status !== 'OK') {
+                //alert('Error was: ' + status);
+                return false;
+            } else {
+                outputDiv.innerHTML = '';
+                outputPrice.innerHTML = '';
+                var results = response.rows[0].elements;
+                console.log(results[0].distance);
+                console.log(results[0].duration);
+                outputDiv.innerHTML += results[0].distance.text + ' in ' +
+                        results[0].duration.text + '<br>';
+                price = calculatePrice(results[0].distance.value, results[0].duration.value);
+                outputPrice.innerHTML += 'SGD: ' + price.toFixed(1);
+                return true;
+
+            }
+        });
+    }
+
+    function calculatePrice($distance, $duration) {
+        var km = $distance / 1000;
+        var min = $duration / 60;
+        return (km + min) / 3.5 + 2;
+    }
+
+
+</script> 
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&libraries=places&callback=myMap"></script>
+
 @stop

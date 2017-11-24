@@ -130,7 +130,7 @@
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{URL::to('user')}}">My Account</a></li>
                                                     <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
-                                                    <li><a href="#">My Favorites</a></li> 
+<!--                                                    <li><a href="#">My Favorites</a></li> -->
                                                     @if(Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())
                                                     <li><a href="{{URL::to('driver/task')}}">Switch to Drive? <i class="fa fa-cab"></i></a></li>
                                                     @elseif(!Auth::user()->is_driver && !\App\Libraries\General::checkIfDriver())                                                    

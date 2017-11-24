@@ -50,6 +50,7 @@
     .output-text{
         float: left;
     } 
+    #colorstar1 { color: #2cc062;}
 </style>
 @stop 
 
@@ -101,7 +102,7 @@
                         <div class="col-md-3 col-sm-6 col-xs-6">
 
                             <div class="field"> 
-                                
+
                                 <div class='input-group date' id='datetimepicker1'>
                                     <input type='text' placeholder="Date and Time" id="datetime" name="datetime" class="form-control"/>
                                     <span class="input-group-addon datetimepicker-cus">
@@ -152,7 +153,7 @@
                 <div class="clearfix"></div>
 
                 @if(count($driverposts) > 0 )
-                
+
                 @foreach ($driverposts as $post)
                 @if(Auth::check())
                 <a href="#" class="view" data-toggle="modal" data-id ={{ $post->route_id }}> 
@@ -166,11 +167,11 @@
                                 <br>
                                 <i class="fa fa-money"></i>  {{ App\Http\Controllers\RouteController::getPrice($post->pickup,$post->destination ) }}
                                 <br> <i class="fa fa-calendar"></i> {{ date("d-m-Y H:iA", strtotime($post->route_datetime)) }} 
-
+                                <span class="pull-right">
+                                    Available Seat(s) <i class="fa fa-user"></i> {{ $post->available_seats }}  
+                                </span> 
                             </div>
-                            <div class="pull-right">
-                                Available Seat(s) <i class="fa fa-user"></i> {{ $post->available_seats }}  
-                            </div> 
+
                         </article><!-- end .ride-box -->
                     </a>
                     @endforeach 
@@ -194,7 +195,7 @@
 @stop
 @section('scripts') 
 <script>
-    var pick ;
+    var pick;
     var dest;
     var price = 0;
     var outputDiv = document.getElementById('output');
@@ -270,14 +271,14 @@
         }
         $("#pickup").keyup(function () {
             clearTimeout(typingTimer);
-            if ($('#pickup').val()) {  
+            if ($('#pickup').val()) {
                 pick = "default";
                 typingTimer = setTimeout(doneTyping, doneTypingInterval);
             }
         });
         $("#destination").keyup(function () {
             clearTimeout(typingTimer);
-            if ($('#destination').val()) { 
+            if ($('#destination').val()) {
                 dest = "default";
                 typingTimer = setTimeout(doneTyping, doneTypingInterval);
             }
@@ -285,8 +286,8 @@
         directionsDisplay.setMap(map);
     }
     function doneTyping() {
-        if (pick && dest) { 
-            
+        if (pick && dest) {
+
             calculateAndDisplayRoute(directionsService, directionsDisplay);
             calculateDistance();
         }
@@ -323,7 +324,7 @@
                 outputPrice.innerHTML = '';
                 var results = response.rows[0].elements;
                 console.log(results[0].distance);
-                console.log(results[0].duration); 
+                console.log(results[0].duration);
                 outputDiv.innerHTML += results[0].distance.text + ' in ' +
                         results[0].duration.text + '<br>';
                 price = calculatePrice(results[0].distance.value, results[0].duration.value);
@@ -333,23 +334,26 @@
             }
         });
     }
-    
-    function calculatePrice($distance, $duration){
-        return ($distance/1000 + $duration/60)/2 + 2;  
+
+    function calculatePrice($distance, $duration) {
+        var km =$distance / 1000;
+        var min =$duration / 60;
+        return (km + min)/3.5 + 2;
     }
 
     $("#request").click(function (e) { //alert($("#seats").val());
         var seats = $("#seats").val();
         var pick = $("#pickup").val();
         var dest = $("#destination").val();
-        var datetime = $("#datetime").val();alert(datetime);
+        var datetime = $("#datetime").val();
+        alert(datetime);
         var token = $("input[name='_token']").val();
         //console.log("Seats :" + seats + ", Price :" + price + ", Start: " + pick + ", End: " + dest);
         e.preventDefault();
         if (seats != 0 && price && pick && dest && datetime) {
             $.ajax({
                 type: "POST",
-                url: "{{ URL::to('rides/request') }}",
+                url: "{{ URL::to('rides/schedule-request') }}",
                 dataType: 'json',
                 data: {
                     seats: seats,
@@ -360,7 +364,7 @@
                     _token: token
                 },
                 success: function (result) {
-                    console.log(result); 
+                    console.log(result);
                     alert('Finding driver for you!');
                     window.location.reload();
                 },
@@ -397,6 +401,16 @@
 
                 $('#route').val(route_id);
                 $('#priceInput').val(data['data']['price']);
+                var stars = "";
+                for (var i = 1; i <= data['data']['star']; i++) {
+                    stars += '<i class="glyphicon .glyphicon-star glyphicon-star"></i>';
+                    // console.log("stars " + i + " " + stars);
+                }
+
+                for (var i = 1; i <= data['data']['empty']; i++) {
+                    stars += '<i class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></i>';
+                }
+                $('#colorstar1 span').html(stars);
                 $('#details').modal('show');
             },
             error: function (data) {

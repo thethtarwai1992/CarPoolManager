@@ -21,15 +21,14 @@ SET time_zone = "+00:00";
 --
 -- Database: `carpoolingmanager`
 --
- 
+ DROP TABLE IF EXISTS `preferences`;
+DROP TABLE IF EXISTS `routes`;
+DROP TABLE IF EXISTS `cancellations`;
 DROP TABLE IF EXISTS `bookings`;
 DROP TABLE IF EXISTS `cars`;
 DROP TABLE IF EXISTS `drivers`;
-DROP TABLE IF EXISTS `preferences`;
-DROP TABLE IF EXISTS `routes`;
 DROP TABLE IF EXISTS `users`; 
-DROP TABLE IF EXISTS `cancellations`;
-  
+
 -- --------------------------------------------------------
  
 --
