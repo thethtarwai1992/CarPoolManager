@@ -30,7 +30,7 @@ class RouteController extends Controller {
         $route = Route::create([
                     'available_seats' => $request->input('seats'), // Need to valid if seats no over capacity
                     'route_datetime' => date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $request->input('dateTime')))),
-                    'comment' => $request->input('comments'), // add comment.         
+                    //'comment' => $request->input('comments'), // add comment.         
                     'pickup' => $request->input('pickup'),
                     'destination' => $request->input('destination'),
                     'drivers_driving_license_no' => $driver->driving_license_no,
