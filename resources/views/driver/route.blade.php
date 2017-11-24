@@ -161,7 +161,7 @@ Label the data
                             <div class="field">
                                 <select id="seats" name="seats" required>
                                     <option value="" selected disabled hidden="Fales">Seats</option>
-                                    @for($i = 1; $i <3 ; $i++)
+                                    @for($i = 1; $i <5 ; $i++)
                                     <option>{{ $i }}</option> 
                                     @endfor
                                 </select>
@@ -202,7 +202,7 @@ Label the data
                    @if(count($routes) > 0 )
 
                 @foreach ($routes as $route)
-                    <tr>
+                    <tr class="id{{ $route->route_id}}">
                         <td>{{ $route->route_id}}</td>
                         <td>{{ $route->pickup }}</td>
                         <td>{{ $route->destination }}</td>

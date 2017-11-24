@@ -124,7 +124,7 @@ Label the data
                                         <li><a class="view" href="#" data-toggle="modal" data-id ={{ $task->booking_id}}>View Details</a></li>
                                         <li class="divider"></li>
                                         @if( $task->b_status== "Scheduled")
-                                        <li><a class="delete" href="#" data-toggle="modal" value={{ $task->booking_id}}>Cancel Booking</a></li>
+                                        <li><a class="delete" href="#" data-toggle="modal" data-id={{ $task->booking_id}}>Cancel Booking</a></li>
                                         @else
                                         <li class="disabled"><a href="#">Cancel Booking</a></li>
                                         @endif
@@ -190,7 +190,8 @@ Label the data
 
         $(document).ready(function () {
             $(".delete").click(function () {
-                var booking_id = $(this).val();
+                var booking_id = $(this).data('id');
+                //alert($(this).val())
                 $('#booking').val(booking_id);
                 $("#cancelModal").modal();
             });
