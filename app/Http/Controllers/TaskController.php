@@ -72,7 +72,7 @@ class TaskController extends Controller {
                     ->select('booking_id', 'pickup', 'destination', 'first_name', 'last_name', 'contactNO', 'route_datetime', 'bookings.status as b_status', 'price')
                     ->where('routes.posted_by', '!=', Auth::user()->userID)
                     ->where('routes.posted_type', 'Passenger')
-                    ->where('routes.route_datetime', '>=', now())
+                    ->whereDate('routes.route_datetime', '>=', date("Y-m-d"))
                     ->where('bookings.status', 'Open')
                     ->orderBy('route_datetime', 'asc')
                     ->get();
@@ -246,7 +246,7 @@ class TaskController extends Controller {
                                 $query->where('posted_type', 'Passenger');
                             }])->where('status', 'Open')
                         ->whereDate('request_time', date('Y-m-d'))->get();
-        if ($booking) {
+        if (count($booking) > 0) {
             return response()->json(['response' => 'Success', 'data' => $booking]);
         }
         return response()->json(['response' => 'Fail', 'data' => $booking]);

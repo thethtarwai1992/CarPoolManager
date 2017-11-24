@@ -40,7 +40,7 @@ class RideController extends Controller {
         $driverposts = Route::with('bookings')
                 //->whereDate('created_at', date('Y-m-d'))
                 ->where('status','Open')
-                ->where('route_datetime',">", date("Y-m-d H:i:s"))
+                ->whereDate('route_datetime', date('Y-m-d')) 
                 ->where('posted_type', 'Driver')
                 ->where('available_seats', '!=', 0)
                 ->orderBy('created_at', 'desc')

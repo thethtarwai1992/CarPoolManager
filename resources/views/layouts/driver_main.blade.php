@@ -324,7 +324,9 @@
                 cache: false,
                 success: function (data) {
                     //console.log(data);
-                    $.notify("Passenger looking for ride", "info");
+                    if(data['response'] == 'Success'){
+                     $.notify("Passenger looking for ride", "info");
+                    }
                 },
                 error: function (data) {
                    // console.log(data);

@@ -2,8 +2,6 @@
 @section('title', '- Rides') 
 @section('styles')
 {!! HTML::style("css/bootstrap.datetimepicker.css") !!} 
-
-
 <style>
     .ride-content{
         float: right;
