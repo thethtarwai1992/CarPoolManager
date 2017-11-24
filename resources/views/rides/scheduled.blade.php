@@ -32,7 +32,7 @@
     #floading-panel {
         position: absolute;
         top: 10px;
-        left: 25%;
+        left: 33%;
         z-index: 5;
         background-color: #fff;
         padding: 5px;
@@ -41,15 +41,17 @@
         font-family: 'Roboto','sans-serif';
         line-height: 30px;
         padding-left: 10px;
-        width : 40%;
+        width : 50%;
     }
-    #output-price, #output{
-        font-size: 10px;
-        float: right;
-    }
-    .output-text{
+    #output-price{
+        font-size: 11px;
         float: left;
     } 
+    #output{
+        font-size: 10px;
+        float: right;
+    } 
+    
     #colorstar1 { color: #2cc062;}
     .timepicker-picker span.glyphicon {
         color :#63a599!important;
@@ -130,8 +132,7 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
 
             <div id="floading-panel">
-                <span class="output-text"><i class="fa fa-taxi"></i> Estimated Price </span>
-                <span id="output-price"></span> <br>
+                <span id="output-price">Estimated Price</span> 
                 <span id="output"></span>
             </div>
             <div id="googleMap" style="width:100%;height:500px;"></div> 
