@@ -6,13 +6,14 @@
                 <input name='booking' id='booking' value='' type='hidden'>
                 
                 <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel">Update Ride Status</h4>
+                    <h4 class="modal-title" id="title"><span>Title</span></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Updated status to picked, if you picked up the passenger.</p>
+                    <p id="msg1"><span></span></p>
+                    <p id="msg2"><span></span></p>
                 </div>
                 <div class="modal-footer">        
                     <a href="{{URL::to('driver/task/update')}}"><button  type="button" class="btn btn-primary" >Confirm</button></a>

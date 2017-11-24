@@ -30,48 +30,56 @@ class TaskController extends Controller {
 
     // Show all the driver's tasks - scheduled, ongoing, canceled, closed
     public function show() {
-        $tasks = DB::table('bookings')
-                ->join('users', 'passenger_id', '=', 'users.userID')
-                ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
-                ->select('booking_id', 'pickup', 'destination', 'first_name', 'last_name', 'contactNO', 'route_datetime', 'bookings.status as b_status', 'bookings.price')
-                ->where('bookings.driver_id', Auth::user()->userID)
-                ->get();
+        if (Auth::user()->is_driver) {
+            $tasks = DB::table('bookings')
+                    ->join('users', 'passenger_id', '=', 'users.userID')
+                    ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
+                    ->select('booking_id', 'pickup', 'destination', 'first_name', 'last_name', 'contactNO', 'route_datetime', 'bookings.status as b_status', 'bookings.price')
+                    ->where('bookings.driver_id', Auth::user()->userID)
+                    ->get();
 
-        return view('driver.task', compact('tasks'));
+            return view('driver.task', compact('tasks'));
+        }
+        return view('driver.register');
     }
 
     // Show the scheduled tasks
-     public function showScheduled() {
-        $tasks=DB::table('bookings')
-            ->join('users', 'passenger_id', '=', 'users.userID')
-            ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
-            ->select('booking_id','pickup','destination','first_name','last_name','contactNO','route_datetime','bookings.status as b_status','bookings.price')
-            ->where('bookings.driver_id', Auth::user()->userID)
-            ->where(function ($query) {
-                    $query->where('bookings.status', 'Scheduled')
-                        ->orWhere('bookings.status', 'Picked');
-                })
-            ->orderBy('route_datetime','asc')
-            ->get();
-   
-        return view('driver.scheduled_booking', compact ('tasks'));
+    public function showScheduled() {
+        if (Auth::user()->is_driver) {
+            $tasks = DB::table('bookings')
+                    ->join('users', 'passenger_id', '=', 'users.userID')
+                    ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
+                    ->select('booking_id', 'pickup', 'destination', 'first_name', 'last_name', 'contactNO', 'route_datetime', 'bookings.status as b_status', 'bookings.price')
+                    ->where('bookings.driver_id', Auth::user()->userID)
+                    ->where(function ($query) {
+                        $query->where('bookings.status', 'Scheduled')
+                        ->orWhere('bookings.status', 'PickedUp');
+                    })
+                    ->orderBy('route_datetime', 'asc')
+                    ->get();
+
+            return view('driver.scheduled_booking', compact('tasks'));
+        }
+        return view('driver.register');
     }
 
     // Show all the new ride request posted by passenger
     public function newRequest() {
-        $tasks = DB::table('bookings')
-                ->join('users', 'passenger_id', '=', 'users.userID')
-                ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
-                ->select('booking_id', 'pickup', 'destination', 'first_name', 'last_name', 'contactNO', 'route_datetime', 'bookings.status as b_status', 'price')
-                ->where('routes.posted_by', '!=', Auth::user()->userID)
-                ->where('routes.posted_type', 'Passenger')
-                ->where('routes.route_datetime', '>=', now())
-                ->where('bookings.status', 'Open')
-                ->orderBy('route_datetime', 'asc')
-                ->get();
+        if (Auth::user()->is_driver) {
+            $tasks = DB::table('bookings')
+                    ->join('users', 'passenger_id', '=', 'users.userID')
+                    ->join('routes', 'bookings.route_id', '=', 'routes.route_id')
+                    ->select('booking_id', 'pickup', 'destination', 'first_name', 'last_name', 'contactNO', 'route_datetime', 'bookings.status as b_status', 'price')
+                    ->where('routes.posted_by', '!=', Auth::user()->userID)
+                    ->where('routes.posted_type', 'Passenger')
+                    ->where('routes.route_datetime', '>=', now())
+                    ->where('bookings.status', 'Open')
+                    ->orderBy('route_datetime', 'asc')
+                    ->get();
 
-
-        return view('driver.new_request', compact('tasks'));
+            return view('driver.new_request', compact('tasks'));
+        }
+        return view('driver.register');
     }
 
     // Driver cancel booking
@@ -89,15 +97,15 @@ class TaskController extends Controller {
             $route = Route::find($booking->route_id);
 
             //Posted by Driver
-            if($route->posted_type == 'Driver' && $route->posted_by == Auth::user()->userID){
-                     if ($route->route_datetime > $now) {
-                        $route->status = 'Open'; // reopen for other passenger to book
-                        $route->available_seats = $booking->seats + $route->available_seats;
-                    } else {
-                        $route->status = 'Canceled';
-                    }
-            }else{
+            if ($route->posted_type == 'Driver' && $route->posted_by == Auth::user()->userID) {
+                if ($route->route_datetime > $now) {
+                    $route->status = 'Open'; // reopen for other passenger to book
+                    $route->available_seats = $booking->seats + $route->available_seats;
+                } else {
                     $route->status = 'Canceled';
+                }
+            } else {
+                $route->status = 'Canceled';
             }
 
             $booking->status = 'Canceled';
@@ -169,60 +177,76 @@ class TaskController extends Controller {
 
         return response()->json(['msg' => 'Fail']);
     }
-    
-<<<<<<< HEAD
-    public function update(Request $request){
-         if ($this->updateStatus($request)) {
+
+    public function update(Request $request) {
+        if ($this->updateStatus($request)) {
             return back()->with('success', 'Update successful!');
         }
         return back()->with('Failure', 'Sorry! Booking Fails!');
     }
-    public function updateStatus($request){
+
+    public function updateStatus($request) {
         date_default_timezone_set('Asia/Singapore');
-        $now= date("Y-m-d H:i:s");
-      
+        $now = date("Y-m-d H:i:s");
+
         $booking = Booking::find($request->session()->get('booking_id'));
-        
-        if($booking){
+
+        if ($booking) {
             $route = Route::find($booking->route_id);
-             if($booking->status == "Scheduled"){
-            $booking->status = 'Picked';
-            $booking->start=date("Y-m-d H:i:s");     
-           
-            if($route->available_seats == 0 || $route->route_datetime <= $now){
-                $route->status = "Closed";
+            if ($booking->status == "Scheduled") {
+                $booking->status = 'PickedUp';
+                $booking->start = date("Y-m-d H:i:s");
+
+                if ($route->available_seats == 0 || $route->route_datetime <= $now) {
+                    $route->status = "Closed";
+                }
+                $route->save();
+                // Send Msg to Passenger       
+            } else if ($booking->status == "PickedUp") {
+                $booking->status = 'Closed';
+                $booking->end = date("Y-m-d H:i:s");
+                // Send invoice to Passenger
             }
-            $route->save();
-            // Send Msg to Passenger       
-        }else if($booking->status == "Picked"){
-            $booking->status = 'Closed';
-            $booking->end=date("Y-m-d H:i:s");
-            // Send invoice to Passenger
+            $booking->save();
+            $request->session()->forget('booking_id');
+            return true;
         }
-         $booking->save();
-         $request->session()->forget('booking_id');
-         return true;
-        }
-       
+
         return false;
-      
     }
-    
-    public function storeSessionData($id){
-      request()->session()->put('booking_id',$id);
-      return response()->json(['response' => 'Success']);
-   }
-=======
+
+    public function storeSessionData($id) {
+        if(request()->session()->has('booking_id')){
+            request()->session()->forget('booking_id');
+        }
+        request()->session()->put('booking_id', $id);
+        $booking = Booking::find($id);
+        $data = array();
+        if($booking){
+            if($booking->status == "Scheduled"){
+                $data['title'] = "Mark as Picked Up";
+                $data['msg1'] = "If you picked up the passenger, mark this booking as picked up.";
+            }
+             if($booking->status == "PickedUp"){
+                $data['title'] = "Mark as Completed";
+                $data['msg1'] = "If you completed the ride, mark this booking as completed after you received the correct fare.";
+                $data['msg2'] = "Total Price: S$ $booking->price";
+             }
+            $data['status'] = $booking->status;
+            return response()->json(['response' => 'Success','data' => $data]);
+        }
+        return response()->json(['response' => 'Fail', 'data' => $data]);   
+    }
+
     public function check() {
         $booking = Booking::with(['route' => function($query) {
-                        $query->where('posted_type', 'Passenger');
-                    }])->where('status', 'Open')
-                            ->whereDate('request_time', date('Y-m-d'))->get();
+                                $query->where('posted_type', 'Passenger');
+                            }])->where('status', 'Open')
+                        ->whereDate('request_time', date('Y-m-d'))->get();
         if ($booking) {
             return response()->json(['response' => 'Success', 'data' => $booking]);
         }
         return response()->json(['response' => 'Fail', 'data' => $booking]);
     }
 
->>>>>>> a510765b74ea34d03cb017803197e5264addfc59
 }

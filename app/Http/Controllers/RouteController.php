@@ -16,6 +16,7 @@ class RouteController extends Controller {
     }
 
     public function index() {
+
         return view('driver.route', compact('routes'));
     }
 
@@ -43,16 +44,32 @@ class RouteController extends Controller {
     }
 
     public function show() {
-        $driver = Driver::where('userID', Auth::user()->userID)->first();
-        $routes = array();
-        if (count($driver) > 0) {
-            $routes = Route::where('drivers_driving_license_no', $driver->driving_license_no) ->orderBy('route_datetime','asc')->get();
+        if (Auth::user()->is_driver) {
+            $driver = Driver::where('userID', Auth::user()->userID)->first();
+            $routes = array();
+            if (count($driver) > 0) {
+                $data = Route::where('drivers_driving_license_no', $driver->driving_license_no)->orderBy('route_datetime', 'asc')->get();
+                $routes = array();
+                foreach ($data as $d) {
+                    $this->update($d->route_id);
+                    $routes[] = $d;
+                }
+            }
+            return view('driver.route', compact('routes'));
         }
-        return view('driver.route', compact('routes'));
+        return view('driver.register');
     }
 
     public function update($id) {
-        
+        date_default_timezone_set('Asia/Singapore');
+        $now = date("Y-m-d H:i:s");
+
+        $route = Route::find($id);
+
+        if ($route->route_datetime <= $now || $route->available_seats == 0) {
+            $route->status = 'Closed';
+            $route->save();
+        }
     }
 
     public function cancel(Request $request) {
@@ -86,8 +103,8 @@ class RouteController extends Controller {
 
         if ($route) {
             $km = $route['distance'] / 1000;
-            $min =$route['duration'] / 60;
-            $price = (($km + $min)/3.5) + 2;
+            $min = $route['duration'] / 60;
+            $price = (($km + $min) / 3.5) + 2;
             $route['price'] = round($price, 1);
 
             //return response()->json(['response' => 'Success', 'data' => $route]);
@@ -101,7 +118,7 @@ class RouteController extends Controller {
         $data = self::calculate($pickup, $dest);
         if ($data) {
             $price = $data["price"];
-        } 
+        }
         return $price;
     }
 

@@ -124,33 +124,44 @@ Label the data
 
                         @foreach ($tasks as $task)
                         <tr class="id{{ $task->booking_id}}">
-                    <td>{{ $task->booking_id}}</td>
-                    <td>{{ $task->pickup }}</td>
-                    <td>{{ $task->destination }}</td>
-                    <td>{{ $task->first_name }} {{ $task->last_name }}</td>
-                    <td>{{ $task->route_datetime }}</td>
-                    <td><i class="fa fa-money"></i> {{ $task->price }}</td>
-                    <td><i class="fa fa-money"></i> {{ $task->price*0.9 }}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary view" data-toggle="modal" data-id ={{ $task->booking_id}}>View</button>
-                    </td>
-                    <td> 
-                        <button type="button" class="btn btn-danger delete" data-toggle="modal" value={{ $task->booking_id}}>Cancel</button>
-                        @if( $task->b_status== "Scheduled")
-                        <button type="button" class="btn btn-primary update" data-toggle="modal" value={{ $task->booking_id}}>Picked </button>
-                        @elseif( $task->b_status== "Picked")
-                         <button type="button" class="btn btn-primary update" data-toggle="modal" value={{ $task->booking_id}}>Completed </button>
-                          @endif  
-                    </td>
-                    
-                    </tr>
-                    @endforeach
-                    @else
-                    <tr>
-                        <td scope="row" colspan="9">No Record Found.</td>
+                            <td>{{ $task->booking_id}}</td>
+                            <td>{{ $task->pickup }}</td>
+                            <td>{{ $task->destination }}</td>
+                            <td>{{ $task->first_name }} {{ $task->last_name }}</td>
+                            <td>{{ $task->route_datetime }}</td>
+                            <td><i class="fa fa-money"></i> {{ $task->price }}</td>
+                            <td><i class="fa fa-money"></i> {{ $task->price*0.9 }}</td>
+                            <td>
+                                @if( $task->b_status== "Scheduled")
+                                <button type="button" class="btn btn-success update" data-toggle="modal" value={{ $task->booking_id}}>Picked </button>
+                                @elseif( $task->b_status== "PickedUp")
+                                <button type="button" class="btn btn-success update" data-toggle="modal" value={{ $task->booking_id}}>Completed </button>
+                                @endif       
+                            </td>
+                            <td>                    
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">More Actions
+                                        <span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="view" href="#" data-toggle="modal" data-id ={{ $task->booking_id}}>View Details</a></li>
+                                        <li class="divider"></li>
+                                        @if( $task->b_status== "Scheduled")
+                                        <li><a class="delete" href="#" data-toggle="modal" value={{ $task->booking_id}}>Cancel Booking</a></li>
+                                        @else
+                                        <li class="disabled"><a href="#">Cancel Booking</a></li>
+                                        @endif
+                                    </ul>
+                                </div>
+                            </td>
 
-                    </tr>
-                    @endif   
+                        </tr>
+                        @endforeach
+                        @else
+                        <tr>
+                            <td scope="row" colspan="9">No Record Found.</td>
+
+                        </tr>
+                        @endif   
                     </tbody>
                 </table>
             </div>
@@ -203,24 +214,27 @@ Label the data
                 $("#cancelModal").modal();
             });
         });
-        
-          $('.update').on('click', function (e) {
-                var booking_id = $(this).val();
-                e.preventDefault();
+
+        $('.update').on('click', function (e) {
+            var booking_id = $(this).val();
+            e.preventDefault();
             $.ajax({
                 url: "{{ URL::to('task/storeSessionData') }}/" + booking_id,
                 dataType: 'json',
                 cache: false,
                 success: function (data) {
                     console.log(data);
+                    $('#title span').html(data['data']['title']);
+                    $('#msg1 span').html(data['data']['msg1']);    
+                     $('#msg2 span').html(data['data']['msg2']); 
                     $('#updateModal').modal('show');
                 },
                 error: function (data) {
                     console.log(data);
                 }
             });
-            });
-  
+        });
+
         /*
          $(document).on('click','.delete',function(e){
          var id=$(this).val();

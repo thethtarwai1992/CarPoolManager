@@ -31,8 +31,9 @@ class User extends Authenticatable {
     ];
     protected $casts = [
         'is_driver' => 'boolean',
+         'is_admin' => 'boolean',
     ];
-
+    
     public function driver() {
         return $this->hasOne(Driver::class, 'userID');
     }

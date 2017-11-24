@@ -83,7 +83,12 @@ class DriverController extends Controller {
         $results = Booking::where('driver_id', $driver_id)->where('rating', '!=', 0);
         $rating = $results->count();
         $total = $results->sum('rating');
-        return round($total/$rating);
+        if($rating == 0 || $total==0){
+            return 0;
+        }else{
+            return round($total/$rating);
+        }
+        
     }
 
 }
