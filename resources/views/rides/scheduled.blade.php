@@ -365,7 +365,7 @@
         var pick = $("#pickup").val();
         var dest = $("#destination").val();
         var datetime = $("#datetime").val();
-        alert(datetime);
+        //alert(datetime);
         var token = $("input[name='_token']").val();
         //console.log("Seats :" + seats + ", Price :" + price + ", Start: " + pick + ", End: " + dest);
         e.preventDefault();
