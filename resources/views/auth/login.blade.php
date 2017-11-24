@@ -73,10 +73,7 @@
                                 <button type="submit" class="submit btn btn-primary">Log in</button> 
                             </div>
 
-                        </div>
-                        <div class="form-group">
-                            <a href="#" class="log-facebook facebook"><i class="fa fa-facebook"></i>Facebook</a>
-                        </div>  
+                        </div> 
                     </form>
                 </div>
             </div>

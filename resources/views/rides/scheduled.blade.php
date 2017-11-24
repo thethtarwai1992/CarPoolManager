@@ -455,8 +455,8 @@
 
     $(function () {
         var myDate = new Date();
-        myDate.setDate(myDate.getDate()-1);
-        $('#datetimepicker1').datetimepicker({maxDate: myDate});
+        myDate.setDate(myDate.getDate() + 1);
+        $('#datetimepicker1').datetimepicker({minDate: myDate});
     });
 </script> 
 {!! HTML::script("js/Moment.js") !!}

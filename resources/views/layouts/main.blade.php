@@ -240,13 +240,13 @@
                                                         </ul>
                                                     </li> 
                                                     <li>
-                                                        <a href="add-ride.html">FAQ</a>
+                                                        <a href="{{ URL::to('faq')  }} ">FAQ</a>
                                                     </li>
                                                     <li>
-                                                        <a href="add-ride.html">About Us</a>
+                                                        <a href="{{ URL::to('about-us')  }}">About Us</a>
                                                     </li>
                                                     <li>
-                                                        <a href="contact-page.html">Contact</a>
+                                                        <a href="{{ URL::to('contact')  }}">Contact</a>
                                                     </li>
                                                 </ul>
 

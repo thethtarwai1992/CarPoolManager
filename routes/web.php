@@ -9,6 +9,9 @@ Route::get('logout', 'Auth\LoginController@logout');
 
 Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index');
+Route::get('/faq', 'HomeController@faq');
+Route::get('/about-us', 'HomeController@about');
+Route::get('/contact', 'HomeController@contact');
 /* |-------------------------------------------------------------------------- */
 
 Route::get('driver/register', 'DriverController@register');
