@@ -133,7 +133,7 @@
                                     <div class="container-fluid"> 
                                         <ul class="nav navbar-nav"> 
                                             <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->first_name }} {{ Auth::user()->last_name or ''}}  <span class="caret"></span></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-o"></i> {{ Auth::user()->first_name }} {{ Auth::user()->last_name}}  <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{URL::to('user')}}">My Account</a></li>
                                                     <li><a href="{{URL::to('rides/myrides')}}">My Rides</a></li>
@@ -164,13 +164,13 @@
 
                         </div><!-- end .col-sm-4 -->
                         <div class="col-md-8 col-sm-8 col-xs-6"> 
-                            <ul class="social-icons"> 
+<!--                            <ul class="social-icons"> 
                                 <li>
                                     <a class="facebook" href="#">
                                         <i class="fa fa-facebook"></i>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul>-->
 
                         </div><!-- end .col-sm-8 -->
 
@@ -185,7 +185,7 @@
                 <div class="col-sm-12">
                     <div class="alert alert-danger alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <i class="fa fa-warning"></i> Failure: {{ Session::get('failure') }}, Please try again.
+                        <i class="fa fa-warning"></i> Failure: {{ Session::get('failure') }}
                     </div>
                 </div>
             </div>

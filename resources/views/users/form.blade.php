@@ -13,10 +13,10 @@
                 <label for="phone_number">Contact Number</label>
                 {!! Form::text('contactNO', null, array('placeholder' => 'Contact Number','class' => 'form-control')) !!}
             </div>
-            <div class="form-group">
+<!--            <div class="form-group">
                 <label for="email">Email</label>
                 {!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
-            </div>
+            </div>-->
             <button type="submit" class="btn btn-primary">
                 <i class="fa fa-btn fa-sign-in"></i> Update
             </button>  

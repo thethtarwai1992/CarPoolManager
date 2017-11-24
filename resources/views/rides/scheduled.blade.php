@@ -28,11 +28,14 @@
     } 
     .search-content{
         margin: 0;
-    }  
+        padding: 0;
+        padding-bottom: 10px;
+    } 
+    
     #floading-panel {
         position: absolute;
         top: 10px;
-        left: 33%;
+        left: 35%;
         z-index: 5;
         background-color: #fff;
         padding: 5px;
@@ -41,7 +44,7 @@
         font-family: 'Roboto','sans-serif';
         line-height: 30px;
         padding-left: 10px;
-        width : 50%;
+        width : 200px;
     }
     #output-price{
         font-size: 11px;
@@ -59,6 +62,10 @@
 
     .timepicker-picker .btn:hover{
         background: transparent!important;
+    }
+    
+    form.idealforms.searchtours .field{
+        padding: 0 0.03em!important;
     }
 </style>
 @stop 
@@ -103,7 +110,7 @@
 
                             <div class="field">
                                 <select id="seats" name="numberOfseats">
-                                    <option value="0">Number of seats</option>
+                                    <option value="0">Seats</option>
                                     @for($i = 1; $i <5 ; $i++)
                                     <option>{{ $i }}</option> 
                                     @endfor
