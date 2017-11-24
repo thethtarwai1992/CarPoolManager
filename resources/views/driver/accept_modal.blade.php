@@ -18,7 +18,7 @@
                     <p>View the booking details at "Scheduled Booking" page. Click <a href="{{URL::to('driver/scheduled')}}">link</a></p>
                 </div>
                 <div class="modal-footer">
-                    <button  type="button" class="btn btn-info" >Close</button>
+                    <button  type="button" class="btn btn-info" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>

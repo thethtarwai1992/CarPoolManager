@@ -1,76 +1,55 @@
 @extends('layouts.driver_main')
 @section('title', '- Rides') 
 @section('styles')
+{!! HTML::style("css/table-view.css") !!} 
 <style>
-    /* 
-           Generic Styling, for Desktops/Laptops 
-    */
-    table { 
-        width: 100%; 
-        border-collapse: collapse; 
-    }
-    /* Zebra striping */
-    tr:nth-of-type(odd) { 
-        background: #eee; 
-    }
-    th { 
-        background: #333; 
-        color: white; 
-        font-weight: bold; 
-        text-align: center; 
-    }
-    td, th { 
-        padding: 6px; 
-        border: 1px solid #ccc; 
-        text-align: center; 
-    }
-    #card_title{
-        font-weight: bold;
-        margin: 5px 30px 5px 0;
-        border-bottom: 1px solid #ddd;
-    }
-    .card_desc{
-        padding:5px;
-        margin: 5px 5px 5px 0;
-        width: 100%;
-    }
-    #card_subtitle{
-        max-width:30px;
-        padding-right: 30px;
-        margin: 30px 30px 30px 0;
-        font-weight: bold;
-    }
-    /* 
-    Max width before this PARTICULAR table gets nasty
-    This query will take effect for any screen smaller than 760px and also iPads specifically.
-    */
-    @media 
-    only screen and (max-width: 760px),
-    (min-device-width: 768px) and (max-device-width: 1024px)  {
 
-        /* Force table to not be like tables anymore */
-        table, thead, tbody, th, td, tr { 
-            display: block; 
-        }
+#card_title{
+    font-weight: bold;
+    margin: 5px 30px 5px 0;
+    border-bottom: 1px solid #ddd;
+}
+.card_desc{
+    padding:5px;
+    margin: 5px 5px 5px 0;
+    width: 100%;
+}
+#card_subtitle{
+    max-width:30px;
+    padding-right: 30px;
+    margin: 30px 30px 30px 0;
+    font-weight: bold;
+}
+/* 
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px and also iPads specifically.
+*/
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
 
-        /* Hide table headers (but not display: none;, for accessibility) */
-        thead tr { 
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
-        }
+    /* Force table to not be like tables anymore */
+    table, thead, tbody, th, td, tr { 
+        display: block; 
+    }
 
-        tr { border: 1px solid #ccc; }
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr { 
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
 
-        td { 
-            /* Behave  like a "row" */
-            border: none;
-            border-bottom: 1px solid #eee; 
-            position: relative;
-            padding-left: 50%; 
-        }
+    tr { border: 1px solid #ccc; }
 
-        td:before { 
+    td { 
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee; 
+        position: relative;
+        padding-left: 50%; 
+    }
+        .main td:before { 
             /* Now like a table header */
             position: absolute;
             /* Top/left values mimic padding */
@@ -83,15 +62,14 @@
         /*
 Label the data
         */
-        td:nth-of-type(1):before { content: "Booking #"; }
-        td:nth-of-type(2):before { content: "From"; }
-        td:nth-of-type(3):before { content: "Destination"; }
-        td:nth-of-type(4):before { content: "Customer"; }
-        td:nth-of-type(5):before { content: "Ride Date&Time"; }
-        td:nth-of-type(6):before { content: "Total Fare"; }
-        td:nth-of-type(7):before { content: "Settlement Price"; }
-        td:nth-of-type(8):before { content: "Actions"; }
-
+         .main td:nth-of-type(1):before { content: "Booking #"; }
+         .main td:nth-of-type(2):before { content: "From"; }
+         .main td:nth-of-type(3):before { content: "Destination"; }
+         .main td:nth-of-type(4):before { content: "Customer"; }
+         .main td:nth-of-type(5):before { content: "Ride Date&Time"; }
+         .main td:nth-of-type(6):before { content: "Total Fare"; }
+         .main td:nth-of-type(7):before { content: "Settlement Price"; }
+         .main td:nth-of-type(8):before { content: "Actions"; }
 
     </style>
     @stop 
@@ -119,7 +97,7 @@ Label the data
                             <th colspan="2">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="main">
                         @if(count($tasks) > 0 )
 
                         @foreach ($tasks as $task)

@@ -7,6 +7,7 @@
             </div>
             <div class="modal-body">
                 <h4 class="text-center">Driver Information.</h4>
+                <div class="table-responsive">
                 <table class="table table-striped" id="tblGrid">
                     <thead id="tblHead">
                         <tr>
@@ -30,8 +31,10 @@
                         </tr>    
                     </tbody>
                 </table>
+                </div>
                 <div class="row"></div><div class="row"></div>
                 <h4 class="text-center">Car Information.</h4>
+                <div class="table-responsive">
                 <table class="table table-striped" id="tblGrid">
                     <thead id="tblHead">
                         <tr>
@@ -49,6 +52,7 @@
                         </tr>    
                     </tbody>
                 </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info " data-dismiss="modal">Close</button>

@@ -1,8 +1,9 @@
 @extends('layouts.driver_main')
 @section('title', '- Rides') 
+@section('styles')
 {!! HTML::style("css/bootstrap.datetimepicker.css") !!} 
 
-@section('styles')
+
 <style>
     .ride-content{
         float: right;
@@ -169,13 +170,7 @@ Label the data
                                
                             </div>
                         </div>
-                         <div class="col-md-3 col-sm-6 col-xs-6">
-
-                            <div class="field">
-                                <textarea id="comments" placeholder="Notes" name="comments" cols="20" rows="3"></textarea>
-                            </div>
-                        </div>
-                        
+                  
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="field">
                                 <button type="submit" class="submit btn green-color" style="width: 45%;">Post</button>
