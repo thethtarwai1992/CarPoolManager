@@ -230,11 +230,18 @@
                                                 <ul class="navigation">
                                                     <li>
                                                         <a href="{{URL::to('/')}}"> Home </a>
-                                                    </li>  
+                                                    </li>                                                      
                                                     @if(Auth::user()->is_admin)
                                                     <li>
                                                         <a href="{{ URL::to('admin/drivers') }}">Drivers </a>
                                                     </li>  
+                                                    @else
+                                                    <li>
+                                                        <a href="{{ URL::to('user/edit') }}">Edit Profile </a> 
+                                                    </li>  
+                                                    <li>
+                                                        <a href="{{URL::to('user/change-pw')}}">Change Password</a>
+                                                    </li> 
                                                    @endif
                                                     <li>
                                                         <a href="{{URL::to('logout')}}">Logout</a>
