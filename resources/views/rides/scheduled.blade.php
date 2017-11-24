@@ -51,10 +51,19 @@
         float: left;
     } 
     #colorstar1 { color: #2cc062;}
+    .timepicker-picker span.glyphicon {
+        color :#63a599!important;
+    }
+
+    .timepicker-picker .btn:hover{
+        background: transparent!important;
+    }
 </style>
 @stop 
 
 @section('content') 
+
+
 <div class="container"> 
     <div class="row"> 
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -67,8 +76,10 @@
         </div><!-- end .col-md-12 col-sm-12 col-xs-12 -->
 
         <div class="col-md-12 col-sm-12 col-xs-12">
-
-            <div class="search-content">
+            <div class="alert alert-info alert-dismissable"> 
+                <i class="fa fa-info-circle"></i> Book for next day rides in advanced.
+            </div>
+            <div class="search-content">  
 
                 <form action="" novalidate autocomplete="off" class="idealforms searchtours">
 
@@ -336,9 +347,9 @@
     }
 
     function calculatePrice($distance, $duration) {
-        var km =$distance / 1000;
-        var min =$duration / 60;
-        return (km + min)/3.5 + 2;
+        var km = $distance / 1000;
+        var min = $duration / 60;
+        return (km + min) / 3.5 + 2;
     }
 
     $("#request").click(function (e) { //alert($("#seats").val());
@@ -411,7 +422,7 @@
                     stars += '<i class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></i>';
                 }
                 $('#colorstar1 span').html(stars);
-                $('#details').modal('show');
+                $('#details').appendTo("body").modal('show');
             },
             error: function (data) {
                 console.log(data);
@@ -435,10 +446,11 @@
     });
 
     $(function () {
-        $('#datetimepicker1').datetimepicker();
+        var myDate = new Date();
+        myDate.setDate(myDate.getDate() + 1);
+        $('#datetimepicker1').datetimepicker({minDate: myDate});
     });
 </script> 
-
 {!! HTML::script("js/Moment.js") !!}
 {!! HTML::script("js/bootstrap.datetimepicker.js") !!}
 <script async defer

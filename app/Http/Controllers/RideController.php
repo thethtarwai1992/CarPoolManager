@@ -22,7 +22,7 @@ class RideController extends Controller {
         $booked = false;
         $driverposts = array();
         //Need to check if current rides is ongoing..cannot book another rides!!
-        if (Auth::check() && (request()->session()->exists('booked') || request()->session()->exists('bookedFromPost'))) {
+        if (Auth::check() && (request()->session()->exists('booked'))) {
             if (BookingController::bookingUpdate()) {
                 return redirect('bookings/ongoing');
             } else {
@@ -38,8 +38,9 @@ class RideController extends Controller {
         }
  
         $driverposts = Route::with('bookings')
-                ->whereDate('created_at', date('Y-m-d'))
+                //->whereDate('created_at', date('Y-m-d'))
                 ->where('status','Open')
+                ->where('route_datetime',">", date("Y-m-d H:i:s"))
                 ->where('posted_type', 'Driver')
                 ->where('available_seats', '!=', 0)
                 ->orderBy('created_at', 'desc')
@@ -62,7 +63,7 @@ class RideController extends Controller {
                 ->orderBy('created_at', 'desc')
                 ->get();
  
-        return view('rides.scheduled', compact('driverposts'));
+        return view('rides.scheduled', compact('driverposts')); 
     }
 
     public function create() {

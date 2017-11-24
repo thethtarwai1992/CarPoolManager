@@ -70,12 +70,13 @@ class BookingController extends Controller {
         if ($request->isMethod('post')) {
             $a = $this->booking($request);
             if ($a == 0) {
-                return back()->with('failure', 'Sorry! Booking Fails');} elseif ($a == 1) {
+                return back()->with('failure', 'Sorry! Booking Fails');                
+            } elseif ($a == 1) {
                 return back()->with('failure', 'You have already booked this');
             } else {
                 //Email
                 MailController::sendToDriver($a);                
-                return back()->with('success', 'Booking successful! You may check your booking status at my rides for your scheduled ride!');
+                return back()->with('success', 'Booking successful!');
                        
             }
         }
@@ -99,15 +100,19 @@ class BookingController extends Controller {
             } else {
                 $booking = new Booking;
                 $booking->request_time = date("Y-m-d H:i:s");
-                $booking->status = "Open";
+                $booking->status = "Scheduled";
                 $booking->price = $request->price;
                 $booking->seats = $request->booking_seats;
                 $booking->passenger_id = Auth::user()->userID;
                 $booking->driver_id = $route->posted_by;
                 $booking->route_id = $route->route_id;
-                $booking->save();
-                $request->session()->put('bookedFromPost', true);
-                $request->session()->put('booking_id', $booking->booking_id);
+                $booking->save();  
+                $route->available_seats = $route->available_seats - $booking->seats;
+                if ($route->available_seats == 0) {
+                    $route->status = 'Closed';
+                }
+                $route->save();
+                
                 $route['price'] = $request->price;
                 return $route;
             }
@@ -131,7 +136,7 @@ class BookingController extends Controller {
                 self::delete($booking_id);
                 request()->session()->forget('booking_id');
                 request()->session()->forget('booked');
-                request()->session()->forget('bookedFromPost');
+                //request()->session()->forget('bookedFromPost');
                 request()->session()->put('driverNotFound', true);
             }
         }
@@ -143,7 +148,7 @@ class BookingController extends Controller {
             $booking = Booking::find($booking_id);
             if ($booking->status == "Scheduled") {
                 request()->session()->forget('booked');
-                request()->session()->forget('bookedFromPost');
+                //request()->session()->forget('bookedFromPost');
                 request()->session()->put('driverFound', true);
                 return true;
             }
