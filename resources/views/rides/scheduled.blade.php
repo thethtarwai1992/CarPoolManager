@@ -87,13 +87,13 @@
 
                     <div class="row">
 
-                        <div class="col-md-3 col-sm-6 col-xs-6">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="field"> 
                                 <input id="pickup" placeholder="Pickup Address" onFocus="geolocate()" type="text"></input>
                             </div> 
                         </div>
 
-                        <div class="col-md-3 col-sm-6 col-xs-6">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="field"> 
                                 <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text"></input>
                             </div>
@@ -448,8 +448,8 @@
 
     $(function () {
         var myDate = new Date();
-        myDate.setDate(myDate.getDate() + 1);
-        $('#datetimepicker1').datetimepicker({minDate: myDate});
+        myDate.setDate(myDate.getDate()-1);
+        $('#datetimepicker1').datetimepicker({maxDate: myDate});
     });
 </script> 
 {!! HTML::script("js/Moment.js") !!}

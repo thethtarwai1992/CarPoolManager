@@ -18,7 +18,7 @@ class AdminController extends Controller {
     }
     
     public function index() {
-        return view('admin.admin');
+        $this->showDrivers() ;
     }
     
     public function scheduled() {

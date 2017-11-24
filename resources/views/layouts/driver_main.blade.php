@@ -19,7 +19,6 @@
 
         <!-- Bootstrap -->
         {!!  HTML::style("css/bootstrap.min.css") !!}
-        {!!  HTML::style("css/bootstrap-datetimepicker.min.css") !!}
         <!-- Forms -->
         {!!  HTML::style("css/jquery.idealforms.css") !!}
         <!-- Select  -->

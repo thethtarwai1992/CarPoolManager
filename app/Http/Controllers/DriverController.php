@@ -47,8 +47,7 @@ class DriverController extends Controller {
 
         $car->save();
 
-        return redirect()->route('/home')
-                        ->with('success', 'Driver Registration is submited successfully');
+        return back()->with('success', 'Register successful! We will arrange interview and contact you soon. ');
     }
 
     public function update() {

@@ -71,13 +71,13 @@
 
                     <div class="row">
                         {{ csrf_field() }}
-                        <div class="col-md-3 col-sm-6 col-xs-6">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="field"> 
                                 <input id="pickup" placeholder="Pickup Address" onFocus="geolocate()" type="text">
                             </div> 
                         </div>
 
-                        <div class="col-md-3 col-sm-6 col-xs-6">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="field"> 
                                 <input id="destination" placeholder="Destination Address" onFocus="geolocate()" type="text">
                             </div>

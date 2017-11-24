@@ -1,6 +1,7 @@
 @extends('layouts.driver_main')
 @section('title', '- Rides') 
-<meta http-equiv="refresh" content="30" >
+{!! HTML::style("css/bootstrap.datetimepicker.css") !!} 
+
 @section('styles')
 <style>
     .ride-content{
@@ -15,10 +16,31 @@
     .route_title{
         text-align: center;
     }
+     #datetimepicker1 fa{
+        color:#63a599 ;   
+    }
+    #datetimepicker1{
+        width: 100%; 
+    }
+    .datetimepicker-cus{
+        border : none; 
+        background: #f4f1e3;
+        border-bottom-right-radius: 3px;
+        border-top-right-radius: 3px;
+        width: 2em;
+    } 
+        #colorstar1 { color: #2cc062;}
+    .timepicker-picker span.glyphicon {
+        color :#63a599!important;
+    }
+
+    .timepicker-picker .btn:hover{
+        background: transparent!important;
+    }
    /* 
            Generic Styling, for Desktops/Laptops 
     */
-    table { 
+    .rides-list  table { 
         width: 100%; 
         border-collapse: collapse; 
     }
@@ -26,7 +48,7 @@
     tr:nth-of-type(odd) { 
         background: #eee; 
     }
-    th { 
+    .rides-list th { 
         background: #333; 
         color: white; 
         font-weight: bold; 
@@ -128,16 +150,19 @@ Label the data
 
                         <div class="col-md-3 col-sm-6 col-xs-6">
 
-                            <div class="field">
-                                <input name="dateTime" type="text" placeholder="Date" class="datetimepicker" >
-                            </div> 
+                            <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' placeholder="Route Date" id="datetime" name="dateTime" class="form-control"/>
+                        <span class="input-group-addon datetimepicker-cus">
+                            <span class="fa fa-calendar-o" style="color :#63a599;"></span>
+                        </span>
+                         </div> 
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-6">
 
                             <div class="field">
                                 <select id="seats" name="seats" required>
                                     <option value="" selected disabled hidden="Fales">Seats</option>
-                                    @for($i = 1; $i <5 ; $i++)
+                                    @for($i = 1; $i <3 ; $i++)
                                     <option>{{ $i }}</option> 
                                     @endfor
                                 </select>
@@ -399,7 +424,14 @@ Label the data
     function calculatePrice($distance, $duration){
         return ($distance/1000 + $duration/60)/2 + 2;  
     }
+    $(function () {
+        var myDate = new Date();
+        myDate.setDate(myDate.getDate());
+        $('#datetimepicker1').datetimepicker({minDate: myDate});
+    });
 </script> 
+{!! HTML::script("js/Moment.js") !!}
+{!! HTML::script("js/bootstrap.datetimepicker.js") !!}
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&libraries=places&callback=myMap"></script>
 

@@ -1,6 +1,7 @@
-@extends('layouts.user_main')
-@section('title', '- Rides') 
+@extends('layouts.design')
+@section('title', '- Driver Register') 
 @section('styles')
+{!! HTML::style("css/bootstrap.datetimepicker.css") !!} 
 <style>
     .ride-content{
         float: right;
@@ -16,6 +17,27 @@
     } 
     .route_title{
         text-align: center;
+    }
+     #datetimepicker1 fa{
+        color:#63a599 ;   
+    }
+    #datetimepicker1{
+        width: 100%; 
+    }
+    .datetimepicker-cus{
+        border : none; 
+        background: #f4f1e3;
+        border-bottom-right-radius: 3px;
+        border-top-right-radius: 3px;
+        width: 2em;
+    } 
+        #colorstar1 { color: #2cc062;}
+    .timepicker-picker span.glyphicon {
+        color :#63a599!important;
+    }
+
+    .timepicker-picker .btn:hover{
+        background: transparent!important;
     }
 </style>
 @stop 
@@ -63,7 +85,12 @@
                         <span class="error"></span>
                     </div>
                     <div class="field">
-                        <input name="expiryDate" type="text"  placeholder="Driving License Valid Till" class="datepicker" data-date-format="dd MM yyyy">
+                         <div class='input-group date' id=''>
+                        <input type='text' placeholder="Driving License Valid Till" id="" name="expiryDate" class="form-control datepicker"/>
+                        <span class="input-group-addon ">
+                            <span class="fa fa-calendar-o" style="color :#63a599;"></span>
+                        </span>
+                         </div> 
                         <span class="error"></span>
                     </div>                
                     
@@ -85,7 +112,13 @@
 @stop
 
 @section('scripts')
- 
+<script>
+  $(function () { 
+        $('.datepicker').datepicker({});
+    });
+    </script> 
+{!! HTML::script("js/Moment.js") !!}
+{!! HTML::script("js/bootstrap.datetimepicker.js") !!}
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8C6FwkrdwpY3ZR7tJ7J3C1Yq-IUf1nZk&callback=myMap"></script>
 @stop
