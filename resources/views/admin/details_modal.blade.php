@@ -1,5 +1,5 @@
 <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="container"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>ass="modal-dialog">
+    <div class="container"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

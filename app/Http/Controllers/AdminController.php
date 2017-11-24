@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use App\Driver;
+use App\Car;
+use App\User;
 
 class AdminController extends Controller {
 
@@ -23,12 +26,39 @@ class AdminController extends Controller {
     }
 
 
-    public function create() {
-        
+    public function delete($id) {
+          if($this->verifyAdmin()){     
+            Driver::destroy($id);
+            Car::destroy($id);
+            return back()->with('success', 'Update successful!');
+        }
     }
 
-    public function update(Request $request) {
-       
+    public function update($id) {
+         if($this->verifyAdmin()){
+        $data = DB::table('drivers')
+                    ->join('cars', 'drivers.driving_license_no', '=', 'cars.driving_license_no')
+                    ->join('users', 'drivers.userID', '=', 'users.userID')
+                    ->where('drivers.driving_license_no', $id)
+                     ->first();
+        
+        if(count($data)>0){
+            $driver=Driver::find($id);
+            $user=User::find($driver->userID);
+            if($driver->status=="Pending" || $driver->status=="Disabled"){
+                $driver->status="Active";
+                $user->is_driver=1;
+            }else{
+                $driver->status="Disabled";
+                $user->is_driver=0;
+            }
+            $driver->save();
+            $user->save();
+            return back()->with('success', 'Update successful!');
+        }
+        return back()->with('Failure', 'Sorry! Booking Fails!');
+         }
+         
     }
 
     // Show new drivers' registration 

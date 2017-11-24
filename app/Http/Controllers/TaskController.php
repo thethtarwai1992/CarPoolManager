@@ -141,11 +141,14 @@ class TaskController extends Controller {
             $tasks['booking_id'] = $data->booking_id;
             $tasks['name'] = $data->first_name . " " . $data->last_name;
             $tasks['contactno'] = $data->contactNO;
+            $tasks['email'] = $data->email;
+            $tasks['gender'] = $data->gender;
+             $tasks['route_datetime'] = $data->route_datetime;
             $tasks['price'] = $data->price;
             $tasks['seats'] = $data->seats;
             $tasks['pickup'] = $data->pickup;
             $tasks['destination'] = $data->destination;
-            $tasks['notes'] = "Pls call when reach soon. Wait at bus station ";
+            //$tasks['notes'] = "Pls call when reach soon. Wait at bus station ";
         }
         if ($tasks) {
             return response()->json(['response' => 'Success', 'data' => $tasks]);

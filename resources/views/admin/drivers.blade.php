@@ -136,10 +136,10 @@ Label the data
                         <td>{{ $result->contactNO }}</td>
                          <td>{{ $result->status }}</td>
                         <td>
-                            @if( $result->status== "Pending")
-                                <button type="button" class="btn btn-success update" data-toggle="modal" value={{  $result->driving_license_no}}>Active </button>
+                            @if( $result->status== "Pending" || $result->status== "Disabled")
+                            <a href="drivers/update/{{$result->driving_license_no}}"><button type="button" class="btn btn-success">Active </button></a>
                             @else
-                                <button type="button" class="btn btn-success update" data-toggle="modal" value={{  $result->driving_license_no}}>Disable </button>
+                            <a href="drivers/update/{{$result->driving_license_no}}"><button type="button" class="btn btn-success" >Disable </button></a>
                             @endif          
                         </td>
                         <td> 
@@ -149,7 +149,7 @@ Label the data
                                     <ul class="dropdown-menu">
                                         <li><a class="view" href="#" data-toggle="modal" data-id ={{ $result->driving_license_no}}>View Details</a></li>
                                         <li class="divider"></li>
-                                        <li><a class="delete" href="#" data-toggle="modal" value={{ $result->driving_license_no}}>Delete Record</a></li>     
+                                        <li class="disabled"> <a class="delete" href="#"  value ={{ $result->driving_license_no}} >Delete Record</a></li>     
                                     </ul>
                                 </div>
                         </td>
@@ -206,31 +206,6 @@ $('.view').on('click', function (e) {
                 console.log(data);
             }
         });
-    });
-    
-    $(document).ready(function () {
-            $(".delete").click(function () {
-                var booking_id = $(this).val();
-                $('#booking').val(booking_id);
-                $("#cancelModal").modal();
-            });
-        });
-    $('.update').on('click', function (e) {
-            var driving_license_no = $(this).data('id');
-            e.preventDefault();
-            $.ajax({
-                url: "{{ URL::to('admin/drivers/update') }}/" + driving_license_no,
-                dataType: 'json',
-                cache: false,
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function (data) {
-                    console.log(data);
-                }
-            });
-        });
-        
-     
+    }); 
 </script>
 @stop
