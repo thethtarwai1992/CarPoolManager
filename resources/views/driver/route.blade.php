@@ -1,5 +1,6 @@
 @extends('layouts.driver_main')
 @section('title', '- Rides') 
+<meta http-equiv="refresh" content="30" >
 @section('styles')
 <style>
     .ride-content{

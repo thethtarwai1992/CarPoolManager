@@ -69,6 +69,7 @@ class BookingController extends Controller {
 
         if ($request->isMethod('post')) {
             $a = $this->booking($request);
+            print_r($a);
             if ($a == 0) {
                 return back()->with('failure', 'Sorry! Booking Fails');                
             } elseif ($a == 1) {

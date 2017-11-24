@@ -1,4 +1,4 @@
-@extends('layouts.driver_main')
+@extends('layouts.user_main')
 @section('title', '- Rides') 
 @section('styles')
 <style>
@@ -67,14 +67,14 @@
         /*
 Label the data
         */
-        td:nth-of-type(1):before { content: "Booking #"; }
-        td:nth-of-type(2):before { content: "From"; }
-        td:nth-of-type(3):before { content: "Destination"; }
-        td:nth-of-type(4):before { content: "Customer"; }
-        td:nth-of-type(5):before { content: "Ride Date & Time"; }
-        td:nth-of-type(6):before {content:"Status";}
-        td:nth-of-type(7):before { content: "Total Fare"; }
-        td:nth-of-type(8):before { content: "Settlement Price"; }
+        td:nth-of-type(1):before { content: "User ID"; }
+        td:nth-of-type(2):before { content: "Name"; }
+        td:nth-of-type(3):before { content: "Driver License No"; }
+        td:nth-of-type(4):before { content: "Driving License Valid Till"; }
+        td:nth-of-type(5):before { content: "Driver Register Date"; }
+        td:nth-of-type(6):before {content:"Car Plate No";}
+        td:nth-of-type(7):before { content: "Car Model"; }
+        td:nth-of-type(8):before { content: "Contact No."; }
         td:nth-of-type(9):before { content: "Actions"; }
 
     #card_title{
@@ -103,51 +103,55 @@ Label the data
         <div class="col-md-12 col-sm-12 col-xs-12">
 
             <div class="page-sub-title textcenter">
-                <h2>All My Tasks</h2>     
+                <h2>Drivers List</h2>     
             </div><!-- end .page-sub-title -->
 
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Booking #</th>
-                        <th>From</th>
-                        <th>Destination  </th>
-                        <th>Customer</th>
-                        <th>Ride Date & Time</th>
+                        <th>User ID</th>
+                        <th>Name</th>        
+                        <th>Driver License No </th>
+                        <th>Driving License Valid Till</th>
+                        <th>Driver Register Date</th>
+                        <th>Car Plate No</th>
+                        <th>Car Model</th>
+                        <th>Contact No.</th>
                         <th>Status</th>
-                        <th>Total Fare</th>
-                        <th>Settlement Price</th>
                         <th colspan="2">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if(count($tasks) > 0 )
+                    @if(count($results) > 0 )
 
-                    @foreach ($tasks as $task)
-                    <tr class="id{{ $task->booking_id}}">
-                        <td>{{ $task->booking_id}}</td>
-                        <td>{{ $task->pickup }}</td>
-                        <td>{{ $task->destination }}</td>
-                        <td>{{ $task->first_name }} {{ $task->last_name }}</td>
-                        <td>{{ $task->route_datetime }}</td>
-                        <td>{{ $task->b_status }}</td>
-                        <td><i class="fa fa-money"></i> {{ $task->price }}</td>
-                        <td><i class="fa fa-money"></i> {{ $task->price*0.9 }}</td>
+                    @foreach ($results as $result)
+                    <tr class="id{{ $result->userID}}">
+                        <td># {{ $result->userID}}</td>
+                        <td>{{ $result->first_name}}{{ $result->last_name}}</td>
+                        <td>{{ $result->driving_license_no }}</td>
+                        <td>{{ $result->driving_license_valid_till }}</td>
+                        <td>{{ $result->driver_register_date }}</td>
+                        <td>{{ $result->plate_no }}</td>
+                        <td>{{ $result->model }}</td>
+                        <td>{{ $result->contactNO }}</td>
+                         <td>{{ $result->status }}</td>
                         <td>
-                            @if( $task->b_status== "Scheduled")
-                                <button type="button" class="btn btn-success update" data-toggle="modal" value={{ $task->booking_id}}>Picked </button>
-                            @elseif( $task->b_status== "PickedUp")
-                                <button type="button" class="btn btn-success update" data-toggle="modal" value={{ $task->booking_id}}>Completed </button>
+                            @if( $result->status== "Pending")
+                                <button type="button" class="btn btn-success update" data-toggle="modal" value={{  $result->driving_license_no}}>Active </button>
                             @else
-                                <button type="button" class="btn btn-primary view" data-toggle="modal" data-id ={{ $task->booking_id}}>View</button>
+                                <button type="button" class="btn btn-success update" data-toggle="modal" value={{  $result->driving_license_no}}>Disable </button>
                             @endif          
                         </td>
                         <td> 
-                            @if( $task->b_status== "Scheduled")
-                            <button type="button" class="btn btn-danger delete" data-toggle="modal" value={{ $task->booking_id}}>Cancel</button>
-                             @else
-                        <button type="button" class="btn btn-info"> N.A</button>
-                             @endif  
+                            <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">More Actions
+                                        <span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="view" href="#" data-toggle="modal" data-id ={{ $result->driving_license_no}}>View Details</a></li>
+                                        <li class="divider"></li>
+                                        <li><a class="delete" href="#" data-toggle="modal" value={{ $result->driving_license_no}}>Delete Record</a></li>     
+                                    </ul>
+                                </div>
                         </td>
 
                 </tr>
@@ -167,34 +171,35 @@ Label the data
 @stop
 
 @section('modals')
-@include('driver/details_modal')
-@include('driver/cancel_modal')
-@include('driver/update_modal')
+@include('admin/details_modal')
 @stop
 
 
 @section('scripts')
 <script type="text/javascript">
 $('.view').on('click', function (e) {
-        var booking_id = $(this).data('id');
+        var driving_license_no = $(this).data('id');
         //console.log('route' + route_id);
         e.preventDefault();
         $.ajax({
-            url: "{{ URL::to('task/view') }}/" + booking_id,
+            url: "{{ URL::to('admin/drivers/view') }}/" + driving_license_no,
             dataType: 'json',
             cache: false,
             success: function (data) {
                 console.log(data);
-                $('#bookingID span').html(data['data']['booking_id']);
+                $('#userID span').html(data['data']['userID']);
                 $('#name span').html(data['data']['name']);
                 $('#contactno span').html(data['data']['contactno']);
-                $('#priceD span').html(data['data']['price']);
-                 $('#settlePriceD span').html(data['data']['price']*0.9);
-                $('#seats span').html(data['data']['seats']);
-                $('#pickupD span').html(data['data']['pickup']);
-                $('#destD span').html(data['data']['destination']);
-                $('#noteD span').html(data['data']['notes']);
-                $('#route').val(booking_id);
+                $('#email span').html(data['data']['email']);
+                 $('#gender span').html(data['data']['gender']);
+                $('#driving_license_no span').html(data['data']['driving_license_no']);
+                $('#driving_license_valid span').html(data['data']['driving_license_valid']);
+                $('#carModel span').html(data['data']['carModel']);
+                $('#plate_no span').html(data['data']['plate_no']);
+                $('#capacity span').html(data['data']['capacity']);
+                $('#driver_register_date span').html(data['data']['driver_register_date']);
+                $('#manufacture_year span').html(data['data']['manufacture_year']);
+                $('#route').val(driving_license_no);
                 $('#viewModal').modal('show');
             },
             error: function (data) {
@@ -211,23 +216,21 @@ $('.view').on('click', function (e) {
             });
         });
     $('.update').on('click', function (e) {
-            var booking_id = $(this).val();
+            var driving_license_no = $(this).data('id');
             e.preventDefault();
             $.ajax({
-                url: "{{ URL::to('task/storeSessionData') }}/" + booking_id,
+                url: "{{ URL::to('admin/drivers/update') }}/" + driving_license_no,
                 dataType: 'json',
                 cache: false,
                 success: function (data) {
                     console.log(data);
-                    $('#title span').html(data['data']['title']);
-                    $('#msg1 span').html(data['data']['msg1']);    
-                     $('#msg2 span').html(data['data']['msg2']);    
-                    $('#updateModal').modal('show');
                 },
                 error: function (data) {
                     console.log(data);
                 }
             });
         });
+        
+     
 </script>
 @stop
