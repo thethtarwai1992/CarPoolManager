@@ -246,7 +246,7 @@ class TaskController extends Controller {
                                 $query->where('posted_type', 'Passenger');
                             }])->where('status', 'Open')
                         ->whereDate('request_time', date('Y-m-d'))->get();
-        if ($booking) {
+        if (count($booking) > 0) {
             return response()->json(['response' => 'Success', 'data' => $booking]);
         }
         return response()->json(['response' => 'Fail', 'data' => $booking]);
