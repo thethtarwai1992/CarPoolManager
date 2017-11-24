@@ -35,7 +35,7 @@
                 @if(count($rides) > 0 )
 
                 @foreach ($rides as $booking)
-                <a href="#" class="viewdetails" data-toggle="modal" data-id ={{ $booking->booking_id }}> 
+                <a href="#" class="viewdetails" data-toggle="modal" data-id ={{ $booking->booking_id }} data-status = {{ $booking->status }}> 
                     <article class="ride-box clearfix">
 
                         <div class="ride-content">
@@ -76,11 +76,13 @@
 <script>
     $('.viewdetails').on('click', function (e) {
         
-        if({{ $booking->status == 'Open' }}){
+        var booking_id = $(this).data('id');
+        var status = $(this).data('status');
+        
+        if( status == 'Open'){
             alert("Finding Driver for you!")
             return false;
         }
-        var booking_id = $(this).data('id');
         //console.log('route' + route_id);
         e.preventDefault();
         $.ajax({

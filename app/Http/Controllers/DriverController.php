@@ -88,7 +88,6 @@ class DriverController extends Controller {
         }else{
             return round($total/$rating);
         }
-        
     }
 
 }

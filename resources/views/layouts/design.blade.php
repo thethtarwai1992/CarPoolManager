@@ -19,7 +19,7 @@
         <link rel="shortcut icon" href="{{ asset('img/shortcut.gif') }}">
 
         <!-- Bootstrap -->
-        {!!  HTML::style("css/bootstrap.min.css") !!}
+        {!!  HTML::style("css/bootstrap-3.1.min.css") !!}
         <!-- Forms -->
         {!!  HTML::style("css/jquery.idealforms.css") !!}
         <!-- Select  -->
@@ -89,6 +89,13 @@
             .log-facebook{
                 width: 100%;
             }
+            .modal-dialog{
+                overflow-y: initial !important
+            }
+            .modal-body{ 
+                overflow-y: auto;
+            }
+
             @media only screen and (min-width: 320px) and (max-width: 980px){
                 .user-log { padding: 0.6em;}
                 .logo h1 {font-size: 25px;}
@@ -307,7 +314,7 @@
         <!-- Javascript -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- Bootstrap -->
-        {!! HTML::script("js/bootstrap.min.js") !!}
+        {!! HTML::script("js/bootstrap-3.1.min.js") !!}
         <!-- Main jQuery -->
         {!! HTML::script("js/jquery.main.js") !!}
         <!-- Form -->

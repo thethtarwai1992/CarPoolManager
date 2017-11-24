@@ -60,7 +60,7 @@ Route::get('user/edit', 'UserController@edit');
 /* |-------------------------------------------------------------------------- */
 
 Route::get('user/change-pw', 'UserController@changePassword');
-Route::get('user/edit', 'UserController@edit');
+Route::get('user/edit', 'UserController@edit'); 
 /* |-------------------------------------------------------------------------- */
 
 Route::get('admin', 'AdminController@index');
