@@ -1,8 +1,7 @@
 @extends('layouts.driver_main')
 @section('title', '- Rides') 
-{!! HTML::style("css/bootstrap.datetimepicker.css") !!} 
-
 @section('styles')
+{!! HTML::style("css/bootstrap.datetimepicker.css") !!} 
 <style>
     .ride-content{
         float: right;
