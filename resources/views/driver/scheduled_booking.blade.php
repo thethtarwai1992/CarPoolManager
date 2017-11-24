@@ -192,12 +192,15 @@ Label the data
                     $('#bookingID span').html(data['data']['booking_id']);
                     $('#name span').html(data['data']['name']);
                     $('#contactno span').html(data['data']['contactno']);
+                    $('#email span').html(data['data']['email']);
+                    $('#gender span').html(data['data']['gender']);
+                     $('#route_datetime span').html(data['data']['route_datetime']);
                     $('#priceD span').html(data['data']['price']);
                     $('#settlePriceD span').html(data['data']['price'] * 0.9);
                     $('#seats span').html(data['data']['seats']);
                     $('#pickupD span').html(data['data']['pickup']);
                     $('#destD span').html(data['data']['destination']);
-                    $('#noteD span').html(data['data']['notes']);
+                    //$('#noteD span').html(data['data']['notes']);
                     $('#route').val(booking_id);
                     $('#viewModal').modal('show');
                 },
