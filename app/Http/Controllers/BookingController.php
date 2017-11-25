@@ -121,7 +121,7 @@ class BookingController extends Controller {
             } 
         }
 
-        return results;
+        return result;
     }
 
     //Check every min after book
