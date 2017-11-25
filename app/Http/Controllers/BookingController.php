@@ -72,11 +72,11 @@ class BookingController extends Controller {
          
             if (count($a) == 0) {
                 return back()->with('failure', 'Sorry! Booking Fails');                
-            } elseif(count($a) > 0 && $a['status'] == 'ok') {
+            } elseif(count($a) > 0 && $a['status'] == 'exist') {
                 return back()->with('failure', 'You have already booked this');
             } else {
                 //Email
-                MailController::sendToDriver($a);                
+               //MailController::sendToDriver($a);                
                 return back()->with('success', 'Booking successful!');
                
             }
