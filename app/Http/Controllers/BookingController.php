@@ -69,23 +69,23 @@ class BookingController extends Controller {
 
         if ($request->isMethod('post')) {
             $a = $this->booking($request);
-            print_r($a);
-            if ($a == 0) {
+         
+            if (count($a) == 0) {
                 return back()->with('failure', 'Sorry! Booking Fails');                
-            } elseif ($a == 1) {
+            } elseif(count($a) > 0 && $a['status'] == 'ok') {
                 return back()->with('failure', 'You have already booked this');
             } else {
                 //Email
                 MailController::sendToDriver($a);                
                 return back()->with('success', 'Booking successful!');
-                       
+               
             }
         }
         return back()->with('failure', 'Sorry! Booking Fails!');
     }
 
     public static function checkBooking($route_id){
-        $booking = Booking::where('route_id',$route_id)->first();
+        $booking = Booking::where('route_id',$route_id)->where('passenger_id', Auth::user()->userID)->first();
         if($booking){
             return true;
         }
@@ -94,10 +94,11 @@ class BookingController extends Controller {
 
     public function booking($request) {
         $route = Route::with('driver')->find($request->route);
+        $result = array();
         if ($route) {
 
             if (self::checkBooking($route->route_id)) {
-                return 1;
+                $result['status'] = 'exist';
             } else {
                 $booking = new Booking;
                 $booking->request_time = date("Y-m-d H:i:s");
@@ -115,11 +116,12 @@ class BookingController extends Controller {
                 $route->save();
                 
                 $route['price'] = $request->price;
-                return $route;
-            }
+                $route['status'] = 'ok';
+                 $result = $route;
+            } 
         }
 
-        return 0;
+        return results;
     }
 
     //Check every min after book
